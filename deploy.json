@@ -1,0 +1,13 @@
+{
+  "contract_version": 1,
+  "strategy": "replace",
+  "on_drift": "fail",
+  "mappings": [
+    { "from": "skills/zskin", "to": ".zcode/skills/zskin" }
+  ],
+  "post_update": [
+    {
+      "say": "Скилл zskin вендорен в .zcode/skills/. Лоадер (loader/zskin.py) в проекты не вендорится — живёт в репо плагина и запускается оттуда; путь до репо см. в журнале .zcode/deployed.json."
+    }
+  ]
+}
