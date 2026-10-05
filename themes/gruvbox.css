@@ -273,6 +273,32 @@ html.theme-zai-light ::selection {
   color: var(--color-warning);
 }
 
+/* ===== chat left gutter (user request) =====
+ * Stock geometry couples the width limit (max-w-6xl = 1152px), mx-auto
+ * centering and a fixed -168px shift (@min-[1280px]/conversation:
+ * -translate-x-42). The shift makes the left gutter jump between ~180px
+ * (right pane closed) and ~25px (open). We keep the stock width/limits and
+ * replace their shift with a fixed gutter; the navigator rail (absolutely
+ * positioned, right edge x≈408) then keeps a ~33px gap to the text.
+ * Scoped to the client's own named container — silent no-op if it drifts.
+ */
+@container conversation (min-width: 1280px) {
+  #content div.shrink-0.mx-auto[class*="max-w-"] {
+    translate: none;
+    margin-left: 62px;
+    margin-right: auto;
+  }
+
+  /* composer dock is centered differently: a flex justify-center parent +
+   * the same -168px shift on the wrapper (no mx-auto, no max-w-*), so the
+   * gutter rule above misses it; the wrapper is addressed by the author
+   * class .chat-composer-region inside it. */
+  #content div.pointer-events-auto:has(.chat-composer-region) {
+    translate: none;
+    margin-left: 62px;
+    margin-right: auto;
+  }
+}
 /* ===== turn navigator ticks (user request) =====
  * Live 3.14.4: the rail (div.relative.w-9 with inline height, buttons
  * "Jump to query N") lays its 36x10px buttons out via inline translateY
