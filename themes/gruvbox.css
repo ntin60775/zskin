@@ -273,6 +273,23 @@ html.theme-zai-light ::selection {
   color: var(--color-warning);
 }
 
+/* ===== turn navigator ticks (user request) =====
+ * Live 3.14.4: the rail (div.relative.w-9 with inline height, buttons
+ * "Jump to query N") lays its 36x10px buttons out via inline translateY
+ * steps, so scaleY is the only way to stretch them without breaking the
+ * layout; the tick shape override is safe — JS only recolors/rescales it
+ * (data-visual-*).
+ */
+#content button[data-testid*="turn-navigator-item"] .rounded-full {
+  height: 8px;
+  border-radius: 3px;
+}
+
+#content div.relative.w-9[style*="height"] {
+  transform: scaleY(2);
+  transform-origin: top left;
+}
+
 /* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
  * Single accent rule above the composer, no side borders. Enable after the
  * base palette is verified; the container selector needs a live check.
