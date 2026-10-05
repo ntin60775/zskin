@@ -9,10 +9,29 @@
 | Путь | Что это |
 |---|---|
 | `loader/zskin.py` | лоадер (stdlib-only Python 3): `run` / `inject` / `list` |
-| `themes/` | CSS-темы; `example.css` — placeholder для проверки пайплайна |
+| `loader/zskin-launcher.sh` + `loader/zskin.desktop` | ярлык «ZCode (zskin)» для меню приложений (копия ставится в `~/.local/share/applications/`) и его обёртка: guard на уже запущенный клиент, лог в `~/.local/state/zskin-launcher.log`, уведомления |
+| `themes/` | CSS-темы; `example.css` — placeholder для проверки пайплайна; `gruvbox.css` — первая настоящая тема (omp dark-gruvbox, mono 17px) |
+| `docs/ui-elements.md` | карта UI рендерера: зоны, селекторы/токены, что меняемо; `docs/ui-tokens-3.14.3.txt` — дамп дизайн-токенов (источник — клон zai-org/ZCode, см. док) |
+| `docs/oh-my-pi-tui-classification.md` | классификация TUI-фреймворка oh-my-pi (`packages/tui`): модули, UI-элементы, назначение (клон в `/home/prog7/home/dev/contrib/clones/oh-my-pi/`) |
+| `docs/oh-my-pi-borrow-ideas.md` | идеи заимствования из oh-my-pi TUI: в темы zskin (раздел A), архитектурные паттерны на будущее (B), осознанные отказы (C) |
+| `docs/agents-ui-join.md` | полное соединение классификаций UI двух агентов (ZCode × oh-my-pi) с приоритетами заимствования; элементы отказов раздела C исключены |
+| `docs/theme-spec.md` | спека темы: omp dark-gruvbox, JBM NFM mono 17px, обе схемы; источники — kitty/omp конфиги и dsh ui-theme |
 | `skills/zskin/SKILL.md` | скилл: как применять, ограничения, границы |
 | `.zcode-plugin/plugin.json` | манифест ZCode-плагина |
 | `deploy.json` | стратегия поставки в sot-zcode-marketplace (контракт v1) |
+
+## Команды
+
+Сборки, линтера и автотестов в репо нет; проверка — живой клиент.
+
+```bash
+python3 loader/zskin.py run    --theme themes/example.css  # запустить клиент + инжект
+python3 loader/zskin.py inject --theme themes/example.css  # реинжект в уже запущенный клиент
+python3 loader/zskin.py list                               # показать цели CDP
+```
+
+Env: `ZSKIN_ZCODE_BIN` (путь до бинарника, по умолчанию `/opt/ZCode/zcode`),
+`ZSKIN_PORT` (дебаг-порт, по умолчанию `9222`).
 
 ## Принципы (нарушать нельзя)
 
@@ -29,9 +48,27 @@
 
 - Пользовательские артефакты (доки, коммиты, скиллы) — на русском; код и
   идентификаторы — английские; комментарии в коде — английские.
-- Лоадер — stdlib-only Python 3, без зависимостей.
+- Лоадер — stdlib-only Python 3, без зависимостей, включая собственный
+  минимальный WebSocket-клиент (RFC 6455) — новые зависимости не тянуть.
 - Коммиты: conventional (`feat:`, `fix:`, `chore:`, `docs:`), push в `main`
   допустим (solo-репо).
+
+## Грабли
+
+- Инжект живёт, пока жив рендерер: перезапуск окна/клиента и перезагрузка
+  страницы сбрасывают `<style id="zskin-style">` — нужен повторный
+  `run`/`inject`. Повторный инжект идемпотентен (тот же `<style>`,
+  содержимое заменяется).
+- `inject` работает только с клиентом, запущенным лоадером: обычный запуск
+  дебаг-порт не открывает.
+- У ZCode single-instance на уровне приложения: пока запущен обычный
+  экземпляр, новый запуск умирает сразу (exit 0, ~0.5 с), `--user-data-dir`
+  не помогает. Живой тест лоадера — только при закрытом клиенте (а его
+  закрытие убивает и хост текущей агентской сессии).
+- `deploy.json` вендорит в проект только скилл (`skills/zskin` →
+  `.zcode/skills/zskin`); лоадер остаётся в этом репо и запускается из него.
+- Перед правками лоадера/тем перечитать `README.md` (мотивация и границы
+  легальности) и `skills/zskin/SKILL.md` (применение, ограничения).
 
 ## Статус
 
