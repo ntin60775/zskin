@@ -1,0 +1,286 @@
+/* zskin theme: gruvbox-dark (omp variant)
+ * Spec: docs/theme-spec.md. Palette: oh-my-pi builtin "dark-gruvbox"
+ * (standard Gruvbox Dark Medium). Fonts: JetBrainsMono Nerd Font Mono
+ * everywhere at 17px (kitty 13pt equivalent). Selectors are hypotheses
+ * until verified in the live client.
+ *
+ * Structure note: dark values are scoped to html.theme-zai-dark / html.dark
+ * and light values to html.theme-zai-light, so switching the client theme
+ * keeps both modes readable (lesson from the dsh ui-theme plugin).
+ */
+
+:root {
+  --ui-font-size: 17px;
+  --font-sans: "JetBrainsMono Nerd Font Mono", "JetBrainsMono NFM",
+    ui-monospace, "Cascadia Mono", monospace;
+  --font-mono: "JetBrainsMono Nerd Font Mono", "JetBrainsMono NFM",
+    ui-monospace, "Cascadia Mono", monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* ===== dark (omp dark-gruvbox) ===== */
+html.theme-zai-dark,
+html.dark {
+  /* surfaces */
+  --color-background: #282828;
+  --color-background-win-alt: #1d2021;
+  --color-background-alt: #32302f;
+  --color-header: #1d2021;
+  --color-panel: #282828;
+  --color-sidebar: #1d2021;
+  --color-tab: #1d2021;
+  --color-tab-active: #282828;
+  --color-surface: #32302f;
+  --color-surface-hover: #3c3836;
+  --color-card: #282828;
+  --color-card-selected: #3c3836;
+  --color-card-border: #3c3836;
+  --color-popover: #1d2021;
+  --color-popover-foreground: #ebdbb2;
+  --color-popover-header: #282828;
+  --color-popover-border: #504945;
+  --color-tooltip: #1d2021;
+  --color-input: #1d2021;
+  --color-input-focused: #1d2021;
+
+  /* text */
+  --color-foreground: #ebdbb2;
+  --color-foreground-subtle: #bdae93;
+  --color-foreground-subtlest: #928374;
+  --color-foreground-inverse: #1d2021;
+
+  /* borders & interaction */
+  --color-border: #3c3836;
+  --color-border-hover: #504945;
+  --color-hover: #32302f;
+  --color-selected: #3c3836;
+  --color-input-border: #504945;
+  --color-input-border-hover: #665c54;
+  --color-input-border-focused: #fe8019;
+
+  /* brand & accents */
+  --color-brand: #fe8019;
+  --color-accent: #3c2f1c;
+  --color-icon-blue: #83a598;
+  --color-find-highlight: #504324;
+  --color-find-highlight-active: #fabd2f;
+
+  /* status semantics: running = orange (brand accent — same orange as the
+   * composer frame, user choice), done = green, error = red.
+   * sky-* feed the unread dots hardcoded as Tailwind utilities
+   * (bg-sky-500 dark:bg-sky-400); overriding them pulls those dots
+   * into the palette too. */
+  --color-success: #b8bb26;
+  --color-warning: #fe8019;
+  --color-destructive: #fb4934;
+  --color-sky-400: #83a598;
+  --color-sky-500: #83a598;
+
+  /* chat trajectory roles */
+  --color-trajectory-user: #83a598;
+  --color-trajectory-assistant: #b8bb26;
+  --color-trajectory-reasoning: #928374;
+  --color-trajectory-tool-call: #fabd2f;
+  --color-trajectory-tool-result: #8ec07c;
+
+  /* markdown */
+  --color-markdown-inline-code: #d3869b;
+
+  /* git */
+  --color-git-modified: #fe8019;
+  --color-git-added: #b8bb26;
+  --color-git-deleted: #fb4934;
+  --color-git-renamed: #83a598;
+  --color-git-untracked: #b8bb26;
+
+  /* usage / context meters (gruvbox accent ramp) */
+  --color-usage-chart-1: #83a598;
+  --color-usage-chart-2: #b8bb26;
+  --color-usage-chart-3: #d3869b;
+  --color-usage-chart-4: #fb4934;
+  --color-usage-chart-5: #fe8019;
+  --color-usage-chart-6: #8ec07c;
+  --color-context-breakdown-1: #458588;
+  --color-context-breakdown-2: #689d6a;
+  --color-context-breakdown-3: #83a598;
+  --color-context-breakdown-4: #8ec07c;
+  --color-context-breakdown-5: #b8bb26;
+  --color-context-breakdown-6: #fabd2f;
+  --color-context-breakdown-7: #ebdbb2;
+  --color-usage-heatmap-0: color-mix(in oklab, #83a598 0%, var(--color-surface));
+  --color-usage-heatmap-1: color-mix(in oklab, #83a598 24%, var(--color-surface));
+  --color-usage-heatmap-2: color-mix(in oklab, #83a598 42%, var(--color-surface));
+  --color-usage-heatmap-3: color-mix(in oklab, #83a598 62%, var(--color-surface));
+  --color-usage-heatmap-4: color-mix(in oklab, #b8bb26 78%, var(--color-surface));
+
+  /* workflow graph */
+  --color-workflow-rule: rgba(235, 219, 178, 0.065);
+  --color-workflow-trace: rgba(235, 219, 178, 0.35);
+  --color-workflow-trace-strong: rgba(235, 219, 178, 0.6);
+
+  /* terminal (omp dark-gruvbox terminal.ansi) */
+  --color-terminal-bg: #282828;
+  --color-terminal-fg: #ebdbb2;
+  --color-terminal-cursor: #ebdbb2;
+  --color-terminal-cursor-accent: #fe8019;
+  --color-terminal-selection: #504945;
+  --color-terminal-selection-inactive: #3c3836;
+  --color-terminal-black: #282828;
+  --color-terminal-red: #da271f;
+  --color-terminal-green: #98971a;
+  --color-terminal-yellow: #d79921;
+  --color-terminal-blue: #458588;
+  --color-terminal-magenta: #b16286;
+  --color-terminal-cyan: #689d6a;
+  --color-terminal-white: #a89984;
+  --color-terminal-bright-black: #928374;
+  --color-terminal-bright-red: #fb4934;
+  --color-terminal-bright-green: #b8bb26;
+  --color-terminal-bright-yellow: #fabd2f;
+  --color-terminal-bright-blue: #83a598;
+  --color-terminal-bright-magenta: #d3869b;
+  --color-terminal-bright-cyan: #8ec07c;
+  --color-terminal-bright-white: #ebdbb2;
+}
+
+/* ===== light (omp light-gruvbox, minimal coverage) ===== */
+html.theme-zai-light {
+  --color-background: #fbf1c7;
+  --color-background-win-alt: #ebdbb2;
+  --color-background-alt: #f2e5bc;
+  --color-header: #ebdbb2;
+  --color-panel: #fbf1c7;
+  --color-sidebar: #ebdbb2;
+  --color-surface: #f2e5bc;
+  --color-surface-hover: #d5c4a1;
+  --color-card: #fbf1c7;
+  --color-card-selected: #d5c4a1;
+  --color-card-border: #d5c4a1;
+  --color-popover: #fbf1c7;
+  --color-popover-foreground: #3c3836;
+  --color-popover-header: #ebdbb2;
+  --color-popover-border: #d5c4a1;
+  --color-tooltip: #fbf1c7;
+  --color-input: #fbf1c7;
+  --color-input-focused: #fbf1c7;
+  --color-foreground: #3c3836;
+  --color-foreground-subtle: #665c54;
+  --color-foreground-subtlest: #928374;
+  --color-foreground-inverse: #fbf1c7;
+  --color-border: #d5c4a1;
+  --color-border-hover: #bdae93;
+  --color-hover: #ebdbb2;
+  --color-selected: #d5c4a1;
+  --color-input-border: #d5c4a1;
+  --color-input-border-hover: #bdae93;
+  --color-input-border-focused: #d65d0e;
+  --color-brand: #d65d0e;
+  --color-accent: #ebdbb2;
+  --color-find-highlight: #fabd2f;
+  --color-find-highlight-active: #d65d0e;
+  --color-success: #98971a;
+  --color-warning: #d65d0e;
+  --color-destructive: #9d0006;
+  --color-sky-400: #458588;
+  --color-sky-500: #458588;
+  --color-trajectory-user: #458588;
+  --color-trajectory-assistant: #98971a;
+  --color-trajectory-reasoning: #928374;
+  --color-trajectory-tool-call: #d79921;
+  --color-trajectory-tool-result: #689d6a;
+  --color-git-modified: #d65d0e;
+  --color-git-added: #98971a;
+  --color-git-deleted: #cc241d;
+  --color-git-renamed: #458588;
+  --color-git-untracked: #98971a;
+  --color-terminal-bg: #fbf1c7;
+  --color-terminal-fg: #3c3836;
+  --color-terminal-cursor: #3c3836;
+  --color-terminal-cursor-accent: #d65d0e;
+  --color-terminal-selection: #d5c4a1;
+  --color-terminal-selection-inactive: #ebdbb2;
+  --color-terminal-black: #fbf1c7;
+  --color-terminal-red: #cc241d;
+  --color-terminal-green: #98971a;
+  --color-terminal-yellow: #d79921;
+  --color-terminal-blue: #458588;
+  --color-terminal-magenta: #b16286;
+  --color-terminal-cyan: #689d6a;
+  --color-terminal-white: #7c6f64;
+  --color-terminal-bright-black: #928374;
+  --color-terminal-bright-red: #9d0006;
+  --color-terminal-bright-green: #79740e;
+  --color-terminal-bright-yellow: #b57614;
+  --color-terminal-bright-blue: #076678;
+  --color-terminal-bright-magenta: #8f3f71;
+  --color-terminal-bright-cyan: #427b58;
+  --color-terminal-bright-white: #3c3836;
+}
+
+/* ===== selection & scrollbars ===== */
+html.theme-zai-dark ::selection,
+html.dark ::selection {
+  background: #504945;
+  color: #ebdbb2;
+}
+
+html.theme-zai-light ::selection {
+  background: #d5c4a1;
+  color: #3c3836;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #504945;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #665c54;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ===== session activity indicators =====
+ * The app paints the running-session spinner with text-foreground-subtle,
+ * so it melts into the sidebar. Status dots and live workflow lines get the
+ * gruvbox ramp through the status tokens above. Row hooks come from
+ * packages/ui: .group/task-row (workspace-grouped-tasks/task-row.tsx),
+ * .group/task-item (TaskListItem.tsx) — hypotheses until verified live.
+ */
+.group\/task-row svg.animate-spin,
+.group\/task-item svg.animate-spin {
+  color: var(--color-warning);
+  stroke-width: 2.75;
+  filter: drop-shadow(0 0 3px color-mix(in oklab, currentColor 45%, transparent));
+}
+
+/* live workflow run line under the title: full-strength text, yellow glyph */
+[data-workflow-run-line="true"][data-run-status="running"] {
+  color: var(--color-foreground);
+}
+
+[data-workflow-run-line="true"][data-run-status="running"] svg.lucide-workflow {
+  color: var(--color-warning);
+}
+
+/* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
+ * Single accent rule above the composer, no side borders. Enable after the
+ * base palette is verified; the container selector needs a live check.
+ *
+ * [data-slot="textarea"] {
+ *   border-top: 1px solid var(--color-brand) !important;
+ *   border-left: none;
+ *   border-right: none;
+ *   border-bottom: none;
+ * }
+ */
