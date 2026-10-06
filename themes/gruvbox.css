@@ -273,21 +273,41 @@ html.theme-zai-light ::selection {
   color: var(--color-warning);
 }
 
-/* ===== turn navigator ticks (user request) =====
- * Live 3.14.4: the rail (div.relative.w-9 with inline height, buttons
- * "Jump to query N") lays its 36x10px buttons out via inline translateY
- * steps, so scaleY is the only way to stretch them without breaking the
- * layout; the tick shape override is safe — JS only recolors/rescales it
- * (data-visual-*).
+/* ===== turn navigator rail: full height, no clipping (user request) =====
+ * Live 3.14.4 structure (ConversationTurnNavigator.tsx):
+ *   nav[data-testid="v4-turn-navigator"] > rail (scroll container,
+ *   max-h 100%-6rem, vertically centered) > sizer (div.relative.w-9,
+ *   inline height = 10px * queries) > wrappers (absolute, inline
+ *   translateY = 10px * index) > button 36x10 > tick span.
+ * The rail is a virtualized 10px-pitch list, so stock it renders as a
+ * short centered stub. Instead of scaling (layout height would stop
+ * matching visual height and the tail would clip), we drop the inline
+ * positioning: wrappers become static flow children of a flex column
+ * sizer with space-between, and min-height stretches the sizer to the
+ * rail height whenever 10px * queries is shorter than the rail. Long
+ * sessions keep the inline height (taller than the rail), so the rail
+ * still scrolls and the virtualizer window keeps working. The rail gets
+ * an explicit height to make min-height percentages resolve.
  */
+#content nav[data-testid="v4-turn-navigator"] > div {
+  height: calc(100% - 6rem);
+}
+
+#content nav[data-testid="v4-turn-navigator"] div.relative.w-9[style*="height"] {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#content nav[data-testid="v4-turn-navigator"] div.relative.w-9[style*="height"] > div {
+  position: static;
+  transform: none !important;
+}
+
 #content button[data-testid*="turn-navigator-item"] .rounded-full {
   height: 8px;
   border-radius: 3px;
-}
-
-#content div.relative.w-9[style*="height"] {
-  transform: scaleY(2);
-  transform-origin: top left;
 }
 
 /* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
