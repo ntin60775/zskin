@@ -1,6 +1,6 @@
 {
   "name": "zskin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Live CSS theming for the official ZCode desktop client: launch with CDP and re-skin on the fly, no product files modified",
   "author": {
     "name": "sothale"
