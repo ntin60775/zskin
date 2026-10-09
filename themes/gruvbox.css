@@ -10,7 +10,11 @@
  */
 
 :root {
-  --ui-font-size: 17px;
+  /* 3.14.5+: the client writes --ui-font-size inline on <html> from its
+   * own setting (localStorage "zcode-ui-font-size-px", clamp 12-20, writes
+   * e.g. 16px after upgrade). Inline beats our plain :root declaration,
+   * so the spec's 17px needs !important to win the cascade back. */
+  --ui-font-size: 17px !important;
   --font-sans: "JetBrainsMono Nerd Font Mono", "JetBrainsMono NFM",
     ui-monospace, "Cascadia Mono", monospace;
   --font-mono: "JetBrainsMono Nerd Font Mono", "JetBrainsMono NFM",
