@@ -280,13 +280,13 @@ html.theme-zai-light ::selection {
 /* ===== status panel (right): width + full height =====
  * aside[data-testid="chat-summary-panel"] (verified live, 3.14.5): stock
  * w-80 = 320px, height sized by content and capped by
- * max-h-[min(64dvh,32rem)]. User wants the panel ~650px wide (marker line
- * at ~70% of the viewport) and always stretched to the full conversation
- * column height, regardless of content. Layout-only: applies in both
- * schemes; the mini display mode is left untouched.
+ * max-h-[min(64dvh,32rem)]. User wants the panel wider than stock (first
+ * take 650px proved too wide) and always stretched to the full
+ * conversation column height, regardless of content. Layout-only: applies
+ * in both schemes; the mini display mode is left untouched.
  */
 :root {
-  --zskin-status-panel-width: 650px;
+  --zskin-status-panel-width: 480px;
 }
 
 /* wrapper (absolute top-0 right-4 pt-4) is sized by content; stretch it so
