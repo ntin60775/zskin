@@ -277,6 +277,32 @@ html.theme-zai-light ::selection {
   color: var(--color-warning);
 }
 
+/* ===== status panel (right): width + full height =====
+ * aside[data-testid="chat-summary-panel"] (verified live, 3.14.5): stock
+ * w-80 = 320px, height sized by content and capped by
+ * max-h-[min(64dvh,32rem)]. User wants the panel ~650px wide (marker line
+ * at ~70% of the viewport) and always stretched to the full conversation
+ * column height, regardless of content. Layout-only: applies in both
+ * schemes; the mini display mode is left untouched.
+ */
+:root {
+  --zskin-status-panel-width: 650px;
+}
+
+/* wrapper (absolute top-0 right-4 pt-4) is sized by content; stretch it so
+ * the panel's calc(100% - ...) resolves against the conversation column */
+div.absolute:has(> aside[data-testid="chat-summary-panel"][data-display-mode="panel"]) {
+  height: 100% !important;
+}
+
+aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
+  width: var(--zskin-status-panel-width) !important;
+  max-height: none !important;
+  /* 100% resolves against the wrapper content box (its pt-4 already
+   * excluded), so the panel bottom lands flush with the column */
+  height: 100% !important;
+}
+
 /* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
  * Single accent rule above the composer, no side borders. Enable after the
  * base palette is verified; the container selector needs a live check.
