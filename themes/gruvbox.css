@@ -286,7 +286,7 @@ html.theme-zai-light ::selection {
  * in both schemes; the mini display mode is left untouched.
  */
 :root {
-  --zskin-status-panel-width: 460px;
+  --zskin-status-panel-width: 450px;
 }
 
 /* wrapper (absolute top-0 right-4 pt-4) is sized by content; stretch it so
