@@ -286,7 +286,7 @@ html.theme-zai-light ::selection {
  * in both schemes; the mini display mode is left untouched.
  */
 :root {
-  --zskin-status-panel-width: 480px;
+  --zskin-status-panel-width: 520px;
 }
 
 /* wrapper (absolute top-0 right-4 pt-4) is sized by content; stretch it so
@@ -299,8 +299,9 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
   width: var(--zskin-status-panel-width) !important;
   max-height: none !important;
   /* 100% resolves against the wrapper content box (its pt-4 already
-   * excluded), so the panel bottom lands flush with the column */
-  height: 100% !important;
+   * excluded); the 16px inset drops the panel bottom flush with the
+   * composer region (.chat-composer-region) instead of the column edge */
+  height: calc(100% - 16px) !important;
 }
 
 /* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
