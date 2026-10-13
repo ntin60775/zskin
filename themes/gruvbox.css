@@ -301,6 +301,7 @@ div.absolute:has(> aside[data-testid="chat-summary-panel"][data-display-mode="pa
 
 aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
   width: var(--zskin-status-panel-width) !important;
+  max-width: var(--zskin-status-panel-width) !important;
   max-height: none !important;
   /* 100% resolves against the wrapper content box (its pt-4 already
    * excluded); the 16px inset drops the panel bottom flush with the
@@ -320,6 +321,11 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
 
   aside[data-testid="chat-summary-panel"][data-display-mode="auto"] {
     width: var(--zskin-status-panel-width) !important;
+    /* 3.14.5 caps the auto panel with
+     * max-w-[min(20rem,calc(100cqw-2rem))] in every breakpoint; max-width
+     * beats width in the used-value pass no matter the !important, so the
+     * cap must be lifted explicitly or width clamps back to 320px */
+    max-width: var(--zskin-status-panel-width) !important;
     max-height: none !important;
     height: calc(100% - 16px) !important;
   }
