@@ -283,14 +283,18 @@ html.theme-zai-light ::selection {
  * max-h-[min(64dvh,32rem)]. User wants the panel wider than stock (first
  * take 650px proved too wide) and always stretched to the full
  * conversation column height, regardless of content. Layout-only: applies
- * in both schemes; the mini display mode is left untouched.
+ * in both schemes; the mini display mode is left untouched. Display
+ * modes: "panel" (Always expanded), "auto" (client default, full panel
+ * only at >=1280px container width, mini capsule below), "mini"
+ * (collapsed capsule — never restyled).
  */
 :root {
   --zskin-status-panel-width: 450px;
 }
 
-/* wrapper (absolute top-0 right-4 pt-4) is sized by content; stretch it so
- * the panel's calc(100% - ...) resolves against the conversation column */
+/* wrapper (absolute, pt-4, right-pinned by the client) is sized by content;
+ * stretch it so the panel's calc(100% - ...) resolves against the
+ * conversation column */
 div.absolute:has(> aside[data-testid="chat-summary-panel"][data-display-mode="panel"]) {
   height: 100% !important;
 }
@@ -302,6 +306,23 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
    * excluded); the 16px inset drops the panel bottom flush with the
    * composer region (.chat-composer-region) instead of the column edge */
   height: calc(100% - 16px) !important;
+}
+
+/* "auto" display mode — the client default (override lives in useState and
+ * resets on restart; resolveConversationStatusPanelVariant returns "auto").
+ * Below the 1280px container breakpoint auto renders as the mini capsule —
+ * leave that alone; at >=1280px it renders as the full stock panel
+ * (w-80 + max-h cap), restyle it identically. */
+@container conversation (min-width: 1280px) {
+  div.absolute:has(> aside[data-testid="chat-summary-panel"][data-display-mode="auto"]) {
+    height: 100% !important;
+  }
+
+  aside[data-testid="chat-summary-panel"][data-display-mode="auto"] {
+    width: var(--zskin-status-panel-width) !important;
+    max-height: none !important;
+    height: calc(100% - 16px) !important;
+  }
 }
 
 /* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
