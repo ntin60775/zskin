@@ -255,15 +255,23 @@ html.theme-zai-light ::selection {
 }
 
 /* ===== session activity indicators =====
- * The app paints the running-session spinner with text-foreground-subtle,
- * so it melts into the sidebar. Status dots and live workflow lines get the
- * gruvbox ramp through the status tokens above. Row hooks come from
- * packages/ui: .group/task-row (workspace-grouped-tasks/task-row.tsx),
- * .group/task-item (TaskListItem.tsx) — hypotheses until verified live.
+ * The app paints activity spinners with text-foreground-subtle, so they melt
+ * into the chrome. Verified live on 3.16.1: `animate-spin` sits on a wrapper
+ * (span in task-item rows, div in the assistant turn) and the lucide svg
+ * inside carries its own text-foreground-subtle class — tag-scoped selectors
+ * broke when the client moved the class off the svg (regression vs 3.14.x),
+ * and inheritance alone cannot beat the svg's own color class. Paint the
+ * class itself and the svg child; stroke and glow stay on the svg. Covers
+ * task-list spinners, the thinking spinner and button/dialog loaders alike —
+ * same semantics: something is working. Status dots and live workflow lines
+ * get the gruvbox ramp through the status tokens above.
  */
-.group\/task-row svg.animate-spin,
-.group\/task-item svg.animate-spin {
+.animate-spin,
+.animate-spin svg {
   color: var(--color-warning);
+}
+
+.animate-spin svg {
   stroke-width: 2.75;
   filter: drop-shadow(0 0 3px color-mix(in oklab, currentColor 45%, transparent));
 }
