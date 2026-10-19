@@ -372,3 +372,13 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
   flex-wrap: wrap !important;
   justify-content: center;
 }
+
+/* composer input: idle height = 5 text lines instead of the stock 2
+ * (min-h-10). Silhouette-independent, so it lives in the theme; the stock
+ * max-h-40 growth cap (8 lines at leading-5) is left alone. Measured live
+ * on 3.16.1: editable is 40px/20px line-height, height is pure CSS (no
+ * inline height from JS). User preference 2026-10-19. */
+[data-testid="v4-composer-input"] {
+  min-height: calc(5 * 1.25rem) !important; /* stock leading-5 fallback */
+  min-height: 5lh !important; /* own line-height of the editable */
+}
