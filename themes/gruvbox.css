@@ -355,3 +355,20 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
 .chat-composer-region.max-w-2xl {
   max-width: none !important;
 }
+
+/* draft suggested prompts (Weekly Summary / Error Fix / …): stock renders
+ * one w-max row in an overflow-x strip, so the chips always scroll
+ * horizontally. Wrap them instead and let the slot grow. User preference
+ * 2026-10-19: no horizontal scroll on the welcome screen. */
+[data-v4-draft-suggested-prompts-slot] {
+  height: auto !important;
+}
+[data-v4-draft-suggested-prompts] {
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+[data-v4-draft-suggested-prompts-group] {
+  width: auto !important;
+  flex-wrap: wrap !important;
+  justify-content: center;
+}
