@@ -12,7 +12,10 @@
 .chat-composer-region form > div.relative {
   border: none !important;
   border-radius: 0 !important;
-  background: transparent !important;
+  /* page-colored mask, not transparent: the dock overlays the chat
+   * scroller (stock hid it behind opaque bg-input), a transparent shell
+   * lets scrolled messages bleed through (live 3.16.1, 2026-10-19) */
+  background: var(--color-background) !important;
 }
 
 /* draft mode: drop the outer surface card so the prompt floats
