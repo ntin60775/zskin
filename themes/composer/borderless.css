@@ -1,0 +1,24 @@
+/* zskin composer silhouette "borderless"
+ * Source: oh-my-pi packages/tui/src/components/composer/borderless.ts —
+ * chrome-free: a bare prompt with no rules or borders. Palette-agnostic.
+ *
+ * Hook verified live on client 3.16.1 (DOM probe 2026-10-19); fallback:
+ *   .chat-composer-region form > div:has([data-testid="v4-composer-input"])
+ *
+ * box-shadow is intentionally NOT zeroed on the shell: the stock drop
+ * target reports itself with ring-1 (a box shadow), and that must stay.
+ */
+
+.chat-composer-region form > div.relative {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* draft mode: drop the outer surface card so the prompt floats
+ * directly on the page background */
+.chat-composer-region .chat-composer-input-surface[class~="rounded-2xl"] {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}

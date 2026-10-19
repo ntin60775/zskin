@@ -1,0 +1,22 @@
+/* zskin composer silhouette "field"
+ * Source: oh-my-pi packages/tui/src/components/composer/field.ts — a filled
+ * one-line field with accent end caps (▐ … ▌). Palette-agnostic.
+ *
+ * Hook verified live on client 3.16.1 (DOM probe 2026-10-19); fallback:
+ *   .chat-composer-region form > div:has([data-testid="v4-composer-input"])
+ */
+
+.chat-composer-region form > div.relative {
+  border: none !important;
+  border-left: 2px solid var(--color-brand) !important;
+  border-right: 2px solid var(--color-brand) !important;
+  border-radius: 2px !important;
+  background: var(--color-input) !important;
+}
+
+/* draft mode: drop the outer surface card so the shell stands alone */
+.chat-composer-region .chat-composer-input-surface[class~="rounded-2xl"] {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}

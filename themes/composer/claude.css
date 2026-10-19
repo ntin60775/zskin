@@ -1,0 +1,36 @@
+/* zskin composer silhouette "claude"
+ * Source: oh-my-pi packages/tui/src/components/composer/claude.ts — two
+ * full-width hairlines above and below a borderless prompt; the omp top
+ * rule carries the accent status chip on the right. Palette-agnostic.
+ *
+ * Hook verified live on client 3.16.1 (DOM probe 2026-10-19); fallback:
+ *   .chat-composer-region form > div:has([data-testid="v4-composer-input"])
+ *
+ * omp's "❯ " prompt gutter was tried and dropped: a ::before on the
+ * Lexical editable collides with the absolutely positioned placeholder.
+ * Without it this silhouette differs from "pi" by nothing visible; kept
+ * for omp parity.
+ */
+
+.chat-composer-region form > div.relative {
+  border: none !important;
+  border-top: 1px solid var(--color-border) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* drop-target flash: stock recolors border-brand — let the hairlines
+ * follow it instead of dying under our !important */
+.chat-composer-region form > div.relative[class~="border-brand"] {
+  border-top-color: var(--color-brand) !important;
+  border-bottom-color: var(--color-brand) !important;
+}
+
+/* draft mode: drop the outer surface card so the silhouette floats
+ * directly on the page background */
+.chat-composer-region .chat-composer-input-surface[class~="rounded-2xl"] {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}

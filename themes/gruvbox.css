@@ -339,14 +339,10 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
   }
 }
 
-/* ===== composer silhouette "rule" (omp composer.shape) — hypothesis =====
- * Single accent rule above the composer, no side borders. Enable after the
- * base palette is verified; the container selector needs a live check.
- *
- * [data-slot="textarea"] {
- *   border-top: 1px solid var(--color-brand) !important;
- *   border-left: none;
- *   border-right: none;
- *   border-bottom: none;
- * }
+/* ===== composer silhouettes =====
+ * Composer shell silhouettes (omp box/band/claude/pi/borderless/rule/field/
+ * rail) live in themes/composer/*.css and load via
+ * `zskin.py ... --composer themes/composer/rail.css`. They are
+ * palette-agnostic and hook the shell verified live on 3.16.1:
+ * .chat-composer-region form > div.relative
  */
