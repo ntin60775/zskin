@@ -346,3 +346,12 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
  * palette-agnostic and hook the shell verified live on 3.16.1:
  * .chat-composer-region form > div.relative
  */
+
+/* draft/welcome composer: stock clamps it to max-w-2xl (672px) while the
+ * conversation composer fills the dock (1152px cap, 16px side padding).
+ * Drop the clamp — the region is w-full inside the same dock, so it lands
+ * exactly on the chat width (1120px at full window). Live-measured
+ * 2026-10-19; user preference: welcome composer = chat width. */
+.chat-composer-region.max-w-2xl {
+  max-width: none !important;
+}
