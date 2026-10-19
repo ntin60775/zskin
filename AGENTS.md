@@ -9,7 +9,7 @@
 | Путь | Что это |
 |---|---|
 | `loader/zskin.py` | лоадер (stdlib-only Python 3): `run` / `inject` / `list` |
-| `loader/session_colors.py` | генератор цветов сессий (порт omp `session-color.ts`): хэш id → оттенок OKLCH с гарантиями читаемости; самопроверка — `python3 loader/session_colors.py` (свойства omp-теста); капа гаммы кэшируется в `~/.cache/zskin/` |
+| `loader/project_colors.py` | генератор цветов проектов группированного сайдбара (порт omp `session-color.ts`): нативный цвет группы, а без него хэш пути → оттенок OKLCH; самопроверка — `python3 loader/project_colors.py` (свойства omp-теста); капа гаммы кэшируется в `~/.cache/zskin/` |
 | `loader/zskin-launcher.sh` + `loader/zskin.desktop` | ярлык «ZCode (zskin)» для меню приложений (копия ставится в `~/.local/share/applications/`) и его обёртка: guard на уже запущенный клиент, лог в `~/.local/state/zskin-launcher.log`, уведомления |
 | `themes/` | CSS-темы; `example.css` — placeholder для проверки пайплайна; `gruvbox.css` — первая настоящая тема (omp dark-gruvbox, mono 17px) |
 | `docs/ui-elements.md` | карта UI рендерера: зоны, селекторы/токены, что меняемо; `docs/ui-tokens-3.14.3.txt` — дамп дизайн-токенов (источник — клон zai-org/ZCode, см. док) |
@@ -33,8 +33,10 @@ python3 loader/zskin.py list                               # показать ц
 # с силуэтом композера (дописывается к теме, инжектится одним <style>)
 python3 loader/zskin.py inject --theme themes/gruvbox.css --composer themes/composer/rail.css
 
-# цвета сессий сайдбара генерируются при инжекте сами (плоский список);
-# --no-sessions отключает, свежесозданные сессии красятся при следующем инжекте
+# цвета проектов (группированный сайдбар): текст+иконка заголовка и рельса
+# от имени вниз; нативный цвет группы, без него — хэш пути. --watch держит
+# лоадер резидентом: новые проекты красятся сами, reload страницы подхватывается
+python3 loader/zskin.py inject --theme themes/gruvbox.css --watch
 ```
 
 Env: `ZSKIN_ZCODE_BIN` (путь до бинарника, по умолчанию `/opt/ZCode/zcode`),

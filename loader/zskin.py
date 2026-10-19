@@ -25,10 +25,14 @@ Usage:
   themes/composer/) to the theme; both files are injected as one <style>.
   Defaults to $ZSKIN_COMPOSER when the flag is omitted.
 
-  Session colors: by default the loader also reads the flat sidebar task
-  list over CDP and appends a generated per-session accent layer (port of
-  oh-my-pi session-color.ts, see session_colors.py). --no-sessions skips
-  it; sessions created after the inject stay uncolored until the next one.
+  Project colors: by default the loader also reads the grouped sidebar
+  (Projects section) over CDP and appends a generated per-project layer —
+  header text + folder icon + rail from the title down (native group color
+  when set, else hashed from the workspace key; see project_colors.py).
+  --no-project-colors skips it. --watch keeps the loader resident: it
+  re-generates the layer when the project set changes (new project from
+  the UI gets colored within the poll interval) and re-injects after a
+  page reload wipes the <style>.
 """
 
 import argparse
@@ -43,18 +47,47 @@ import time
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import session_colors  # noqa: E402
+import project_colors  # noqa: E402
 
 DEFAULT_PORT = 9222
 DEFAULT_BIN = "/opt/ZCode/zcode"
 STYLE_ID = "zskin-style"
 WAIT_TIMEOUT = 60.0
-SESSIONS_WAIT = 10.0
+GROUPS_WAIT = 10.0
+WATCH_POLL = 5.0
 
-SESSION_IDS_JS = (
-    "JSON.stringify([...document.querySelectorAll('[data-task-item-key]')]"
-    ".map(r => (r.getAttribute('data-testid') || '')"
-    ".replace(/^task-item-/, '')).filter(Boolean))")
+# Grouped sidebar snapshot: per project group — its key (workspace path),
+# the native color enum from the header color mark (None when unset/gray),
+# and rail geometry relative to the group container. The mark's Tailwind
+# class stems (rose/amber/sky/violet/...) map back to the client's enum
+# names (red/yellow/blue/purple/...).
+GROUPS_JS = r"""
+JSON.stringify([...document.querySelectorAll('[data-grouped-group-item-id]')].map(c => {
+  const id = c.getAttribute('data-grouped-group-item-id') || '';
+  const header = c.querySelector('[data-grouped-group-header-id]');
+  const content = c.querySelector('[data-grouped-group-content-id]');
+  const cRect = c.getBoundingClientRect();
+  const hRect = header ? header.getBoundingClientRect() : null;
+  const ctRect = content ? content.getBoundingClientRect() : null;
+  const expanded = ctRect && ctRect.height > 2;
+  const STEM = { zinc: null, rose: 'red', orange: 'orange', amber: 'yellow',
+                 emerald: 'green', sky: 'blue', violet: 'purple' };
+  let color = null;
+  if (header) {
+    const m = header.innerHTML.match(/dark:bg-(zinc|rose|orange|amber|emerald|sky|violet)-400/);
+    if (m) color = STEM[m[1]];
+  }
+  return {
+    id,
+    color,
+    left: expanded ? Math.round(ctRect.left - cRect.left) : 15,
+    top: hRect ? Math.round(hRect.top - cRect.top) + 12 : 12,
+    bottom: expanded ? Math.max(2, Math.round(cRect.bottom - ctRect.bottom)) : 2
+  };
+}))
+"""
+
+STYLE_PRESENT_JS = "!!document.getElementById('%s')" % STYLE_ID
 
 INJECT_JS = (
     "(function(css) {"
@@ -205,18 +238,18 @@ def inject_css(port: int, css: str) -> None:
           f"{target.get('url', '?')[:80]}")
 
 
-def collect_session_ids(port: int, wait: float = SESSIONS_WAIT) -> list:
-    """Flat sidebar task ids; poll while the renderer boots, [] on timeout.
+def collect_groups(port: int, wait: float = GROUPS_WAIT) -> list:
+    """Grouped sidebar snapshot; poll while the renderer boots, [] on timeout.
 
-    The app mounts the sidebar after the CDP port answers, so a fresh
-    `run` needs a few retries before any row exists.
+    The flat sidebar view has no groups at all — an empty result is also
+    the correct layer for that mode.
     """
     deadline = time.monotonic() + wait
     while True:
         try:
-            value = cdp_evaluate(port, SESSION_IDS_JS, timeout=5.0)
-            if value:
-                return list(dict.fromkeys(json.loads(value)))
+            value = cdp_evaluate(port, GROUPS_JS, timeout=5.0)
+            if value is not None:
+                return json.loads(value)
         except (RuntimeError, TimeoutError, OSError, ValueError):
             pass
         if time.monotonic() >= deadline:
@@ -224,8 +257,12 @@ def collect_session_ids(port: int, wait: float = SESSIONS_WAIT) -> list:
         time.sleep(0.5)
 
 
+def _signature(groups: list) -> str:
+    return json.dumps([[g.get("id"), g.get("color"), g.get("left"),
+                        g.get("top"), g.get("bottom")] for g in groups])
+
+
 def cmd_run(args) -> int:
-    css = build_css(args.theme, args.composer)
     proc = subprocess.Popen(
         [args.bin, f"--remote-debugging-port={args.port}"],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
@@ -235,27 +272,65 @@ def cmd_run(args) -> int:
     wait_debug_port(args.port, WAIT_TIMEOUT)
     # The first window may appear slightly after the port answers.
     time.sleep(3)
-    inject_all(args, css)
+    static_css = build_css(args.theme, args.composer)
+    last_sig = inject_with_projects(args, static_css)
+    if args.watch:
+        return watch_loop(args, static_css, last_sig)
     return 0
 
 
 def cmd_inject(args) -> int:
-    css = build_css(args.theme, args.composer)
-    inject_all(args, css)
+    static_css = build_css(args.theme, args.composer)
+    last_sig = inject_with_projects(args, static_css)
+    if args.watch:
+        return watch_loop(args, static_css, last_sig)
     return 0
 
 
-def inject_all(args, css: str) -> None:
-    """Static layers plus the generated session-color layer, one inject."""
-    if not args.no_sessions:
-        ids = collect_session_ids(args.port)
-        if ids:
-            css += session_colors.build_layer(ids)
-            print(f"zskin: session colors for {len(ids)} session(s)")
-        else:
-            print("zskin: no sidebar rows seen; skipping session colors",
-                  file=sys.stderr)
+def inject_with_projects(args, static_css: str) -> str | None:
+    """Static layers plus the generated project layer; returns its signature."""
+    groups = [] if args.no_project_colors else collect_groups(args.port)
+    css = static_css
+    sig = None
+    if groups:
+        css += project_colors.build_layer(groups)
+        sig = _signature(groups)
+        print(f"zskin: project colors for {len(groups)} group(s)")
+    else:
+        print("zskin: no sidebar groups seen; skipping project colors",
+              file=sys.stderr)
     inject_css(args.port, css)
+    return sig
+
+
+def watch_loop(args, static_css: str, last_sig: str | None) -> int:
+    """Keep the injection alive: re-color on project changes, re-inject
+    after page reloads, exit when the client goes away."""
+    print(f"zskin: watching (poll {WATCH_POLL:.0f}s), Ctrl-C to stop")
+    while True:
+        time.sleep(WATCH_POLL)
+        try:
+            groups = collect_groups(args.port, wait=0)
+            sig = _signature(groups) if groups else None
+            style_present = cdp_evaluate(args.port, STYLE_PRESENT_JS)
+            if style_present and sig == last_sig:
+                continue
+            css = static_css
+            if groups:
+                css += project_colors.build_layer(groups)
+            inject_css(args.port, css)
+            if not style_present:
+                print("zskin: style was gone (reload?), re-injected")
+            elif groups:
+                print(f"zskin: project set changed, re-colored "
+                      f"({len(groups)} group(s))")
+            last_sig = sig
+        except (RuntimeError, TimeoutError, OSError, ValueError):
+            # CDP is gone — the client was closed; nothing left to watch.
+            print("zskin: client is gone, watch exits")
+            return 0
+        except KeyboardInterrupt:
+            return 0
 
 
 def cmd_list(args) -> int:
@@ -290,8 +365,11 @@ def main(argv=None) -> int:
             sp.add_argument("--composer", default=os.environ.get("ZSKIN_COMPOSER") or None,
                             help="optional composer-silhouette CSS appended to the theme "
                                  "(default: $ZSKIN_COMPOSER)")
-            sp.add_argument("--no-sessions", action="store_true",
-                            help="skip the generated per-session sidebar colors")
+            sp.add_argument("--no-project-colors", action="store_true",
+                            help="skip the generated per-project sidebar colors")
+            sp.add_argument("--watch", action="store_true",
+                            help="stay resident: re-color on project changes, "
+                                 "re-inject after page reloads")
         sp.add_argument("--port", type=int, default=int(
             os.environ.get("ZSKIN_PORT", DEFAULT_PORT)))
         if name == "run":

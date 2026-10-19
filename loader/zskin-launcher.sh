@@ -40,8 +40,11 @@ if client_running; then
     exit 1
 fi
 
-echo "$(date '+%F %T') launching: zskin.py run --theme $THEME${COMPOSER:+ --composer $COMPOSER}" >>"$LOG_FILE"
-if out="$(python3 "$LOADER" run --theme "$THEME" ${COMPOSER:+--composer "$COMPOSER"} 2>&1)"; then
+echo "$(date '+%F %T') launching: zskin.py run --theme $THEME${COMPOSER:+ --composer $COMPOSER} --watch" >>"$LOG_FILE"
+# --watch keeps the loader resident: project colors regenerate when the
+# project set changes, and page reloads get re-injected. When the client
+# exits, CDP dies and the watch loop returns.
+if out="$(python3 "$LOADER" run --theme "$THEME" ${COMPOSER:+--composer "$COMPOSER"} --watch 2>&1)"; then
     printf '%s %s\n' "$(date '+%F %T')" "$out" >>"$LOG_FILE"
     exit 0
 fi
