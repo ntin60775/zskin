@@ -24,6 +24,11 @@ Usage:
   --composer appends an optional composer-silhouette CSS file (see
   themes/composer/) to the theme; both files are injected as one <style>.
   Defaults to $ZSKIN_COMPOSER when the flag is omitted.
+
+  Session colors: by default the loader also reads the flat sidebar task
+  list over CDP and appends a generated per-session accent layer (port of
+  oh-my-pi session-color.ts, see session_colors.py). --no-sessions skips
+  it; sessions created after the inject stay uncolored until the next one.
 """
 
 import argparse
@@ -37,10 +42,19 @@ import sys
 import time
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import session_colors  # noqa: E402
+
 DEFAULT_PORT = 9222
 DEFAULT_BIN = "/opt/ZCode/zcode"
 STYLE_ID = "zskin-style"
 WAIT_TIMEOUT = 60.0
+SESSIONS_WAIT = 10.0
+
+SESSION_IDS_JS = (
+    "JSON.stringify([...document.querySelectorAll('[data-task-item-key]')]"
+    ".map(r => (r.getAttribute('data-testid') || '')"
+    ".replace(/^task-item-/, '')).filter(Boolean))")
 
 INJECT_JS = (
     "(function(css) {"
@@ -161,6 +175,20 @@ class WsClient:
         self.s.sendall(header + mask + masked)
 
 
+def cdp_evaluate(port: int, expression: str, timeout: float = 15.0):
+    """One-shot Runtime.evaluate on the main page target, returns the value."""
+    target = pick_page_target(port)
+    ws_url = target["webSocketDebuggerUrl"]
+    rest = ws_url.split("://", 1)[1]
+    host, rest = rest.split(":", 1)
+    port_ws, path = rest.split("/", 1)
+    ws = WsClient(host, int(port_ws), "/" + path)
+    result = ws.call("Runtime.evaluate",
+                     {"expression": expression, "returnByValue": True},
+                     timeout=timeout)
+    return result.get("result", {}).get("value")
+
+
 def inject_css(port: int, css: str) -> None:
     target = pick_page_target(port)
     ws_url = target["webSocketDebuggerUrl"]
@@ -177,6 +205,25 @@ def inject_css(port: int, css: str) -> None:
           f"{target.get('url', '?')[:80]}")
 
 
+def collect_session_ids(port: int, wait: float = SESSIONS_WAIT) -> list:
+    """Flat sidebar task ids; poll while the renderer boots, [] on timeout.
+
+    The app mounts the sidebar after the CDP port answers, so a fresh
+    `run` needs a few retries before any row exists.
+    """
+    deadline = time.monotonic() + wait
+    while True:
+        try:
+            value = cdp_evaluate(port, SESSION_IDS_JS, timeout=5.0)
+            if value:
+                return list(dict.fromkeys(json.loads(value)))
+        except (RuntimeError, TimeoutError, OSError, ValueError):
+            pass
+        if time.monotonic() >= deadline:
+            return []
+        time.sleep(0.5)
+
+
 def cmd_run(args) -> int:
     css = build_css(args.theme, args.composer)
     proc = subprocess.Popen(
@@ -188,14 +235,27 @@ def cmd_run(args) -> int:
     wait_debug_port(args.port, WAIT_TIMEOUT)
     # The first window may appear slightly after the port answers.
     time.sleep(3)
-    inject_css(args.port, css)
+    inject_all(args, css)
     return 0
 
 
 def cmd_inject(args) -> int:
     css = build_css(args.theme, args.composer)
-    inject_css(args.port, css)
+    inject_all(args, css)
     return 0
+
+
+def inject_all(args, css: str) -> None:
+    """Static layers plus the generated session-color layer, one inject."""
+    if not args.no_sessions:
+        ids = collect_session_ids(args.port)
+        if ids:
+            css += session_colors.build_layer(ids)
+            print(f"zskin: session colors for {len(ids)} session(s)")
+        else:
+            print("zskin: no sidebar rows seen; skipping session colors",
+                  file=sys.stderr)
+    inject_css(args.port, css)
 
 
 def cmd_list(args) -> int:
@@ -230,6 +290,8 @@ def main(argv=None) -> int:
             sp.add_argument("--composer", default=os.environ.get("ZSKIN_COMPOSER") or None,
                             help="optional composer-silhouette CSS appended to the theme "
                                  "(default: $ZSKIN_COMPOSER)")
+            sp.add_argument("--no-sessions", action="store_true",
+                            help="skip the generated per-session sidebar colors")
         sp.add_argument("--port", type=int, default=int(
             os.environ.get("ZSKIN_PORT", DEFAULT_PORT)))
         if name == "run":
