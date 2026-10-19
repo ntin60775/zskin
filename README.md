@@ -23,12 +23,21 @@ python3 loader/zskin.py run --theme themes/example.css
 # повторный инжект в уже запущенный (лоадером) клиент
 python3 loader/zskin.py inject --theme themes/example.css
 
+# то же с силуэтом композера — второй файл дописывается к теме в один <style>
+python3 loader/zskin.py inject --theme themes/gruvbox.css \
+    --composer themes/composer/rail.css
+
 # посмотреть цели CDP
 python3 loader/zskin.py list
 ```
 
 Переменные окружения: `ZSKIN_ZCODE_BIN` (по умолчанию `/opt/ZCode/zcode`),
-`ZSKIN_PORT` (по умолчанию `9222`).
+`ZSKIN_PORT` (по умолчанию `9222`), `ZSKIN_COMPOSER` (силуэт композера по
+умолчанию для `run`/`inject`; ярлык читает её же).
+
+Силуэты композера (`themes/composer/`): перенос восьми форм поля ввода
+oh-my-pi — `rule`, `rail`, `field`, `band`, `claude`, `pi`, `borderless`,
+`box`. Файлы палитро-независимы и работают с любой темой поверх.
 
 ## Почему это законно
 

@@ -16,6 +16,7 @@
 | `docs/oh-my-pi-borrow-ideas.md` | идеи заимствования из oh-my-pi TUI: в темы zskin (раздел A), архитектурные паттерны на будущее (B), осознанные отказы (C) |
 | `docs/agents-ui-join.md` | полное соединение классификаций UI двух агентов (ZCode × oh-my-pi) с приоритетами заимствования; элементы отказов раздела C исключены |
 | `docs/theme-spec.md` | спека темы: omp dark-gruvbox, JBM NFM mono 17px, обе схемы; источники — kitty/omp конфиги и dsh ui-theme |
+| `themes/composer/` | силуэты композера (перенос 8 форм omp): `rule`/`rail`/`field`/`band`/`claude`/`pi`/`borderless`/`box`; палитро-независимы, подключаются через `--composer` |
 | `skills/zskin/SKILL.md` | скилл: как применять, ограничения, границы; глобального применения — в проекты не вендорится |
 | `.zcode-plugin/plugin.json` | манифест ZCode-плагина |
 
@@ -27,10 +28,14 @@
 python3 loader/zskin.py run    --theme themes/example.css  # запустить клиент + инжект
 python3 loader/zskin.py inject --theme themes/example.css  # реинжект в уже запущенный клиент
 python3 loader/zskin.py list                               # показать цели CDP
+
+# с силуэтом композера (дописывается к теме, инжектится одним <style>)
+python3 loader/zskin.py inject --theme themes/gruvbox.css --composer themes/composer/rail.css
 ```
 
 Env: `ZSKIN_ZCODE_BIN` (путь до бинарника, по умолчанию `/opt/ZCode/zcode`),
-`ZSKIN_PORT` (дебаг-порт, по умолчанию `9222`).
+`ZSKIN_PORT` (дебаг-порт, по умолчанию `9222`), `ZSKIN_COMPOSER` (силуэт
+композера по умолчанию; ярлык пробрасывает её же).
 
 ## Принципы (нарушать нельзя)
 

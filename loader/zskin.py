@@ -10,14 +10,20 @@ stdlib-only Python 3 (no dependencies), same bar as sot-zcode-marketplace
 runner.
 
 Usage:
-  zskin.py run    --theme themes/example.css [--port 9222] [--bin /opt/ZCode/zcode]
-  zskin.py inject --theme themes/example.css [--port 9222]
+  zskin.py run    --theme themes/example.css [--composer themes/composer/rule.css]
+                  [--port 9222] [--bin /opt/ZCode/zcode]
+  zskin.py inject --theme themes/example.css [--composer themes/composer/rule.css]
+                  [--port 9222]
   zskin.py list   [--port 9222]
 
   run     start ZCode with the debug port, wait for it, inject, then exit
           (the injected <style> lives as long as the window does)
   inject  attach to an already running instance (started with the port)
   list    show CDP page targets
+
+  --composer appends an optional composer-silhouette CSS file (see
+  themes/composer/) to the theme; both files are injected as one <style>.
+  Defaults to $ZSKIN_COMPOSER when the flag is omitted.
 """
 
 import argparse
@@ -172,7 +178,7 @@ def inject_css(port: int, css: str) -> None:
 
 
 def cmd_run(args) -> int:
-    css = load_css(args.theme)
+    css = build_css(args.theme, args.composer)
     proc = subprocess.Popen(
         [args.bin, f"--remote-debugging-port={args.port}"],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
@@ -187,7 +193,7 @@ def cmd_run(args) -> int:
 
 
 def cmd_inject(args) -> int:
-    css = load_css(args.theme)
+    css = build_css(args.theme, args.composer)
     inject_css(args.port, css)
     return 0
 
@@ -204,6 +210,15 @@ def load_css(path: str) -> str:
         return f.read()
 
 
+def build_css(theme_path: str, composer_path: str | None) -> str:
+    """Theme CSS plus an optional composer-silhouette layer, one injection."""
+    css = load_css(theme_path)
+    if composer_path:
+        name = os.path.basename(composer_path)
+        css += f"\n/* ===== zskin composer: {name} ===== */\n\n" + load_css(composer_path)
+    return css
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="zskin",
                                 description="Live CSS theming for ZCode via CDP")
@@ -212,6 +227,9 @@ def main(argv=None) -> int:
         sp = sub.add_parser(name)
         if name in ("run", "inject"):
             sp.add_argument("--theme", required=True, help="path to CSS file")
+            sp.add_argument("--composer", default=os.environ.get("ZSKIN_COMPOSER") or None,
+                            help="optional composer-silhouette CSS appended to the theme "
+                                 "(default: $ZSKIN_COMPOSER)")
         sp.add_argument("--port", type=int, default=int(
             os.environ.get("ZSKIN_PORT", DEFAULT_PORT)))
         if name == "run":
