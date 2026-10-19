@@ -27,6 +27,18 @@ description: Живое перекрашивание официального к
 
 4. Посмотреть цели CDP: `python3 loader/zskin.py list`.
 
+5. Силуэт композера — необязательный второй CSS поверх темы (серия
+   `themes/composer/`: `rule`, `rail`, `field`, `band`, `claude`, `pi`,
+   `borderless`, `box`); подключается флагом или переменной:
+
+   ```bash
+   python3 loader/zskin.py inject --theme themes/gruvbox.css \
+       --composer themes/composer/rail.css
+   ZSKIN_COMPOSER=themes/composer/rule.css python3 loader/zskin-launcher.sh
+   ```
+
+   Пустая переменная/флаг без значения = стоковая оболочка композера.
+
 ## Ограничения (не терять)
 
 - Инжект живёт, пока жив рендерер: перезапуск окна/клиента = повторный

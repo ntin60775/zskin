@@ -121,12 +121,34 @@
   `animation: none`).
 
 ### 5. Композер (ввод)
-- `components/ai-elements/prompt-input*.tsx` (`data-slot="textarea"` и
-  соседние), `prompt-editor/` (`ChatPromptEditor`, упоминания
-  `.prompt-mention`), `chat-input-toolbar/` (модель, контекст, квоты
-  `--color-usage*`, `--color-context-breakdown*`).
+- v4: `src/v4/ConversationComposer.tsx` — регион `.chat-composer-region`
+  (= `data-testid="v4-composer"`), внутри `.chat-composer-input-surface`
+  (карточка `rounded-2xl bg-surface shadow-xl/5` только в draft-режиме),
+  форма `ChatPromptEditor` и оболочка поля — div `relative flex flex-col
+  … rounded-2xl border border-input-border bg-input p-3 …`.
+  Проверено живьём на 3.16.1 (замер 2026-10-19): оболочка ловится
+  селектором `.chat-composer-region form > div.relative` (первый ребёнок
+  формы после абсолютного контейнера панелей); запасной хук —
+  `form > div:has([data-testid="v4-composer-input"])`. Сам ввод —
+  contenteditable `data-testid="v4-composer-input"`; `data-slot="textarea"`
+  в v4-композере НЕ рендерится (упоминание в этом доке относилось к
+  `components/ui/textarea.tsx`).
+- Состояния оболочки: hover — `--color-input-border-hover`; фокус —
+  `focus-within:!border-input-border-focused` (= brand) и
+  `focus-within:bg-input-focused`; drag-файл — `border-brand` +
+  `ring-1 ring-brand/30`. Каскадный факт: утилиты Tailwind v4 живут в
+  `@layer utilities`, а важные объявления из слоя бьют `!important` вне
+  слоёв — перекрасить фокусную рамку из инжекта нельзя (и не нужно: это
+  сигнал фокуса); вне фокуса обычные утилиты проигрывают инжектному
+  `!important`.
+- Источник: `prompt-editor/ChatPromptEditor.tsx` (оболочка, ~строка 347),
+  `LexicalChatInput.tsx` (contenteditable, упоминания `.prompt-mention`),
+  `chat-input-toolbar/` + `src/v4/composer/V4ComposerToolbar.tsx` (модель,
+  контекст, квоты `--color-usage*`, `--color-context-breakdown*`).
 - Меняемо: фон и рамка поля (`--color-input*`), тулбар, кнопки, метры
   квот, подсказки. Скрытие индикаторов квот/подтверждений запрещено.
+  Силуэты оболочки — серия в `themes/composer/` (подключается
+  `--composer`).
 
 ### 6. Терминал
 - `terminal/` (`.terminal-xterm-shell`), рендер xterm.
