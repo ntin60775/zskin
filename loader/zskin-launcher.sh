@@ -9,8 +9,9 @@ set -u
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOADER="$REPO_DIR/loader/zskin.py"
 THEME="$REPO_DIR/themes/gruvbox.css"
-# Optional composer silhouette (themes/composer/*.css); empty = stock shell.
-COMPOSER="${ZSKIN_COMPOSER:-}"
+# Composer silhouette shipped by default (user-picked 2026-10-19);
+# ZSKIN_COMPOSER overrides, set it empty for the stock shell.
+COMPOSER="${ZSKIN_COMPOSER-$REPO_DIR/themes/composer/rule.css}"
 LOG_FILE="$HOME/.local/state/zskin-launcher.log"
 LOCK_FILE="$HOME/.config/ZCode/SingletonLock"
 
