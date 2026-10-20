@@ -9,9 +9,6 @@ set -u
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOADER="$REPO_DIR/loader/zskin.py"
 THEME="$REPO_DIR/themes/gruvbox.css"
-# Composer silhouette shipped by default (user-picked 2026-10-19);
-# ZSKIN_COMPOSER overrides, set it empty for the stock shell.
-COMPOSER="${ZSKIN_COMPOSER-$REPO_DIR/themes/composer/rule.css}"
 LOG_FILE="$HOME/.local/state/zskin-launcher.log"
 LOCK_FILE="$HOME/.config/ZCode/SingletonLock"
 
@@ -40,11 +37,8 @@ if client_running; then
     exit 1
 fi
 
-echo "$(date '+%F %T') launching: zskin.py run --theme $THEME${COMPOSER:+ --composer $COMPOSER} --watch" >>"$LOG_FILE"
-# --watch keeps the loader resident: project colors regenerate when the
-# project set changes, and page reloads get re-injected. When the client
-# exits, CDP dies and the watch loop returns.
-if out="$(python3 "$LOADER" run --theme "$THEME" ${COMPOSER:+--composer "$COMPOSER"} --watch 2>&1)"; then
+echo "$(date '+%F %T') launching: zskin.py run --theme $THEME" >>"$LOG_FILE"
+if out="$(python3 "$LOADER" run --theme "$THEME" 2>&1)"; then
     printf '%s %s\n' "$(date '+%F %T')" "$out" >>"$LOG_FILE"
     exit 0
 fi
