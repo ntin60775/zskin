@@ -728,3 +728,16 @@ html.theme-zai-light [data-streamdown="table"] td {
 [data-v4-turn-unit][data-index]:not([data-index="0"]) > section {
   padding-top: 2rem;
 }
+
+/* 2.4 user message. Live 3.16.2: div[data-v4-user-input-bubble] carries
+ * bg-surface (our #32302f), 1px border-border, px-4 py-3 and a 12px radius
+ * with a 2px top-right notch. Target is a plate darker than the base with one
+ * cell of padding: the background moves to --color-background-win-alt
+ * (#1d2021 dark / #ebdbb2 light) and the padding tightens to 8px at the 17px
+ * font. Radius and hairline border stay stock — 12px already reads as
+ * "moderate", and the border keeps the plate separated from the feed. */
+[data-v4-user-input-bubble] {
+  background: var(--color-background-win-alt);
+  padding: 8px;
+  color: var(--color-foreground);
+}
