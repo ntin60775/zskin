@@ -18,10 +18,10 @@ zskin закрывает нишу до появления штатной тем�
 
 ```bash
 # запустить клиент и накатить тему
-python3 loader/zskin.py run --theme themes/example.css
+python3 loader/zskin.py run --theme themes/gruvbox.css
 
 # повторный инжект в уже запущенный (лоадером) клиент
-python3 loader/zskin.py inject --theme themes/example.css
+python3 loader/zskin.py inject --theme themes/gruvbox.css
 
 # посмотреть цели CDP
 python3 loader/zskin.py list
@@ -38,14 +38,18 @@ python3 loader/zskin.py list
 - Авторизация, подписи запросов (`x-client-sig`/`x-client-pow`) и учёт квот
   не затрагиваются.
 - Условия ZCode ToS запрещают обход «файлов ограничений безопасности» —
-  CSS поверх DOM к ним не относится. Дискуссия в fora/issue: см. скилл
-  `skills/zskin/SKILL.md`, раздел «Границы».
+  CSS поверх DOM к ним не относится. Дискуссия в fora/issue: см. раздел
+  «Границы» ниже.
 
 ## Статус
 
-**Инфраструктура.** Лоадер — рабочая минимальная реализация (stdlib-only
-Python 3): `run` / `inject` / `list`. Дальнейшие задачи (темы, watch-режим,
- hot-reload при перезагрузке окна, подбор селекторов) будут нарезаны отдельно.
+**Тема и планы.** `themes/gruvbox.css` — omp dark-gruvbox, mono 17px,
+обе схемы. Шаг 1 плана закрыт (10 из 90 задач), дальше шаг 2 по порядку;
+карта работ, приёмка и волны — в `docs/plans/00-common.md`.
+
+**Инфраструктура.** Лоадер (stdlib-only Python 3): `run` / `inject` /
+`list`, ярлык «ZCode (zskin)» в меню приложений. Watch-режима и hot-reload
+нет: после перезагрузки страницы нужен повторный `inject`.
 
 ## Границы
 
