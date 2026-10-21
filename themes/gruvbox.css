@@ -1522,6 +1522,67 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   color: var(--zskin-tool-meta);
 }
 
+/* 3.10 wait / result. TaskStop renders a dl of label/value pairs in a bg-panel
+ * box; TaskOutput prints a pre. Labels recede to muted, values stay foreground. */
+[data-tool-name="TaskStop"] [data-slot="collapsible-content"] div.bg-panel,
+[data-tool-name="TaskOutput"] [data-slot="collapsible-content"] div.bg-panel {
+  background: var(--color-background-win-alt);
+  border-color: var(--color-border-hover);
+}
+
+[data-tool-name="TaskStop"] dt {
+  color: var(--zskin-text-muted);
+}
+
+[data-tool-name="TaskOutput"] [data-slot="collapsible-content"] pre {
+  color: var(--zskin-text-muted);
+}
+
+/* 3.11 MCP. The card splits into kindDetail (server, foreground-subtle) and
+ * content (tool, foreground); the icon takes the brand accent. Result and
+ * error surfaces are the 2.20 / 3.7 pair. */
+[data-tool-name^="mcp__"] .tool-summary-content {
+  color: var(--color-foreground);
+}
+
+[data-tool-name^="mcp__"] [data-testid^="tool-summary-trigger-"] > span:first-child svg {
+  color: var(--color-brand);
+}
+
+[data-testid="mcp-result-surface"] {
+  background: var(--color-background-win-alt);
+  border-color: var(--color-border-hover);
+  color: var(--zskin-text-muted);
+}
+
+/* 3.12 web fetch. This build ships a summary-only card (no output body), and
+ * Sources/InlineCitation only appear with a web-search answer, which the
+ * installed tool set does not produce. The URL keeps the plan's #bdae93 and
+ * must not fall into the dim path-caption rule above. */
+[data-tool-name="WebFetch"] .tool-summary-content > span.truncate {
+  color: var(--color-foreground-subtle);
+}
+
+/* 3.13 automation. CronCreate has no dedicated block or fields in 3.16.2: it
+ * renders through the default card (kind label + title) and is covered by the
+ * 3.2 frame. OffPeakCreateTaskCard is an automations-list card, not a tool
+ * call, and stays on the card tokens from step 1. */
+
+/* Review note 2 (wave 2): rule 2.9 keeps its row-wide scope on purpose — the
+ * actions toolbar has no data hook, so narrowing it would mean guessing a
+ * class. The only tooltip trigger inside a card is the failure status label,
+ * so it is re-coloured here after 2.9 so "Failed"/"Denied"/"Stopped" keep
+ * their signal colour. */
+[data-tool-call-id][data-status="failed"] .tool-summary-content > [data-slot="tooltip-trigger"],
+[data-tool-call-id][data-status="denied"] .tool-summary-content > [data-slot="tooltip-trigger"] {
+  color: var(--color-destructive);
+}
+
+[data-tool-call-id][data-status="stopped"] .tool-summary-content > [data-slot="tooltip-trigger"],
+[data-tool-call-id][data-status="paused"] .tool-summary-content > [data-slot="tooltip-trigger"] {
+  color: var(--color-warning);
+}
+
 /* ===== composer popovers: width follows content =====
  * Two composer popovers ship with a hard width and clip their own labels:
  *   - the context-window popover pins !w-80 (320px) on the popover content,
