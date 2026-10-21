@@ -704,3 +704,27 @@ html.theme-zai-light [data-streamdown="table"] td {
   background-color: transparent;
   background-image: none;
 }
+
+/* 2.3 turn block. Live 3.16.2: a turn is
+ * div[data-v4-turn-unit][data-turn-id] > section[data-turn-id][data-turn-key],
+ * absolutely positioned by the virtualiser, and it is already not a card —
+ * transparent background, no border, no shadow; the air between rows comes
+ * from the section's gap-5. Plan 2.3 named [data-row-kind] as the turn hook,
+ * but in the installed bundle that attribute only exists on timeline markers
+ * (data-row-kind="timelineMarker"); turns are keyed by data-turn-id, rows by
+ * data-row-id. Two changes: rows and the section are pinned to no card chrome,
+ * and every turn except the first loses the 56px top padding that only exists
+ * to clear the floating header — one blank line (2rem) is left instead. */
+[data-v4-turn-unit] > section,
+[data-v4-turn-unit] [data-row-id] {
+  background-color: transparent;
+  border-width: 0;
+  box-shadow: none;
+}
+
+/* data-index is the virtualiser's absolute unit number; :first-child is
+ * unusable here because for a single-turn conversation the unit node doubles
+ * as the content column and sits one place off the first slot. */
+[data-v4-turn-unit][data-index]:not([data-index="0"]) > section {
+  padding-top: 2rem;
+}
