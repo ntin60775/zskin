@@ -764,3 +764,43 @@ html.theme-zai-light [data-conversation-selectable] a {
   color: #427b58;
   text-decoration-color: #427b58;
 }
+
+/* Plan 2 contrast floor. --color-foreground-subtlest (#928374) resolves to
+ * about 4.0:1 on the dark base and 3.1:1 on cream — under the 4.5:1 bar this
+ * plan is accepted against. Muted text that still carries meaning (reasoning,
+ * signatures, stack traces) uses this pair instead; purely decorative greys
+ * keep the stock token. */
+html.theme-zai-dark {
+  --zskin-text-muted: #a89984; /* gruvbox fg4 — 5.3:1 on #282828 */
+}
+
+html.theme-zai-light {
+  --zskin-text-muted: #665c54; /* gruvbox fg3-light — 5.7:1 on #fbf1c7 */
+}
+
+/* 2.6 reasoning. Live 3.16.2 anatomy (bundle offset ~330.598 млн):
+ * button with [data-reasoning-label] holds "Thought · N seconds" spans, each
+ * painted text-foreground-subtlest; the collapsible content carries
+ * [data-reasoning-content][data-reasoning-content-variant] and, inside
+ * div.pt-3, a scroll box with data-reasoning-scroll-mask that already has the
+ * quote indent (ml-2 border-l pl-3.5). The plan wants no frames, so the left
+ * rail goes and the indent stays; both the label and the body move to the
+ * contrast-safe muted colour. Neither a background nor a border is added. */
+[data-reasoning-label],
+[data-reasoning-label] span,
+[data-reasoning-label] svg,
+button:has(> [data-reasoning-label]) svg,
+[data-reasoning-content] {
+  color: var(--zskin-text-muted);
+}
+
+[data-reasoning-content] [data-reasoning-scroll-mask] {
+  border-left-width: 0;
+  background: transparent;
+}
+
+/* the inner scroll box and the text node repeat the utility class, so a rule
+ * keyed on the wrapper alone loses to their own class */
+[data-reasoning-content] [class~="text-foreground-subtlest"] {
+  color: var(--zskin-text-muted);
+}
