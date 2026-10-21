@@ -415,6 +415,22 @@ html.theme-zai-light ::selection {
  * }
  */
 
+/* 1.6 tabs. Active trigger reads as full foreground, inactive recedes;
+ * hover adds the chrome tint. Background of the active trigger is left to
+ * the component (segmented and underline tabs resolve it differently). */
+[data-slot="tabs-trigger"] {
+  color: var(--color-foreground-subtle);
+}
+
+[data-slot="tabs-trigger"]:hover {
+  color: var(--color-foreground);
+  background: var(--color-hover);
+}
+
+[data-slot="tabs-trigger"][data-state="active"] {
+  color: var(--color-foreground);
+}
+
 /* ===== session activity indicators =====
  * The app paints activity spinners with text-foreground-subtle, so they melt
  * into the chrome. Verified live on 3.16.1: `animate-spin` sits on a wrapper
