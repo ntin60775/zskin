@@ -1310,3 +1310,40 @@ html.theme-zai-light diffs-container {
 [data-goal-elapsed-seconds] {
   color: var(--zskin-text-muted);
 }
+
+/* ===== composer popovers: width follows content =====
+ * Two composer popovers ship with a hard width and clip their own labels:
+ *   - the context-window popover pins !w-80 (320px) on the popover content,
+ *     so the "Context windows … 353.1K/1M (33.7%)" row and the breakdown
+ *     labels run into ellipsis;
+ *   - the model / provider menu pins w-72 (288px) and its rows use truncate,
+ *     so provider and model names are cut mid-word.
+ * Both are switched to max-content with a viewport cap. The width lives inside
+ * @layer utilities on purpose: an unlayered !important loses to a layered
+ * !important (Tailwind v4 puts utilities in that layer), while a rule in the
+ * same layer wins on specificity. Verified: 320px → content width, and a
+ * pathological line still caps at 44rem.
+ * Identification is by each surface's own marker, not by width: the context
+ * card by the literal !w-80 token on the hover-card content (the bundle routes
+ * it through the shared popover content component, but this build mounts it as
+ * data-slot="hover-card-content" — checked live), the model menu by
+ * the [data-composer-model-list] / [data-composer-provider-list] scroll blocks
+ * inside it (both confirmed live). */
+@layer utilities {
+  [data-slot="hover-card-content"][class~="!w-80"],
+  [data-slot="popover-content"][class~="!w-80"],
+  [data-slot="dropdown-menu-content"]:has([data-composer-model-list]),
+  [data-slot="dropdown-menu-content"]:has([data-composer-provider-list]) {
+    width: max-content !important;
+    max-width: min(calc(100vw - 24px), 44rem) !important;
+  }
+}
+
+/* inside a max-content popover the ellipsis utilities are counterproductive:
+ * they keep text-overflow on rows that no longer need to clip */
+[data-slot="hover-card-content"][class~="!w-80"] .truncate,
+[data-slot="popover-content"][class~="!w-80"] .truncate,
+[data-slot="dropdown-menu-content"]:has([data-composer-model-list]) .truncate,
+[data-slot="dropdown-menu-content"]:has([data-composer-provider-list]) .truncate {
+  max-width: none;
+}
