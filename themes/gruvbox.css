@@ -689,3 +689,18 @@ html.theme-zai-light [data-streamdown="table"] td {
   border-right-color: #7c6f64;
   border-bottom-color: #7c6f64;
 }
+
+/* 2.2 conversation feed. Verified live on 3.16.2: the conversation frame
+ * (section[data-workspace-conversation-frame]) paints bg-background, which
+ * resolves to #282828 through --color-background. The only fade in the feed
+ * is a mask on the scroll wrapper — [data-scroll-mask="top"] carries
+ * mask-image: linear-gradient(transparent 0, black 24px, black 100%) — and a
+ * mask darkens nothing, so no second background appears. The message layer
+ * itself is transparent. The rule below pins that: if a future build starts
+ * painting the scroll layer or its inner column, the transcript stays on the
+ * single base colour instead of gaining stripes or a gradient. */
+[data-testid="v4-timeline"],
+[data-v4-timeline-message-layer] {
+  background-color: transparent;
+  background-image: none;
+}
