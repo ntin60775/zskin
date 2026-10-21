@@ -148,6 +148,40 @@ html.dark {
   --color-terminal-bright-magenta: #d3869b;
   --color-terminal-bright-cyan: #8ec07c;
   --color-terminal-bright-white: #ebdbb2;
+
+  /* plan 1.1 — missing semantic groups. Stock blue/violet roles ported to
+   * gruvbox; tinted surfaces reuse the stock recipe (color alpha over the
+   * base). --color-plugin-paid-plan-badge* left stock: the client already
+   * ships warm brown/cream values that sit well in this palette. */
+  --color-toast: #1d2021;
+  --color-menu: #1d2021;
+  --color-menu-hover: #32302f;
+  --color-tab-border: #3c3836;
+  --color-tooltip-foreground: #ebdbb2;
+  --color-tooltip-tag: #3c3836;
+  --color-tooltip-tag-foreground: #bdae93;
+  --color-diff-added: #b8bb26;
+  --color-diff-added-foreground: #1d2021;
+  --color-diff-removed: #fb4934;
+  --color-diff-removed-foreground: #1d2021;
+  --color-success-surface: color-mix(in srgb, var(--color-success) 16%, transparent);
+  --color-success-surface-foreground: #b8bb26;
+  --color-warning-surface: color-mix(in srgb, var(--color-warning) 16%, transparent);
+  --color-warning-surface-foreground: #fabd2f;
+  --color-destructive-surface: color-mix(in srgb, var(--color-destructive) 16%, transparent);
+  --color-destructive-surface-foreground: #fb4934;
+  --color-progress-surface: color-mix(in srgb, #83a598 16%, transparent);
+  --color-progress-surface-foreground: #83a598;
+  --color-interaction-ask-surface: color-mix(in oklab, #076678 35%, #1d2021);
+  --color-interaction-ask-foreground: #83a598;
+  --color-interaction-ask-fill: color-mix(in srgb, var(--color-success) 24%, transparent);
+  --color-interaction-confirmation-surface: color-mix(in srgb, var(--color-success) 16%, transparent);
+  --color-interaction-confirmation-foreground: #b8bb26;
+  --color-git-ignored: var(--color-foreground-subtlest);
+  --color-git-descendant: var(--color-git-modified);
+  --color-git-none: var(--color-foreground);
+  --color-idle-task: #d3869b;
+  --color-idle-task-surface: color-mix(in oklab, #8f3f71 35%, #1d2021);
 }
 
 /* ===== light (omp light-gruvbox, minimal coverage) ===== */
@@ -222,6 +256,67 @@ html.theme-zai-light {
   --color-terminal-bright-magenta: #8f3f71;
   --color-terminal-bright-cyan: #427b58;
   --color-terminal-bright-white: #3c3836;
+
+  /* tabs were absent from the minimal light pass; completing the family */
+  --color-tab: #ebdbb2;
+  --color-tab-active: #fbf1c7;
+  --color-tab-border: #d5c4a1;
+
+  /* plan 1.1 — missing semantic groups (light twins of the dark block);
+   * ramp colors use the faded gruvbox light accents for >=4.5:1 on cream */
+  --color-toast: #fbf1c7;
+  --color-menu: #fbf1c7;
+  --color-menu-hover: #f2e5bc;
+  --color-tooltip-foreground: #3c3836;
+  --color-tooltip-tag: #ebdbb2;
+  --color-tooltip-tag-foreground: #665c54;
+  --color-markdown-inline-code: #8f3f71;
+  --color-diff-added: #79740e;
+  --color-diff-added-foreground: #fbf1c7;
+  --color-diff-removed: #9d0006;
+  --color-diff-removed-foreground: #fbf1c7;
+  --color-success-surface: color-mix(in oklab, #98971a 14%, #fbf1c7);
+  --color-success-surface-foreground: #79740e;
+  --color-warning-surface: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  --color-warning-surface-foreground: #b57614;
+  --color-destructive-surface: color-mix(in srgb, var(--color-destructive) 10%, transparent);
+  --color-destructive-surface-foreground: #9d0006;
+  --color-progress-surface: color-mix(in srgb, #458588 15%, transparent);
+  --color-progress-surface-foreground: #076678;
+  --color-interaction-ask-surface: color-mix(in oklab, #458588 14%, #fbf1c7);
+  --color-interaction-ask-foreground: #076678;
+  --color-interaction-ask-fill: color-mix(in srgb, #98971a 20%, transparent);
+  --color-interaction-confirmation-surface: color-mix(in oklab, #98971a 12%, #fbf1c7);
+  --color-interaction-confirmation-foreground: #79740e;
+  --color-git-ignored: var(--color-foreground-subtlest);
+  --color-git-descendant: var(--color-git-modified);
+  --color-git-none: var(--color-foreground);
+  --color-idle-task: #8f3f71;
+  --color-idle-task-surface: color-mix(in oklab, #8f3f71 12%, #fbf1c7);
+
+  /* usage ramps: light counterparts of the dark gruvbox ramp (stock light
+   * falls back to blue, which breaks the palette in light mode) */
+  --color-usage-chart-1: #458588;
+  --color-usage-chart-2: #98971a;
+  --color-usage-chart-3: #8f3f71;
+  --color-usage-chart-4: #9d0006;
+  --color-usage-chart-5: #d65d0e;
+  --color-usage-chart-6: #427b58;
+  --color-context-breakdown-1: #076678;
+  --color-context-breakdown-2: #427b58;
+  --color-context-breakdown-3: #458588;
+  --color-context-breakdown-4: #689d6a;
+  --color-context-breakdown-5: #98971a;
+  --color-context-breakdown-6: #d79921;
+  --color-context-breakdown-7: #3c3836;
+  --color-usage-heatmap-0: color-mix(in oklab, #458588 0%, var(--color-surface));
+  --color-usage-heatmap-1: color-mix(in oklab, #458588 24%, var(--color-surface));
+  --color-usage-heatmap-2: color-mix(in oklab, #458588 42%, var(--color-surface));
+  --color-usage-heatmap-3: color-mix(in oklab, #458588 62%, var(--color-surface));
+  --color-usage-heatmap-4: color-mix(in oklab, #98971a 78%, var(--color-surface));
+  --color-workflow-rule: rgba(60, 56, 54, 0.06);
+  --color-workflow-trace: rgba(60, 56, 54, 0.35);
+  --color-workflow-trace-strong: rgba(60, 56, 54, 0.6);
 }
 
 /* ===== selection & scrollbars ===== */
