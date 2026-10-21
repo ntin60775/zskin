@@ -472,6 +472,55 @@ html.theme-zai-light [data-slot="alert-dialog-overlay"] {
  * here.
  */
 
+/* 1.8 form fields. The wrapper (input-group) carries bg/border when the
+ * bare control is borderless inside it; focus is caught both directly
+ * (:focus-visible) and through the wrapper (:focus-within). */
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="select-trigger"],
+[data-slot="input-group"] {
+  background: var(--color-input);
+  border-color: var(--color-input-border);
+  color: var(--color-foreground);
+}
+
+[data-slot="input"]:hover:not(:focus),
+[data-slot="textarea"]:hover:not(:focus),
+[data-slot="select-trigger"]:hover:not(:focus),
+[data-slot="input-group"]:hover:not(:focus-within) {
+  border-color: var(--color-input-border-hover);
+}
+
+[data-slot="input"]:focus-visible,
+[data-slot="textarea"]:focus-visible,
+[data-slot="select-trigger"]:focus-visible,
+[data-slot="input-group"]:focus-within {
+  border-color: var(--color-input-border-focused);
+}
+
+[data-slot="input"]::placeholder,
+[data-slot="textarea"]::placeholder,
+[data-slot="input-group-control"]::placeholder {
+  color: var(--color-foreground-subtlest);
+}
+
+/* checked toggles go brand; the check/cross icon inherits through the
+ * indicator (stock paints it text-primary-foreground, black on the stock
+ * white — needs the inverse to stay readable on orange) */
+[data-slot="switch"][data-state="checked"] {
+  background: var(--color-brand);
+}
+
+[data-slot="checkbox"][data-state="checked"],
+[data-slot="checkbox"][data-state="indeterminate"] {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+[data-slot="checkbox"] [data-slot="checkbox-indicator"] {
+  color: var(--color-foreground-inverse);
+}
+
 /* ===== session activity indicators =====
  * The app paints activity spinners with text-foreground-subtle, so they melt
  * into the chrome. Verified live on 3.16.1: `animate-spin` sits on a wrapper
