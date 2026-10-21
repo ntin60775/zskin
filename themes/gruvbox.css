@@ -1210,3 +1210,23 @@ html.theme-zai-light [data-artifact-kind] > svg {
 .terminal-xterm-shell .xterm {
   background-color: var(--color-terminal-bg);
 }
+
+/* 2.20 error block. The plan names StackTrace/formatErrorBlock, but the
+ * upstream classes of that component ("not-prose w-full overflow-hidden
+ * rounded-lg border bg-background font-mono") are absent from the 3.16.2
+ * bundle, so the trace block is not shipped as such in this build. What the
+ * build does render is the MCP error surface: p[data-testid="mcp-error-surface"]
+ * with "rounded-lg bg-destructive/10 px-3 py-2 text-destructive" under an h4
+ * that already carries text-destructive. That block gets the plan's error
+ * treatment: the plan's #3c2021 fill and #fb4934 frame are the
+ * --color-destructive-surface / --color-destructive pair from step 1, the body
+ * text goes back to the main foreground so long messages stay readable, and
+ * the machine text takes the mono face at 0.9em. The heading above stays red —
+ * the accent marks the error, the body carries the content. */
+[data-testid="mcp-error-surface"] {
+  background-color: var(--color-destructive-surface);
+  border: 1px solid var(--color-destructive);
+  color: var(--color-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
