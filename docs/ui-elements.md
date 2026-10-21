@@ -262,6 +262,43 @@ html.theme-zai-light {
 обычном клиенте): сначала пробная тема с `outline: 1px solid` на сомнительных
 селекторах, потом чистовая.
 
+## Подтверждённые хуки волны 2 (3.16.2)
+
+Снято живым DOM и грепом по `app.asar` при выполнении шага 2. Колонка
+«Где» — как проверено: живой клиент (Ж) или бандл (Б).
+
+| Хук | Что это | Где |
+|---|---|---|
+| `[data-v4-timeline-content-column]` → `[data-v4-turn-unit][data-index]` → `section[data-turn-id]` | лента → ход | Ж |
+| `[data-row-id]` | строка хода (роль в классе `group/user-row`, `group/assistant-row`) | Ж |
+| `[data-v4-user-input-bubble]` | плашка сообщения пользователя | Ж |
+| `[data-v4-user-input-collapsible-content]` | тело плашки (сворачивается по высоте) | Ж |
+| `[data-conversation-selectable]` | контейнер выделяемого текста (и проза, и markdown-обёртка) | Ж |
+| `[data-reasoning-label]`, `[data-reasoning-content][data-reasoning-content-variant]`, `[data-reasoning-scroll-mask]` | reasoning: метка, свёртка, скроллбокс с отступом цитаты | Ж |
+| `table[data-streamdown="table"]` | markdown-таблица (внутри `div[data-markdown-table-frame]`) | Б |
+| `[data-markdown-table-frame]`, `[data-markdown-table-toolbar]`, `[data-markdown-table-edge-shadow]` | рамка/тулбар/тени таблицы | Б |
+| `[data-streamdown="heading-1..6"]`, `[data-streamdown="unordered-list"/"ordered-list"/"list-item"/"link"/"blockquote"]`, `[data-markdown-list]`, `[data-markdown-blockquote]` | markdown-узлы, у которых приложение оставило атрибут | Б |
+| `[data-language]` | контейнер блока кода (плюс `diffs-container` внутри) | Б |
+| `[data-elicitation-dialog-card/-body/-footer]`, `[data-elicitation-countdown-seconds]` | карточка вопроса | Б |
+| `[data-confirm-intent]`, `[data-permission-rule-scope(s)/prefixes]` | диалог подтверждения и правила разрешений | Б |
+| `[data-background-task-kind][data-work-id][data-work-status]` | строка фоновой работы; статусы `running`,`resultPending`,`failed`,`cancelled` | Б |
+| `[data-plan-status]`, `[data-status-todo-preview-trigger]` | todo-список панели статуса | Б |
+| `[data-plan-directory-tool-call-id]`, `[data-plan-detail-tool-call-id]` | каталог планов и открытие плана | Б |
+| `[data-goal-status]`, `[data-goal-iteration][data-goal-iteration-completed][data-goal-verification-outcome]`, `[data-goal-elapsed-seconds]` | цель, итерации, счётчик | Б |
+| `[data-artifact-kind/-id/-version/-body]` | ссылка на артефакт и пресетное тело | Б |
+| `[data-conversation-selection-action]` | пункт меню выделения | Ж |
+| `[data-testid="mcp-error-surface"]` | блок ошибки MCP | Б |
+| `[data-side-pane-full-view-host/-clip]` | хост полноэкранной панели | Ж |
+| `<diffs-container>` | pierre/diffs: shadow root, стилизуется только `--diffs-*` | Б |
+
+Чего в сборке нет или что работает иначе:
+
+- `data-markdown-table-layout-root` — скролл-контейнер таймлайна, не таблица;
+- `data-row-kind` — только маркеры таймлайна (`timelineMarker`);
+- `.message-response` — displayName React-компонента, не класс;
+- `StackTrace` в 3.16.2 не отгружается (его классы в бандле отсутствуют);
+- тосты: слота `toast` нет, красятся токеном `--color-toast`.
+
 ## Обновление карты
 
 1. `git -C /home/prog7/home/dev/contrib/clones/ZCode fetch --tags` и

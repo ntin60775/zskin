@@ -44,8 +44,9 @@ python3 loader/zskin.py list
 ## Статус
 
 **Тема и планы.** `themes/gruvbox.css` — omp dark-gruvbox, mono 17px,
-обе схемы. Шаг 1 плана закрыт (10 из 90 задач), дальше шаг 2 по порядку;
-карта работ, приёмка и волны — в `docs/plans/00-common.md`.
+обе схемы. Шаги 1 и 2 плана закрыты (33 из 90 задач: токены, примитивы,
+транскрипт и markdown), дальше шаг 3; карта работ, приёмка и волны —
+в `docs/plans/00-common.md`.
 
 **Инфраструктура.** Лоадер (stdlib-only Python 3): `run` / `inject` /
 `list`, ярлык «ZCode (zskin)» в меню приложений. Watch-режима и hot-reload
