@@ -556,7 +556,7 @@ html.theme-zai-light [data-slot="alert-dialog-overlay"] {
 
 .animate-spin svg {
   stroke-width: 2.75;
-  filter: drop-shadow(0 0 3px color-mix(in oklab, currentColor 45%, transparent));
+  filter: none; /* omp draws no glow (plan 3.3) */
 }
 
 /* live workflow run line under the title: full-strength text, yellow glyph */
@@ -1340,6 +1340,132 @@ html.theme-zai-light diffs-container {
 
 [data-goal-elapsed-seconds] {
   color: var(--zskin-text-muted);
+}
+
+/* ===== plan 3 — tool cards (docs/plans/03-tool-cards.md) =====
+ * Live anatomy on 3.16.2 (verified in the running client):
+ *   div[data-tool-call-id][data-tool-name][data-status] .w-full
+ *     > div[data-slot="collapsible"] .w-full.flex.flex-col
+ *       > div[data-slot="collapsible-trigger"].tool-summary
+ *           span (icon wrapper, [&_svg]:text-foreground-subtlest)
+ *           span.tool-summary-kind-label   -- "Terminal", "Read", "MCP"…
+ *           div.tool-summary-content       -- command, file chip, stats, status label
+ *           svg.lucide-chevron-right (hover-revealed)
+ *       > div[data-slot="collapsible-content"] > div > div.pt-2 > body
+ * Facts the plan guessed differently:
+ *   - the status hook is data-status on the card root, not data-tool-status.
+ *     Values seen live and in the bundle: pending, in_progress, completed,
+ *     failed, denied, stopped;
+ *   - a tool call is a one-line summary row, not a framed card. The frame,
+ *     radius and interior padding of 3.2 are added here;
+ *   - nested calls (Explore / Agent / ExecuteGroup / changes groups) sit in a
+ *     shared rail div.ml-2.space-y-2.border-l.pl-3.5, so only the outermost
+ *     card is framed — the tree inside stays flat, as in omp;
+ *   - there is no duration label (283ms) in this build.
+ * Phases follow omp: a running card shouts, a finished one fades.
+ */
+
+html.theme-zai-dark {
+  --zskin-tool-border: #7c6f64; /* dim frame of a finished card (omp table) */
+  --zskin-tool-bg: #1d2021;     /* terminal plate, darker than the feed */
+  --zskin-tool-title: #d5c4a1;  /* omp toolTitle */
+  --zskin-tool-content: #bdae93;
+  --zskin-tool-meta: #7c6f64;   /* gutters, captions — decor only */
+  --zskin-tool-error-bg: #3c2021;
+}
+
+html.theme-zai-light {
+  --zskin-tool-border: #928374;
+  --zskin-tool-bg: #ebdbb2;
+  --zskin-tool-title: #3c3836;
+  --zskin-tool-content: #665c54;
+  --zskin-tool-meta: #7c6f64;
+  --zskin-tool-error-bg: color-mix(in oklab, #9d0006 8%, #fbf1c7);
+}
+
+/* 3.2 card frame. The plan's success frame #3c3836 is invisible on the
+ * #1d2021 plate (1.1:1); omp's own phase table gives dim #7c6f64 for a
+ * finished card, so that is what the success state uses.
+ * Specificity ladder on purpose: base frame (0,2,0) < phase (0,3,0) <
+ * nested reset (0,3,0, later in the sheet). A complex :not() on the base
+ * would outrank the phase rules and freeze every card at the success look. */
+[data-tool-call-id] > [data-slot="collapsible"] {
+  padding: 6px 10px;
+  border: 1px solid var(--zskin-tool-border);
+  border-radius: 6px;
+  background: var(--zskin-tool-bg);
+}
+
+/* running / pending: brand rim, no plate — the call is still moving */
+[data-tool-call-id][data-status="in_progress"] > [data-slot="collapsible"],
+[data-tool-call-id][data-status="pending"] > [data-slot="collapsible"] {
+  border-color: var(--color-brand);
+  background: transparent;
+}
+
+/* error: red rim on the warm error plate */
+[data-tool-call-id][data-status="failed"] > [data-slot="collapsible"],
+[data-tool-call-id][data-status="denied"] > [data-slot="collapsible"] {
+  border-color: var(--color-destructive);
+  background: var(--zskin-tool-error-bg);
+}
+
+/* interrupted / waiting on the user: warning rim, no plate */
+[data-tool-call-id][data-status="stopped"] > [data-slot="collapsible"],
+[data-tool-call-id][data-status="paused"] > [data-slot="collapsible"],
+[data-tool-call-id][data-status="cancelled"] > [data-slot="collapsible"] {
+  border-color: var(--color-warning);
+  background: transparent;
+}
+
+/* nested calls are part of a tree, not cards of their own (3.1/3.9):
+ * reset the frame after the phase rules so the rail does the grouping */
+[data-tool-call-id] [data-tool-call-id] > [data-slot="collapsible"] {
+  padding: 0;
+  border-width: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* title (kind label). Running cards carry the animated gradient, whose
+ * stock colours are the purple icon tokens — re-point them at the brand so
+ * "Running" pulses orange, and leave the text clip alone. */
+[data-tool-call-id] .tool-summary-kind-label {
+  color: var(--zskin-tool-title);
+}
+
+[data-tool-call-id] .tool-summary-kind-label.animated-gradient-text {
+  --animated-gradient-text-strong: var(--color-brand);
+  --animated-gradient-text-soft: color-mix(in srgb, var(--color-brand) 22%, transparent);
+}
+
+/* light brand #d65d0e measures 3.41:1 on cream — under the text bar. The
+ * running label takes the darker orange already used by 2.16 (5.4:1). */
+html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradient-text {
+  --animated-gradient-text-strong: #af3a03;
+  --animated-gradient-text-soft: color-mix(in srgb, #af3a03 22%, transparent);
+}
+
+/* summary content: the de-facto intent line (command, query, filename) */
+[data-tool-call-id] .tool-summary-content {
+  color: var(--zskin-tool-content);
+}
+
+/* 3.3 progress. Spinner colour and the no-glow rule live in the session
+ * activity block above; the success mark the plan asks for has no glyph in
+ * this build, so it is drawn as a 6px dot at the end of a finished row. */
+/* The marker sits right after the title, as omp writes "╭── • Title · (ms)":
+ * the summary row itself stretches to the card width, so a trailing pseudo
+ * on the trigger would land at the far edge, far from the label. */
+[data-tool-call-id][data-status="completed"] .tool-summary-kind-label::after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 6px;
+  height: 6px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: var(--zskin-text-success);
 }
 
 /* ===== composer popovers: width follows content =====
