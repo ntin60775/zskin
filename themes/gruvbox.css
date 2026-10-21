@@ -1111,3 +1111,32 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 [data-elicitation-countdown-seconds] {
   color: var(--zskin-text-muted);
 }
+
+/* 2.16 confirmation. Bundle (~332.710 млн): the confirmation dialog content
+ * carries data-confirm-intent, keeps its stock bg-popover with border-none and
+ * a ring, and its footer buttons are shadcn buttons with data-variant. Plan
+ * 2.16 wants the confirmation tint, a brand confirm button with dark text and
+ * an outlined cancel. Neither button is individually hooked, so they are keyed
+ * by variant: default gets brand, outline gets the hairline. Destructive
+ * variants are deliberately excluded — a delete confirmation must keep its red,
+ * and repainting it orange would weaken the danger signal. The tint itself is
+ * not poured over the whole dialog (that would make it translucent); the
+ * confirmation colour appears as a 2px top edge instead. Permission rule
+ * scopes ([data-permission-rule-scope]) go to the contrast-safe grey.
+ * Visibility, wording and behaviour are untouched. */
+[data-confirm-intent] {
+  border-top: 2px solid var(--color-interaction-confirmation-foreground);
+}
+
+[data-confirm-intent] [data-slot="button"][data-variant="default"] {
+  background-color: var(--color-brand);
+  color: var(--color-foreground-inverse);
+}
+
+[data-confirm-intent] [data-slot="button"][data-variant="outline"] {
+  border-color: var(--color-border-hover);
+}
+
+[data-permission-rule-scope] {
+  color: var(--zskin-text-muted);
+}
