@@ -1058,3 +1058,23 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 [data-side-pane-full-view-clip] {
   background-color: var(--color-background);
 }
+
+/* 2.14 plan. Verified against the bundle (~329.983 млн): the plan surface has
+ * two shapes. In the status panel the session plans are rows
+ * button[data-plan-directory-tool-call-id] with an icon and a truncated
+ * title; the plan itself opens as a "plan-detail" side-pane tab whose body is
+ * markdown, so its card look is the markdown of 2.7 and its numbered steps
+ * already take the orange list markers from there. What is left for this task
+ * is the directory row: the title stays the main foreground colour, the icon
+ * takes the brand accent so a plan reads as an actionable entry rather than
+ * another grey row. No background or border is invented — the rows sit in the
+ * panel, and the plan card is the side pane, which 2.13 already put on the
+ * base colour. (The list keyed by [data-plan-status] in the panel is the todo
+ * list and belongs to 2.22.) */
+[data-plan-directory-tool-call-id] {
+  color: var(--color-foreground);
+}
+
+[data-plan-directory-tool-call-id] > svg {
+  color: var(--color-brand);
+}
