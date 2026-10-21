@@ -804,3 +804,80 @@ button:has(> [data-reasoning-label]) svg,
 [data-reasoning-content] [class~="text-foreground-subtlest"] {
   color: var(--zskin-text-muted);
 }
+
+/* 2.7 markdown. Node components confirmed against the bundle (offset
+ * ~328.912 млн): headings carry data-streamdown="heading-1..6" with classes
+ * mt-6 mb-4 text-ui-xl/lg/base font-semibold (21/19/17px at the 17px base),
+ * lists carry data-markdown-list plus marker:text-foreground-subtlest,
+ * blockquotes carry data-markdown-blockquote with a 2px border-l,
+ * paragraphs and inline <code> are plain tags (no data attribute). The plan's
+ * flat hierarchy: h1 2em bold underlined, h2-h4 1em bold, all in amber.
+ * Light needs a darker amber than #fabd2f (1.6:1 on cream) to clear 4.5:1;
+ * #8a6100 keeps the hue at 4.9:1. Inline code loses the 50% chip, its padding
+ * and radius, and takes the plum token. List markers go orange with the twos
+ * characters of indent the stock pl-5 already gives (ol switches from
+ * list-inside to list-outside so both lists line up). Quotes drop to the
+ * contrast-safe muted colour and a 1px rail; hr is toned down from a
+ * full-strength foreground line. */
+[data-streamdown^="heading-"] {
+  color: #fabd2f;
+}
+
+[data-streamdown="heading-1"] {
+  font-size: 2em;
+  font-weight: 700;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+[data-streamdown="heading-2"],
+[data-streamdown="heading-3"],
+[data-streamdown="heading-4"] {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+html.theme-zai-light [data-streamdown^="heading-"] {
+  color: #8a6100;
+}
+
+[data-conversation-selectable] :not(pre):not([data-language]) > code {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  color: var(--color-markdown-inline-code);
+}
+
+[data-markdown-list] > li::marker {
+  color: #fe8019;
+}
+
+[data-markdown-list="ordered"] {
+  list-style-position: outside;
+  padding-left: 20px;
+}
+
+html.theme-zai-light [data-markdown-list] > li::marker {
+  color: #d65d0e;
+}
+
+[data-markdown-blockquote] {
+  color: var(--zskin-text-muted);
+  border-left-width: 1px;
+  border-left-color: #504945;
+}
+
+html.theme-zai-light [data-markdown-blockquote] {
+  border-left-color: #bdae93;
+}
+
+[data-conversation-selectable] hr {
+  border-top-width: 1px;
+  border-top-color: #504945;
+}
+
+html.theme-zai-light [data-conversation-selectable] hr {
+  border-top-color: #d5c4a1;
+}
