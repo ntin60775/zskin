@@ -427,6 +427,9 @@ html.theme-zai-light ::selection {
   background: var(--color-hover);
 }
 
+/* Base UI Tabs (3.16.2) marks the active trigger with data-active; the
+ * side-pane tab wrapper sets data-state by hand, so match both. */
+[data-slot="tabs-trigger"][data-active],
 [data-slot="tabs-trigger"][data-state="active"] {
   color: var(--color-foreground);
 }
@@ -504,9 +507,13 @@ html.theme-zai-light [data-slot="alert-dialog-overlay"] {
   color: var(--color-foreground-subtlest);
 }
 
-/* checked toggles go brand; the check/cross icon inherits through the
- * indicator (stock paints it text-primary-foreground, black on the stock
- * white — needs the inverse to stay readable on orange) */
+/* checked toggles go brand. The 3.16.2 switch is Base UI and exposes
+ * data-checked/data-unchecked (stock classes read data-checked:bg-primary),
+ * not the Radix data-state, so match both forms defensively. The checkbox
+ * check icon inherits through the indicator (stock paints it
+ * text-primary-foreground, black on the stock white — needs the inverse to
+ * stay readable on orange). */
+[data-slot="switch"][data-checked],
 [data-slot="switch"][data-state="checked"] {
   background: var(--color-brand);
 }
@@ -521,10 +528,11 @@ html.theme-zai-light [data-slot="alert-dialog-overlay"] {
   color: var(--color-foreground-inverse);
 }
 
-/* 1.10 kbd. Compact key capsule; mono comes from the theme body font. */
+/* 1.10 kbd. Compact key capsule; mono comes from the theme body font. The
+ * stock kbd has no border utility, so the rim needs an explicit width. */
 [data-slot="kbd"] {
   background: var(--color-surface);
-  border-color: var(--color-border-hover);
+  border: 1px solid var(--color-border-hover);
   color: var(--color-foreground-subtle);
   border-radius: 4px;
 }
