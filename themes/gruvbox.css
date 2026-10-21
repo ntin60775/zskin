@@ -349,6 +349,45 @@ html.theme-zai-light ::selection {
   background: transparent;
 }
 
+/* ===== plan 1 primitives (docs/plans/01-foundation.md) =====
+ * data-slot names below were verified against the installed 3.16.2 bundle
+ * (grep app.asar). Radix state attributes (data-state, :focus-visible) are
+ * conventions — hypotheses until the live pass.
+ */
+
+/* 1.2 toast. The stock toaster paints itself from --color-toast (token set
+ * in 1.1). No toast data-slot or sonner attribute strings exist in the
+ * 3.16.2 bundle, so structural rules wait for the live pass; candidates:
+ *
+ * [data-sonner-toast] {
+ *   background: var(--color-toast);
+ *   border: 1px solid var(--color-popover-border);
+ *   border-radius: 8px;
+ * }
+ */
+
+/* 1.3 alert (shadcn alert family: alert/-title/-description/-action).
+ * Neutral alerts keep the card look; the destructive variant is caught by
+ * its tailwind class fragment (hypothesis until seen live). */
+[data-slot="alert"] {
+  background: var(--color-card);
+  border-color: var(--color-card-border);
+  color: var(--color-foreground);
+}
+
+[data-slot="alert"][class*="destructive"] {
+  background: var(--color-destructive-surface);
+  border-color: var(--color-destructive);
+}
+
+[data-slot="alert"][class*="destructive"] [data-slot="alert-title"] {
+  color: var(--color-destructive-surface-foreground);
+}
+
+[data-slot="alert"] [data-slot="alert-description"] {
+  color: var(--color-foreground);
+}
+
 /* ===== session activity indicators =====
  * The app paints activity spinners with text-foreground-subtle, so they melt
  * into the chrome. Verified live on 3.16.1: `animate-spin` sits on a wrapper
