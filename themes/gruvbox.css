@@ -1140,3 +1140,23 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 [data-permission-rule-scope] {
   color: var(--zskin-text-muted);
 }
+
+/* 2.17 sources. The bundle keeps the vercel/ai-elements shape: Sources is a
+ * Collapsible "not-prose mb-4 text-primary", its trigger reads "Used N
+ * sources", the entries are plain <a class="flex items-center gap-2">, and an
+ * inline citation is a Badge (data-slot="badge", variant secondary, rounded
+ * full) showing the hostname plus a "+N" tail. Plan 2.17's chip palette maps
+ * onto the badge: surface fill #32302f, muted label #bdae93, hairline
+ * --color-border, hover lifts the label to the main foreground. Scoped to the
+ * transcript so settings badges elsewhere keep their stock look. The plan's
+ * "number in brand" does not exist in this build — the chip carries a hostname
+ * and a count, not an index — so no numeral is coloured. */
+[data-conversation-selectable] [data-slot="badge"] {
+  background: var(--color-surface);
+  color: var(--color-foreground-subtle);
+  border: 1px solid var(--color-border);
+}
+
+[data-conversation-selectable] [data-slot="badge"]:hover {
+  color: var(--color-foreground);
+}
