@@ -1184,3 +1184,29 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 html.theme-zai-light [data-artifact-kind] > svg {
   color: #427b58;
 }
+
+/* 2.19 terminal output. xterm paints its own canvas, so the text itself is
+ * coloured only through the 22 --color-terminal-* tokens, which step 1 already
+ * set from the omp dark-gruvbox terminal ramp and its light twin; terminalTheme
+ * resolves them into rgba at mount. The DOM part is the shell: the workspace
+ * frame div[data-workspace-terminal-frame] is a bg-background surface (already
+ * #282828) and the panel header sits on a tabs-list. The frame is pinned to the
+ * base colour explicitly, the header strip goes to the chrome colour
+ * (--color-tab, #1d2021) so it reads as a title bar over the screen, and the
+ * xterm shell keeps the terminal background token so no seam appears between
+ * the canvas and its container. Status words keep the success/error tokens.
+ * Font metrics stay on xterm's JS options — CSS font overrides desync the
+ * canvas measurements. */
+[data-workspace-terminal-frame] {
+  background-color: var(--color-background);
+}
+
+[data-workspace-terminal-frame] [data-slot="tabs-list"] {
+  background-color: var(--color-tab);
+  border-color: var(--color-tab-border);
+}
+
+.terminal-xterm-shell,
+.terminal-xterm-shell .xterm {
+  background-color: var(--color-terminal-bg);
+}
