@@ -1267,3 +1267,22 @@ html.theme-zai-light diffs-container {
   --diffs-fg-number-override: #bdae93;
   --diffs-fg: #3c3836;
 }
+
+/* 2.22 todo. The list is the status panel's todo block: each row is
+ * li[data-plan-status] (pending | inProgress | completed) holding a status
+ * icon and a label span. Stock reads: completed icon text-[--color-success]
+ * and a subtlest struck-through label, inProgress icon text-foreground,
+ * pending icon text-foreground-subtlest. Plan 2.22 wants done in green with a
+ * strike, in-progress in brand, waiting quiet — so the completed label takes
+ * --color-success (keeping the strike the app already draws) and the
+ * in-progress icon takes --color-warning, which is the brand orange in this
+ * palette. The checkbox half of the plan is left alone: [data-slot="checkbox"]
+ * is shared by every form in the app and step 1 already paints a checked box
+ * brand; recolouring it green here would repaint unrelated dialogs. */
+[data-plan-status="completed"] > span:last-child {
+  color: var(--color-success);
+}
+
+[data-plan-status="inProgress"] > svg {
+  color: var(--color-warning);
+}
