@@ -1042,3 +1042,19 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 [data-background-task-kind][data-work-status="cancelled"] > svg {
   color: var(--color-foreground-subtlest);
 }
+
+/* 2.13 subagent transcript. Verified: "subagent-session" is a side-pane tab
+ * type (tab factory xXe in the bundle, ~327.369 млн), not a component with its
+ * own hooks. The pane mounts the same v4 session pane and the same timeline
+ * components as the main column, so the transcript rules of 2.2, 2.3 and
+ * 2.5-2.7 already apply inside it, and the pane chrome comes from the panel
+ * and tab tokens set in step 1. What is left is the surface under the nested
+ * transcript: the full-view host is transparent today and inherits whatever
+ * the pane paints, so it is pinned to the base colour explicitly. The
+ * "headings #bdae93" from the plan are markdown headings inside the nested
+ * transcript, and 2.7 already paints those amber — recolouring the heading
+ * scale per pane would fork the markdown rules for no gain. */
+[data-side-pane-full-view-host],
+[data-side-pane-full-view-clip] {
+  background-color: var(--color-background);
+}
