@@ -1230,3 +1230,40 @@ html.theme-zai-light [data-artifact-kind] > svg {
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+
+/* 2.21 diff. The diff renderer is the same pierre/diffs <diffs-container> as
+ * the code block (shadow root, adopted stylesheet), so data-diff-*,
+ * data-diffs-header, data-selected-line and data-merge-conflict-* — all inside
+ * that shadow — cannot be reached by selectors. What does reach the shadow is
+ * the variable set the adopted sheet reads: --diffs-light-bg / --diffs-dark-bg
+ * for the surface, --diffs-light / --diffs-dark for text, --diffs-*-color for
+ * the added / deleted / modified bases (the tints are mixed from them with
+ * color-mix in the sheet), and --diffs-fg-number-override for the line
+ * numbers. Both light-and-dark branches are pinned to the active scheme's
+ * value because :host resolves light-dark() from color-scheme, which on this
+ * element still reads dark right after a theme switch (same trap as 2.8).
+ * Values: added #b8bb26 / #79740e, deleted #fb4934 / #9d0006, modified
+ * #fabd2f / #b57614, numbers #7c6f64 / #bdae93. */
+html.theme-zai-dark diffs-container {
+  --diffs-light-bg: #282828;
+  --diffs-dark-bg: #282828;
+  --diffs-light: #ebdbb2;
+  --diffs-dark: #ebdbb2;
+  --diffs-addition-color: #b8bb26;
+  --diffs-deletion-color: #fb4934;
+  --diffs-modified-color: #fabd2f;
+  --diffs-fg-number-override: #7c6f64;
+  --diffs-fg: #ebdbb2;
+}
+
+html.theme-zai-light diffs-container {
+  --diffs-light-bg: #fbf1c7;
+  --diffs-dark-bg: #fbf1c7;
+  --diffs-light: #3c3836;
+  --diffs-dark: #3c3836;
+  --diffs-addition-color: #79740e;
+  --diffs-deletion-color: #9d0006;
+  --diffs-modified-color: #b57614;
+  --diffs-fg-number-override: #bdae93;
+  --diffs-fg: #3c3836;
+}
