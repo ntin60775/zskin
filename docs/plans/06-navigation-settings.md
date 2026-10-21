@@ -2,6 +2,12 @@
 
 Шаг 6 — периферия: навигация, списки, настройки. Зависит от шагов 1 и 3.
 
+Разведка 3.16.2: настройки просмотрены вживую (фон — приёмка плана 1) —
+артефактов нет; в сайдбаре подтверждены `data-project-*`,
+`data-task-row-metadata`, `data-task-item-key`, `data-task-title-copy`;
+`data-grouped-*` в перепись не попал — проверить в группированном
+виде.
+
 Ссылки: [общее](00-common.md) · [образец стиля](../oh-my-pi-output-style.md) · [join-таблица](../components-join.md).
 
 ### 6.1. Список выбора и меню (пара 13)
@@ -27,7 +33,9 @@ selected `#3c3836`, hover `#32302f`.
 `ProjectSidebar`, `TaskGroupedView`, `TaskList`.
 **Что.** Строка: hover `#32302f`, active `#3c3836`, заголовок группы —
 `#928374`; бейдж активности — brand; без зебры.
-**Как.** `data-task-row-*`, `data-grouped-*`; токены selected/hover.
+**Как.** `data-task-row-metadata`, `data-task-item-key`,
+`data-project-*` (подтверждены в DOM 3.16.2); `data-grouped-*` —
+проверить в группированном виде; токены selected/hover.
 
 ### 6.5. Поиск и палитра (пара 77)
 `CommandCenterDialog`, `TaskFindDialog`.

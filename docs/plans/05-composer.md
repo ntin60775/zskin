@@ -3,21 +3,28 @@
 Шаг 5 — композер. Только палитра: силуэт, ширина и центровка остаются
 стоковыми (прежние A1/A2 откачены).
 
+Разведка 3.16.2: инпут композера — `div[contenteditable]` без
+`data-slot`, внутри `FORM` в `.chat-composer-region`
+(`data-testid="v4-composer"`, `data-input-routing`), обёртка
+`.chat-composer-input-surface`. Гипотезы с `[data-composer-layout]` и
+`[data-slot="textarea"]` для этой версии неверны.
+
 Ссылки: [общее](00-common.md) · [образец стиля](../oh-my-pi-output-style.md) · [join-таблица](../components-join.md).
 
 ### 5.1. Композер целиком (пара 19)
 `ConversationComposer`, `V4ComposerToolbar`.
 **Что.** Поле на `#1d2021`, рамка `#504945`, фокус brand; тулбар — текст
 `#bdae93`; геометрию и раскладку не менять.
-**Как.** `--color-input*` (есть); `[data-composer-layout]` — только цвета,
-без width/padding.
+**Как.** `--color-input*` (есть); `.chat-composer-region`
+(`data-testid="v4-composer"`) — только цвета, без width/padding.
 
 ### 5.2. Текстовый редактор (пара 21)
 `LexicalChatInput`, `ChatPromptEditor`.
 **Что.** Текст `#ebdbb2`, плейсхолдер `#928374`, каретка brand, выделение —
 `#504945`.
-**Как.** `[data-slot="textarea"]`, `caret-color: var(--color-brand)`;
-`::selection` уже есть.
+**Как.** Инпут — `div[contenteditable]` внутри
+`.chat-composer-input-surface` (3.16.2), `caret-color:
+var(--color-brand)`; `::selection` уже есть.
 
 ### 5.3. Отправка и стоп (пара 22)
 `PromptInputSubmit`, `PromptInputButton`.

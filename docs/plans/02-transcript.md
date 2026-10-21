@@ -3,6 +3,11 @@
 Шаг 2 — основной визуальный эффект. Зависит от шага 1 (токены и
 недостающие группы). Дифф и подсветка кода — здесь же.
 
+Разведка 3.16.2: в живом DOM подтверждены `data-row-kind` (2.3),
+`data-v4-user-input-bubble` (2.4), `data-plan-status` (2.14);
+markdown-контент рендерит Streamdown — блоки несут `data-streamdown="…"`
+(2.7, в DOM 20 вхождений).
+
 Ссылки: [общее](00-common.md) · [образец стиля](../oh-my-pi-output-style.md) · [join-таблица](../components-join.md).
 
 ### 2.1. Таблица (пара 12)
@@ -23,14 +28,16 @@
 ### 2.3. Блок хода (пара 39)
 `ConversationTurnGroup`, `ConversationTurnRow`.
 **Что.** Ход не карточка: одна пустая строка между ходами, без рамок.
-**Как.** `[data-row-kind]` — отступы; убрать бордеры/фоны, если есть.
+**Как.** `[data-row-kind]` (подтверждён в DOM 3.16.2) — отступы; убрать
+бордеры/фоны, если есть.
 
 ### 2.4. Сообщение пользователя (пара 40)
 `ConversationUserInputBubble`, `ConversationUserInputBody`.
 **Что.** Плашка темнее базы (`#1d2021`), отступ 1 клетка (≈ 8px при 17px),
 текст `#ebdbb2`, радиус умеренный.
-**Как.** `--color-background-win-alt` (есть); селектор пузыря — гипотеза
-(класс `ConversationUserInput*` / `data-row-kind`), проверить `outline`-темой.
+**Как.** `--color-background-win-alt` (есть); селектор пузыря подтверждён
+в DOM 3.16.2: `[data-v4-user-input-bubble]` (рядом
+`data-v4-user-input-collapsible-content`).
 
 ### 2.5. Ответ ассистента (пара 41)
 `ConversationRowView`, `MessageResponse`.
@@ -53,9 +60,11 @@ H3–H4 — 1em bold `#fabd2f` (решётки `###` — TUI-артефакт,
 переносить). Инлайн-код `#d3869b` **без подложки**; ссылки aqua; списки —
 маркер `#fe8019`, отступ 2 символа; цитата — `#928374` без курсива, планка
 `#504945`; hr — 1px `#504945`.
-**Как.** Селекторы внутри контейнера ответа: `h1..h4`, `code`, `a`,
-`li::marker`, `blockquote`, `hr`; `--color-markdown-inline-code` (есть).
-Снять фон/бордер у `code` — сейчас приложение красит плашкой.
+**Как.** Markdown-контент рендерит Streamdown: блоки несут
+`data-streamdown="…"` — при разведке снять значения атрибута для
+абзаца, кода, цитаты, списка и вести селекторы от них; плюс `h1..h4`,
+`li::marker`, `a`; `--color-markdown-inline-code` (есть). Снять
+фон/бордер у `code` — сейчас приложение красит плашкой.
 
 ### 2.8. Блок кода (пара 44)
 `CodeBlock`, `CodeBlockHeader`, `CodeBlockLanguageSelector`.
@@ -105,7 +114,8 @@ success/warning/error, полоса прогресса — `--color-progress-su
 `Plan`, `PlanReviewOverlay`, `PlanDetailSidePane`.
 **Что.** Карточка плана: заголовок bold `#ebdbb2`, номера шагов brand,
 статусы success/warning, фон `#282828`, рамка `#3c3836`.
-**Как.** `[data-plan-status]`, классы `Plan*`; токены card/border.
+**Как.** `[data-plan-status]` (подтверждён в DOM 3.16.2), классы `Plan*`;
+токены card/border.
 
 ### 2.15. Вопрос пользователю (пара 55)
 `AskQuestionToolCallBlock`, `V4UserInputDialog`, `ElicitationDialog`.
