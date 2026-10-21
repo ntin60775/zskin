@@ -521,6 +521,14 @@ html.theme-zai-light [data-slot="alert-dialog-overlay"] {
   color: var(--color-foreground-inverse);
 }
 
+/* 1.10 kbd. Compact key capsule; mono comes from the theme body font. */
+[data-slot="kbd"] {
+  background: var(--color-surface);
+  border-color: var(--color-border-hover);
+  color: var(--color-foreground-subtle);
+  border-radius: 4px;
+}
+
 /* ===== session activity indicators =====
  * The app paints activity spinners with text-foreground-subtle, so they melt
  * into the chrome. Verified live on 3.16.1: `animate-spin` sits on a wrapper
