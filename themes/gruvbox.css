@@ -388,6 +388,33 @@ html.theme-zai-light ::selection {
   color: var(--color-foreground);
 }
 
+/* 1.4 scroll-area. shadcn draws its own scrollbar inside the viewport, so
+ * the global ::-webkit-scrollbar rules never reach it. */
+[data-slot="scroll-area-scrollbar"] {
+  background: transparent;
+}
+
+[data-slot="scroll-area-thumb"] {
+  background: var(--color-border-hover);
+  border-radius: 5px;
+}
+
+[data-slot="scroll-area-thumb"]:hover {
+  background: color-mix(in oklab, var(--color-border-hover) 75%, var(--color-foreground) 25%);
+}
+
+/* 1.5 panel splitters. No resizable/split data hooks exist in the 3.16.2
+ * bundle (the workbench splitter is custom), so this stays a hypothesis:
+ *
+ * [data-slot="resizable-handle"] {
+ *   background: var(--color-border);
+ * }
+ * [data-slot="resizable-handle"][data-resize-handle-state="hover"],
+ * [data-slot="resizable-handle"][data-resize-handle-state="drag"] {
+ *   background: var(--color-border-hover);
+ * }
+ */
+
 /* ===== session activity indicators =====
  * The app paints activity spinners with text-foreground-subtle, so they melt
  * into the chrome. Verified live on 3.16.1: `animate-spin` sits on a wrapper
