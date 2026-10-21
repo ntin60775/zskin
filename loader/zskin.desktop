@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=ZCode (zskin)
+Comment=Запуск официального ZCode с живой CSS-темой zskin (перед запуском закройте обычный клиент)
+Exec=/home/prog7/home/dev/personal/zskin/loader/zskin-launcher.sh
+Icon=zcode
+Terminal=false
+Categories=Development;
+StartupWMClass=ZCode

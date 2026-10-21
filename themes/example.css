@@ -1,0 +1,14 @@
+/* zskin example theme — placeholder.
+ * Scope: the ZCode renderer DOM. Everything is keyed under html/body so the
+ * cascade beats stock styles without !important wherever possible.
+ * Real theme tasks will be cut later; this file proves the pipeline.
+ */
+
+:root {
+  --zskin-accent: #7aa2f7;
+}
+
+/* Sample: accent-tint the composer border so the inject is visible. */
+textarea {
+  border-color: var(--zskin-accent) !important;
+}
