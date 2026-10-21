@@ -760,9 +760,12 @@ html.theme-zai-light [data-streamdown="table"] td {
   text-decoration-style: solid;
 }
 
+/* #427b58 measured 4.40:1 on the cream base — under the 4.5 bar. #076678 is
+ * 5.82:1 and is already the light --color-interaction-ask-foreground, so the
+ * palette stays closed. */
 html.theme-zai-light [data-conversation-selectable] a {
-  color: #427b58;
-  text-decoration-color: #427b58;
+  color: #076678;
+  text-decoration-color: #076678;
 }
 
 /* Plan 2 contrast floor. --color-foreground-subtlest (#928374) resolves to
@@ -776,6 +779,17 @@ html.theme-zai-dark {
 
 html.theme-zai-light {
   --zskin-text-muted: #665c54; /* gruvbox fg3-light — 5.7:1 on #fbf1c7 */
+}
+
+/* --color-success itself is #98971a in light, which is only 2.73:1 on cream —
+ * fine as an icon tint, unusable as label text. Text that says "done" takes
+ * this pair instead: 7.1:1 in dark, 5.0:1 in light. */
+html.theme-zai-dark {
+  --zskin-text-success: #b8bb26;
+}
+
+html.theme-zai-light {
+  --zskin-text-success: #6b6a00;
 }
 
 /* 2.6 reasoning. Live 3.16.2 anatomy (bundle offset ~330.598 млн):
@@ -1133,6 +1147,13 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
   color: var(--color-foreground-inverse);
 }
 
+/* light: cream on #d65d0e is 3.41:1. The button takes gruvbox's dark orange
+ * #af3a03 (already in the palette as a shade between #d65d0e and #9d0006),
+ * which puts the same cream label at 5.4:1. */
+html.theme-zai-light [data-confirm-intent] [data-slot="button"][data-variant="default"] {
+  background-color: #af3a03;
+}
+
 [data-confirm-intent] [data-slot="button"][data-variant="outline"] {
   border-color: var(--color-border-hover);
 }
@@ -1159,6 +1180,16 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 
 [data-conversation-selectable] [data-slot="badge"]:hover {
   color: var(--color-foreground);
+}
+
+/* 2.5 underlines every link in the transcript. If an inline citation chip is
+ * itself an <a> (or sits inside one), it would inherit the aqua underline
+ * under a muted label — the two rules would fight. The chip owns its look, so
+ * decoration is switched off on the badge and its children. Review note for
+ * step 3: confirm on the first live render that carries citations. */
+[data-conversation-selectable] [data-slot="badge"],
+[data-conversation-selectable] [data-slot="badge"] * {
+  text-decoration-line: none;
 }
 
 /* 2.18 artifact. Two shapes in this build. Inside tool calls an artifact is a
@@ -1280,7 +1311,7 @@ html.theme-zai-light diffs-container {
  * is shared by every form in the app and step 1 already paints a checked box
  * brand; recolouring it green here would repaint unrelated dialogs. */
 [data-plan-status="completed"] > span:last-child {
-  color: var(--color-success);
+  color: var(--zskin-text-success);
 }
 
 [data-plan-status="inProgress"] > svg {
@@ -1300,7 +1331,7 @@ html.theme-zai-light diffs-container {
  * The panel chrome and the objective title stay on their stock tokens — they
  * are the panel's own header, not the goal's state. */
 [data-goal-iteration][data-goal-iteration-completed="true"] {
-  color: var(--color-success);
+  color: var(--zskin-text-success);
 }
 
 [data-goal-iteration][data-goal-verification-outcome="failed"] {
