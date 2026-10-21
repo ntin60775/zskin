@@ -741,3 +741,26 @@ html.theme-zai-light [data-streamdown="table"] td {
   padding: 8px;
   color: var(--color-foreground);
 }
+
+/* 2.5 assistant response. Plan 2.5 called the container class message-response:
+ * that string is the React displayName of the markdown component, not a DOM
+ * class — no element carries it in 3.16.2. The real anatomy is
+ * div[data-row-id] > div[data-conversation-selectable] > div.space-y-4
+ * .text-ui-base.leading-[1.75] (the Streamdown wrapper), sitting on the feed
+ * base with no bubble, no background and no border. Nothing to unpaint; the
+ * work is the link colour, which the app paints with text-icon-blue.
+ * Links get the plan's aqua (#8ec07c dark, #427b58 light) and a solid
+ * underline: the stock decoration is dotted and only appears on hover, which
+ * loses the affordance in a mono transcript. text-decoration-color is set
+ * explicitly so the line matches the text instead of the stock primary. */
+[data-conversation-selectable] a {
+  color: #8ec07c;
+  text-decoration-line: underline;
+  text-decoration-color: #8ec07c;
+  text-decoration-style: solid;
+}
+
+html.theme-zai-light [data-conversation-selectable] a {
+  color: #427b58;
+  text-decoration-color: #427b58;
+}
