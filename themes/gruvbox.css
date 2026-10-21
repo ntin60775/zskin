@@ -1160,3 +1160,27 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 [data-conversation-selectable] [data-slot="badge"]:hover {
   color: var(--color-foreground);
 }
+
+/* 2.18 artifact. Two shapes in this build. Inside tool calls an artifact is a
+ * button[data-artifact-kind][data-artifact-id][data-artifact-version] holding
+ * a type icon and a truncated label; the rendered artifact itself is the
+ * upstream card — "flex flex-col rounded-lg border bg-background shadow-sm"
+ * with a header "border-b bg-muted/50 px-4 py-3" — and its preset body carries
+ * data-artifact-body="preset". The card already lands on the plan's palette
+ * through tokens: bg-background is #282828, the border is --color-border
+ * #3c3836, and the header title is plain foreground. What the tokens cannot
+ * express is the type accent, so the icon in the artifact link takes the aqua
+ * (#8ec07c dark, #427b58 light) and the label stays a muted caption that
+ * underlines on hover — the "actions subtle" half of the plan is the stock
+ * ghost button treatment. */
+[data-artifact-kind] {
+  color: var(--color-foreground-subtle);
+}
+
+[data-artifact-kind] > svg {
+  color: #8ec07c;
+}
+
+html.theme-zai-light [data-artifact-kind] > svg {
+  color: #427b58;
+}
