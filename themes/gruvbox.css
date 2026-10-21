@@ -991,3 +991,23 @@ html.theme-zai-light diffs-container {
 html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-added) > div:first-child {
   border-top-color: #bdae93;
 }
+
+/* 2.11 selection actions. Bundle (~330.692 млн): the floating menu is
+ * div.fixed.z-50 with border-popover-border, bg-menu, text-ui-sm and shadow,
+ * holding button[data-conversation-selection-action] items (add-to-task,
+ * ask-in-side-chat) separated by div.w-px.bg-border. The plan's palette is
+ * already token-driven — bg-menu is #1d2021, hover:bg-menu-hover is #32302f,
+ * text inherits foreground — so only the pressed/selected state needs a rule
+ * of its own: #3c3836 from the plan, via --color-selected. Items keep their
+ * stock padding; nothing is hidden or moved. */
+[data-conversation-selection-action] {
+  color: var(--color-foreground);
+}
+
+[data-conversation-selection-action]:hover {
+  background-color: var(--color-menu-hover);
+}
+
+[data-conversation-selection-action]:active {
+  background-color: var(--color-selected);
+}
