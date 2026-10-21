@@ -1480,6 +1480,18 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   color: var(--zskin-text-muted);
 }
 
+/* 3.4 read file chip. File type icon is an <img> (src from the app's icon
+ * set), so #83a598 cannot be applied to it — only the label is recoloured.
+ * 3.5 edit/write headers reuse the same chip: name bright, path caption dim;
+ * +N/-N already read --color-diff-added / --color-diff-removed from step 1. */
+[data-tool-call-id] .tool-summary-content :is(button, span)[title] > span.truncate {
+  color: var(--color-foreground);
+}
+
+[data-tool-call-id] .tool-summary-content > span.truncate {
+  color: var(--zskin-tool-meta);
+}
+
 /* ===== composer popovers: width follows content =====
  * Two composer popovers ship with a hard width and clip their own labels:
  *   - the context-window popover pins !w-80 (320px) on the popover content,
