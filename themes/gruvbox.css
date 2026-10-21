@@ -1468,6 +1468,18 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   background: var(--zskin-text-success);
 }
 
+/* 3.1 / 3.9 agent trees. The rail is the only border-l inside a card body;
+ * nested rows recede: the branch colour is the dim gutter, names drop to the
+ * contrast-safe muted pair. Subagent rows also get the app's source badge
+ * (border + bg-background-alt), which reads as a quiet [subagent] tag. */
+[data-tool-call-id] [data-slot="collapsible-content"] div.border-l {
+  border-left-color: var(--zskin-tool-meta);
+}
+
+[data-tool-call-id] [data-tool-call-id] .tool-summary-kind-label {
+  color: var(--zskin-text-muted);
+}
+
 /* ===== composer popovers: width follows content =====
  * Two composer popovers ship with a hard width and clip their own labels:
  *   - the context-window popover pins !w-80 (320px) on the popover content,
