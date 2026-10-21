@@ -11,7 +11,7 @@
 | `loader/zskin.py` | лоадер (stdlib-only Python 3): `run` / `inject` / `list` |
 | `loader/zskin-launcher.sh` + `loader/zskin.desktop` | ярлык «ZCode (zskin)» для меню приложений (копия ставится в `~/.local/share/applications/`) и его обёртка: guard на уже запущенный клиент, лог в `~/.local/state/zskin-launcher.log`, уведомления |
 | `themes/` | CSS-темы; `example.css` — placeholder для проверки пайплайна; `gruvbox.css` — первая настоящая тема (omp dark-gruvbox, mono 17px) |
-| `docs/ui-elements.md` | карта UI рендерера: зоны, селекторы/токены, что меняемо; `docs/ui-tokens-3.14.3.txt` — дамп дизайн-токенов (источник — клон zai-org/ZCode, см. док) |
+| `docs/ui-elements.md` | карта UI рендерера: зоны, селекторы/токены, что меняемо; `docs/ui-tokens-3.14.3.txt` — дамп дизайн-токенов исходников (клон zai-org/ZCode), `docs/ui-tokens-3.16.2.txt` — дамп установленного клиента (см. док) |
 | `docs/oh-my-pi-tui-classification.md` | классификация TUI-фреймворка oh-my-pi (`packages/tui`): модули, UI-элементы, назначение (клон в `/home/prog7/home/dev/contrib/clones/oh-my-pi/`) |
 | `docs/oh-my-pi-borrow-ideas.md` | идеи заимствования из oh-my-pi TUI: в темы zskin (раздел A), архитектурные паттерны на будущее (B), осознанные отказы (C) |
 | `docs/agents-ui-join.md` | полное соединение классификаций UI двух агентов (ZCode × oh-my-pi) с приоритетами заимствования; элементы отказов раздела C исключены |

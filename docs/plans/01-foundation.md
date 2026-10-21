@@ -7,7 +7,10 @@
 `61ce655`, `531480b`, `b74dd4b`, `02398f6`). Токены 1.1 подтверждены CDP
 в обеих схемах; настройки просмотрены вживую — артефактов нет.
 Селекторы 1.2–1.10 сняты с бандла 3.16.2 и применятся при монтировании
-поверхностей; точечных проверок тоста, alert и диалога не было.
+поверхностей; точечных проверок тоста, alert и диалога не было. После
+ревью 2026-10-21 исправлены три мёртвых правила (`56839fc`): 1.6 —
+`data-active`, 1.8 — `data-checked`, 1.10 — рамка 1px; проверено
+в живом клиенте.
 
 Ссылки: [общее](00-common.md) · [образец стиля](../oh-my-pi-output-style.md) · [join-таблица](../components-join.md).
 
@@ -63,8 +66,9 @@ resizable-слотов нет (сплиттер рабочей области к
 **Что.** Активный таб светлее хрома (`#282828` на `#1d2021`), неактивный —
 `#bdae93`, hover — `#32302f`; лишний индикатор-подчёркивание убрать, если он
 дублирует фон.
-**Как.** `[data-slot="tabs-trigger"][data-state="active"]`; токены
-`--color-tab`, `--color-tab-active`, `--color-tab-border` (последний — 1.1).
+**Как.** `[data-slot="tabs-trigger"][data-active]` (Base UI) и
+`[data-state="active"]` (кастомный таб); токены `--color-tab`,
+`--color-tab-active`, `--color-tab-border` (последний — 1.1).
 
 ### 1.7. Диалог и оверлей (пара 15)
 `Dialog`, `Popover`, `AlertDialog`, `OverlayPanel`.
@@ -79,8 +83,8 @@ resizable-слотов нет (сплиттер рабочей области к
 **Что.** Поле `#1d2021`, рамка `#504945`, hover `#665c54`, фокус `#fe8019`;
 плейсхолдер `#928374`; switch/checkbox — brand в активном.
 **Как.** `[data-slot="input"]`, `textarea`, `select-trigger`, `switch`,
-`checkbox`; токены `--color-input-border*`, `--color-input-border-focused`
-уже заданы.
+`checkbox`; свитч красится по `data-checked`, чекбокс — по `data-state`;
+токены `--color-input-border*`, `--color-input-border-focused` уже заданы.
 
 ### 1.9. Визард (пара 17)
 `OnboardingWizardHeader/Footer/Sidebar`, `SetupWizardComponent`.
@@ -95,4 +99,5 @@ surface и status. Маркеры шагов — после живой раз�
 **Что.** Капсула: фон `#32302f`, рамка `#504945`, текст `#bdae93`, mono,
 радиус 4px; бейдж хоткея — та же капсула в компактном виде.
 **Как.** `[data-slot="kbd"]`; `--color-surface`, `--color-border-hover`;
-`ControlShortcutBadge` — класс компонента (гипотеза).
+рамка `1px solid` (в стоке нет border-width); `ControlShortcutBadge` —
+класс компонента (гипотеза).

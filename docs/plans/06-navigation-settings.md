@@ -126,3 +126,17 @@ SVG графа — `stroke`/`fill` селекторами (гипотеза).
 `WelcomeScreen`, `LoginPanel`, `LoginApiKeyForm`.
 **Что.** Фон базы, поля 1.8, кнопка brand, ошибка — destructive.
 **Как.** Классы login; 1.8; токены.
+
+### 6.21. Служебные токены вне join
+**Пара** — нет: токены, которым не нашлось пары в join-таблице.
+**Что.** Убрать стоковые цвета с поверхностей, которые 1.1 не покрыла:
+`--color-highspeed-*` (фон композера `#151515`, акцент `#b392ff`),
+`--color-primary`/`-foreground` (`#fff`/`#000` — первичные кнопки),
+`--color-destructive-foreground` (`#fff`), remote-поверхности
+(`#4099ff`/`#9f84ff`/`#46bf72`), палитры узлов графа (`file #70aee0`,
+`session #68c4bc`, `skill #a689da`, `plugin #e0ae70`).
+**Как.** Переопределить токены в блоках 1.1: highspeed — база и акцент
+gruvbox, primary — brand с inverse-текстом, remote — приглушённые тона,
+узлы — ramp trajectory (сверить с 6.7). Снять живые highspeed- и 
+remote-поверхности; если highspeed остаётся стоком — внести отказ в
+00-common.

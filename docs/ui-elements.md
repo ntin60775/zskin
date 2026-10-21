@@ -61,15 +61,18 @@
    - `data-slot="…"` на всех shadcn-примитивах: `button`, `textarea`, `input`,
      `dialog-content/-header/-title/-close`, `popover-*`, `select-*`,
      `command-input/-item`, `tabs/-list/-trigger/-content`, `switch/-thumb`,
-     `badge`, `kbd`, `tooltip*`, `scroll-area*`, `progress*`, `separator`,
-     `accordion-*`, `input-group-control` и др.;
+     `badge`, `kbd`, `tooltip*`, `scroll-area*`, `progress*`,
+     `alert/-title/-description`, `card/-header/-title/-content`, `label`,
+     `collapsible*`, `accordion-*`, `input-group-control` и др.;
    - авторские классы из `styles.css`: `.wf-*` (граф workflow, ~50 шт.),
      `.prompt-mention`, `.terminal-xterm-shell`, `.browser-use-viewport`,
      `.side-pane-open-tab-shell`, `.task-search-result-highlight`,
      `.markdown-image-loading-shimmer`, `.animate-zcode-alarm-ring`;
-   - data-атрибуты поведения: `data-rail-position`, `data-state`,
-     `data-zcode-stream-animate`, `data-zcode-tool-stream-animate`,
-     `data-zcode-chat-loading-animate`, `data-zcode-collapsible-animate-close`,
+   - data-атрибуты поведения: `data-rail-position`, `data-state`
+     (Radix: dialog/popover/alert-dialog), `data-active` (табы Base UI),
+     `data-checked` (свитч), `data-zcode-stream-animate`,
+     `data-zcode-tool-stream-animate`, `data-zcode-chat-loading-animate`,
+     `data-zcode-collapsible-animate-close`,
      `data-zcode-pptx-render-surface`, `data-eye-expression` (маскот).
    - хвостовые классы Tailwind (`.bg-neutral-900` и т.п.) — наименее
      стабильны: зависят от состава использованных утилит в конкретной версии.
@@ -117,7 +120,8 @@
   `artifact.tsx`, `plan.tsx`, `confirmation.tsx` (подтверждения операций —
   **не скрывать и не маскировать**, принцип 2), `checkpoint.tsx`,
   `image.tsx`, `image-thumbnail-gallery.tsx`, `attachments.tsx`,
-  `markdown-*` (blockquote/list/table/image), `mermaid-block.tsx`,
+  `markdown-*` (blockquote/list/table/image; рендерит Streamdown, блоки
+  несут `data-streamdown`), `mermaid-block.tsx`,
   `sources.tsx`, `suggestion.tsx`, `queue.tsx`, `task.tsx`, `persona.tsx`,
   `shimmer.tsx`, `chat-loading.tsx`.
 - Цветовые токены ролей: `--color-trajectory-{user,assistant,reasoning,
@@ -128,8 +132,10 @@
   `animation: none`).
 
 ### 5. Композер (ввод)
-- `components/ai-elements/prompt-input*.tsx` (`data-slot="textarea"` и
-  соседние), `prompt-editor/` (`ChatPromptEditor`, упоминания
+- 3.16.2: `FORM > div[contenteditable]` внутри `.chat-composer-region`
+  (`data-testid="v4-composer"`, `data-input-routing`), обёртка
+  `.chat-composer-input-surface`; у композера нет `data-slot="textarea"`.
+  Редактор: `prompt-editor/` (`ChatPromptEditor`, упоминания
   `.prompt-mention`), `chat-input-toolbar/` (модель, контекст, квоты
   `--color-usage*`, `--color-context-breakdown*`).
 - Меняемо: фон и рамка поля (`--color-input*`), тулбар, кнопки, метры
