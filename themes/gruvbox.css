@@ -938,3 +938,25 @@ html.theme-zai-dark diffs-container {
 html.theme-zai-light diffs-container {
   --diffs-fg: #3c3836;
 }
+
+/* 2.9 message actions. Live 3.16.2: the hover toolbar is
+ * div.flex.gap-1.mt-1.opacity-0 with group-hover/user-row and focus-within
+ * both raising it to full opacity; the buttons are
+ * button[data-slot="tooltip-trigger"][data-size="icon-sm"] whose stock classes
+ * read text-foreground hover:bg-hover hover:text-foreground. The visible part
+ * is only the 14px lucide icon (the "Copy" label is sr-only), and the icon
+ * inherits currentColor. Plan 2.9: icons recede to the muted grey at rest and
+ * come up to full foreground on hover, with no background plate — so the
+ * hover tint and the aria-expanded tint are both cancelled. The muted token is
+ * #928374: at 3.8:1 it clears the 3:1 bar for non-text UI, and these are
+ * icons, not prose. */
+[data-row-id] [data-slot="tooltip-trigger"] {
+  color: var(--color-foreground-subtlest);
+  background-color: transparent;
+}
+
+[data-row-id] [data-slot="tooltip-trigger"]:hover,
+[data-row-id] [data-slot="tooltip-trigger"][aria-expanded="true"] {
+  color: var(--color-foreground);
+  background-color: transparent;
+}
