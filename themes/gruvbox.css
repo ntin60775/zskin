@@ -633,3 +633,59 @@ aside[data-testid="chat-summary-panel"][data-display-mode="panel"] {
  *   border-bottom: none;
  * }
  */
+
+/* ===== plan 2 — transcript and markdown (docs/plans/02-transcript.md) =====
+ * Renderer facts verified against the installed 3.16.2 bundle (app.asar) and
+ * the live DOM. Markdown goes through Streamdown, but the app replaces its
+ * default node components, so only a few block types carry data-streamdown:
+ * heading-1..6, unordered-list, ordered-list, list-item, link, table,
+ * blockquote. Paragraphs and inline code are plain p/code.
+ */
+
+/* 2.1 markdown table.
+ * Live-confirmed anatomy (grep 3.16.2, offsets ~328938000):
+ *   div[data-markdown-table-frame]
+ *     > div.min-w-full
+ *       > div.rounded-xl.border          <- frame ring
+ *         > div.overflow-x-auto > table[data-streamdown="table"]
+ * Cells are th/td with a bottom border only; the table is border-separate
+ * with zero spacing, so a per-cell right+bottom border yields one 1px line
+ * between neighbours without the half-pixel clipping that border-collapse
+ * shows at the scroll edge. The frame's rounded ring is dropped so the
+ * square grid owns the outline. Chosen colour is the plan's #d5c4a1 in dark;
+ * on cream it reads at ~1.4:1, so light keeps the plan's documented
+ * compromise #7c6f64. */
+[data-streamdown="table"] {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top: 1px solid #d5c4a1;
+  border-left: 1px solid #d5c4a1;
+}
+
+[data-streamdown="table"] th,
+[data-streamdown="table"] td {
+  border-width: 0;
+  border-right: 1px solid #d5c4a1;
+  border-bottom: 1px solid #d5c4a1;
+}
+
+[data-streamdown="table"] th {
+  color: var(--color-foreground);
+  font-weight: 700;
+}
+
+[data-markdown-table-frame] > div > div:first-child {
+  border-width: 0;
+  border-radius: 0;
+}
+
+html.theme-zai-light [data-streamdown="table"] {
+  border-top-color: #7c6f64;
+  border-left-color: #7c6f64;
+}
+
+html.theme-zai-light [data-streamdown="table"] th,
+html.theme-zai-light [data-streamdown="table"] td {
+  border-right-color: #7c6f64;
+  border-bottom-color: #7c6f64;
+}
