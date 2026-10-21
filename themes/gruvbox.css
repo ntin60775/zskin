@@ -960,3 +960,34 @@ html.theme-zai-light diffs-container {
   color: var(--color-foreground);
   background-color: transparent;
 }
+
+/* 2.10 checkpoint / change summary. The block has no data-* hook of its own:
+ * in the bundle (offset ~330.436 млн) it is a Collapsible whose root carries
+ * "overflow-hidden rounded-xl border border-border bg-card shadow-none", a
+ * header div.flex.h-10 with the chevron, the "N files changed" label and the
+ * +added/-removed counters, and a ghost Undo button that opens the rewind
+ * alert-dialog. It is anchored here by :has(.text-diff-added), which only this
+ * block has inside a transcript row. Plan 2.10 wants a quiet separator rather
+ * than a card: the plate, ring, radius and shadow are dropped, a dashed
+ * #3c3836 rule is drawn above the header, and the label recedes to the
+ * contrast-safe muted grey. Hover feedback on the header stays — it is still a
+ * control. The rewind dialog itself is an alert-dialog and already covered by
+ * 1.7, so nothing is re-styled there. */
+[data-row-id] [data-slot="collapsible"]:has(.text-diff-added) {
+  background: transparent;
+  border-width: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+[data-row-id] [data-slot="collapsible"]:has(.text-diff-added) > div:first-child {
+  border-top: 1px dashed #3c3836;
+}
+
+[data-row-id] [data-slot="collapsible"]:has(.text-diff-added) > div:first-child > button > span.font-medium {
+  color: var(--zskin-text-muted);
+}
+
+html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-added) > div:first-child {
+  border-top-color: #bdae93;
+}
