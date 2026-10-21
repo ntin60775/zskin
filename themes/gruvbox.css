@@ -881,3 +881,60 @@ html.theme-zai-light [data-markdown-blockquote] {
 html.theme-zai-light [data-conversation-selectable] hr {
   border-top-color: #d5c4a1;
 }
+
+/* 2.8 code block. Anatomy from the bundle (offset ~327.186 млн):
+ * div[data-language] .group.relative.rounded-xl.bg-background plus the
+ * caller's "my-4 border border-border bg-card" wraps a header
+ * (div.px-3.py-2.text-muted-foreground with the language label and the wrap/
+ * copy buttons) and a body div.p-2.pt-0.pb-3 that hosts the pierre/diffs
+ * renderer. That renderer is a <diffs-container> custom element with an open
+ * shadow root and an adopted stylesheet, so no selector of ours crosses into
+ * it: only custom properties inherit. Its inline style pins --diffs-bg and
+ * friends to var(--color-card), so those three are re-pinned with !important
+ * at the same element; --diffs-dark/--diffs-light (the fallback text colour)
+ * and --diffs-font-family reach the shadow by inheritance.
+ *
+ * Token colouring by role (keyword/function/string…) is NOT reachable: Shiki
+ * writes the palette into inline --diffs-token-light/--diffs-token-dark on
+ * every span inside the shadow, and the app's theme is a settings-level
+ * Shiki theme (github-dark/github-light by default). The plan's role map is
+ * therefore not implementable from CSS in 3.16.2; recorded as a limitation,
+ * not silently dropped. */
+[data-language] {
+  background: var(--color-background-win-alt);
+  border-color: var(--color-border-hover);
+}
+
+[data-language] > div:first-child {
+  color: var(--zskin-text-muted);
+  border-bottom: 1px solid #504945;
+}
+
+html.theme-zai-light [data-language] > div:first-child {
+  border-bottom-color: #d5c4a1;
+}
+
+[data-language] [style*="--diffs-bg"] {
+  --diffs-bg: var(--color-background-win-alt) !important;
+  --diffs-light-bg: #fbf1c7 !important;
+  --diffs-dark-bg: #1d2021 !important;
+}
+
+[data-language],
+diffs-container {
+  --diffs-dark: #ebdbb2;
+  --diffs-light: #3c3836;
+  --diffs-font-family: var(--font-mono);
+}
+
+/* :host derives --diffs-fg with light-dark(), which follows color-scheme —
+ * on the host element that still reads as dark after a light theme switch.
+ * Pin the two branches per scheme instead so the code text never falls back
+ * to near-black on the dark plate. */
+html.theme-zai-dark diffs-container {
+  --diffs-fg: #ebdbb2;
+}
+
+html.theme-zai-light diffs-container {
+  --diffs-fg: #3c3836;
+}
