@@ -1492,6 +1492,36 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   color: var(--zskin-tool-meta);
 }
 
+/* 3.7 shell. Command plate on the terminal colour, prompt stays stock-muted,
+ * output uses the contrast-safe muted pair (the plan's #928374 is 4.0:1).
+ * The bottom fade is the app's own data-scroll-mask and is left intact.
+ * Exit code never reaches the DOM in this build — status is data-status. */
+[data-testid="execute-detail"] {
+  background: var(--color-background-win-alt);
+  border-color: var(--color-border-hover);
+}
+
+[data-testid="execute-command"] pre {
+  color: var(--color-foreground);
+}
+
+[data-testid="bash-result-output"] {
+  color: var(--zskin-text-muted);
+}
+
+/* 3.8 eval. Node REPL keeps its own surfaces (node-repl-*); the code body is
+ * the shared code viewer, so only the gutter and the result plate are
+ * recoloured here. Syntax roles stay with Shiki (same limit as 2.8). */
+[data-testid="node-repl-result-surface"] {
+  background: var(--color-background-win-alt);
+  border-color: var(--color-border-hover);
+  color: var(--zskin-text-muted);
+}
+
+[data-testid^="node-repl-"] [data-line-number-content] {
+  color: var(--zskin-tool-meta);
+}
+
 /* ===== composer popovers: width follows content =====
  * Two composer popovers ship with a hard width and clip their own labels:
  *   - the context-window popover pins !w-80 (320px) on the popover content,
