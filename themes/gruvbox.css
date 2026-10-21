@@ -1011,3 +1011,34 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
 [data-conversation-selection-action]:active {
   background-color: var(--color-selected);
 }
+
+/* 2.12 background work. The surface is not a card grid: in the bundle the
+ * items are li[data-background-task-kind][data-work-id][data-work-status]
+ * rows inside the summary panel, with a title line, a muted elapsed-time line
+ * and the status icon as svg painted text-foreground-subtle. The status enum
+ * is running | resultPending | failed | cancelled, so "status dot" from the
+ * plan becomes the row icon: activity orange while running, green once the
+ * result is waiting, red on failure, quiet grey when cancelled. Progress bars
+ * are not part of these rows; the ones elsewhere already read
+ * --color-progress-surface-foreground from step 1. No background or border is
+ * added — inventing a card here would change the panel's layout, not its
+ * palette. */
+[data-background-task-kind] > svg {
+  color: var(--zskin-text-muted);
+}
+
+[data-background-task-kind][data-work-status="running"] > svg {
+  color: var(--color-warning);
+}
+
+[data-background-task-kind][data-work-status="resultPending"] > svg {
+  color: var(--color-success);
+}
+
+[data-background-task-kind][data-work-status="failed"] > svg {
+  color: var(--color-destructive);
+}
+
+[data-background-task-kind][data-work-status="cancelled"] > svg {
+  color: var(--color-foreground-subtlest);
+}
