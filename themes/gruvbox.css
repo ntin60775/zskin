@@ -1286,3 +1286,27 @@ html.theme-zai-light diffs-container {
 [data-plan-status="inProgress"] > svg {
   color: var(--color-warning);
 }
+
+/* 2.23 goal. The goal lives in the status panel: the aside carries
+ * data-goal-status/data-goal-objective, the elapsed counter is
+ * span[data-goal-elapsed-seconds], and each iteration is
+ * div[data-goal-iteration][data-goal-iteration-completed]
+ * [data-goal-verification-outcome] with a marker, a title and an optional
+ * verification result. Plan 2.23 asks for status colours on the iterations and
+ * a quiet elapsed caption; the budget bar is the shared progress component and
+ * already reads --color-progress-surface(-foreground) from step 1. So: a
+ * completed or passed iteration reads success, a failed verification reads
+ * destructive, and the elapsed counter drops to the contrast-safe muted grey.
+ * The panel chrome and the objective title stay on their stock tokens — they
+ * are the panel's own header, not the goal's state. */
+[data-goal-iteration][data-goal-iteration-completed="true"] {
+  color: var(--color-success);
+}
+
+[data-goal-iteration][data-goal-verification-outcome="failed"] {
+  color: var(--color-destructive);
+}
+
+[data-goal-elapsed-seconds] {
+  color: var(--zskin-text-muted);
+}
