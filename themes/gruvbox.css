@@ -172,7 +172,10 @@ html.dark {
   --color-destructive-surface-foreground: #fb4934;
   --color-progress-surface: color-mix(in srgb, #83a598 16%, transparent);
   --color-progress-surface-foreground: #83a598;
-  --color-interaction-ask-surface: color-mix(in oklab, #076678 35%, #1d2021);
+  /* Ask card sits on the warm feed; the 35% faded-blue mix read as a cold
+   * slab (#253a40 measured on screen) and broke the palette. 10% brand keeps
+   * the tint warm and quiet (user call, 2026-10-22). */
+  --color-interaction-ask-surface: color-mix(in oklab, #fe8019 10%, #1d2021);
   --color-interaction-ask-foreground: #83a598;
   --color-interaction-ask-fill: color-mix(in srgb, var(--color-success) 24%, transparent);
   --color-interaction-confirmation-surface: color-mix(in srgb, var(--color-success) 16%, transparent);
@@ -283,7 +286,7 @@ html.theme-zai-light {
   --color-destructive-surface-foreground: #9d0006;
   --color-progress-surface: color-mix(in srgb, #458588 15%, transparent);
   --color-progress-surface-foreground: #076678;
-  --color-interaction-ask-surface: color-mix(in oklab, #458588 14%, #fbf1c7);
+  --color-interaction-ask-surface: color-mix(in oklab, #d65d0e 10%, #fbf1c7);
   --color-interaction-ask-foreground: #076678;
   --color-interaction-ask-fill: color-mix(in srgb, #98971a 20%, transparent);
   --color-interaction-confirmation-surface: color-mix(in oklab, #98971a 12%, #fbf1c7);
