@@ -1370,8 +1370,17 @@ html.theme-zai-dark {
   --zskin-tool-bg: #1d2021;     /* terminal plate, darker than the feed */
   --zskin-tool-title: #d5c4a1;  /* omp toolTitle */
   --zskin-tool-content: #bdae93;
-  --zskin-tool-meta: #7c6f64;   /* gutters, captions — decor only */
+  --zskin-tool-meta: #7c6f64;   /* gutters, tree rails — decor only */
   --zskin-tool-error-bg: #3c2021;
+  /* warning phase needs its own pair: --color-warning is the brand orange
+   * from step 1, so a card framed with it would be indistinguishable from a
+   * running call. Yellow is omp's warning role and the plan's 3.2 hex. */
+  --zskin-tool-warning: #fabd2f;
+  --zskin-text-warning: #fabd2f; /* 9.7:1 on the feed base */
+  /* --color-destructive #fb4934 is a 4.3:1 label on the error plate, under
+   * the text bar; the label takes a lightened twin of the same red (5.2:1),
+   * the way wave 2 introduced --zskin-text-success for fills vs text. */
+  --zskin-text-destructive: #fc6a55;
 }
 
 html.theme-zai-light {
@@ -1381,10 +1390,13 @@ html.theme-zai-light {
   --zskin-tool-content: #665c54;
   --zskin-tool-meta: #7c6f64;
   --zskin-tool-error-bg: color-mix(in oklab, #9d0006 8%, #fbf1c7);
+  --zskin-tool-warning: #b57614; /* 3.3:1 as a hairline on cream */
+  --zskin-text-warning: #8a6100; /* 4.9:1 on cream; the amber already used in 2.7 */
+  --zskin-text-destructive: #9d0006; /* 7.1:1 on the tinted error plate */
 }
 
 /* 3.2 card frame. The plan's success frame #3c3836 is invisible on the
- * #1d2021 plate (1.1:1); omp's own phase table gives dim #7c6f64 for a
+ * #1d2021 plate (1.41:1); omp's own phase table gives dim #7c6f64 for a
  * finished card, so that is what the success state uses.
  * Specificity ladder on purpose: base frame (0,2,0) < phase (0,3,0) <
  * nested reset (0,3,0, later in the sheet). A complex :not() on the base
@@ -1414,7 +1426,7 @@ html.theme-zai-light {
 [data-tool-call-id][data-status="stopped"] > [data-slot="collapsible"],
 [data-tool-call-id][data-status="paused"] > [data-slot="collapsible"],
 [data-tool-call-id][data-status="cancelled"] > [data-slot="collapsible"] {
-  border-color: var(--color-warning);
+  border-color: var(--zskin-tool-warning);
   background: transparent;
 }
 
@@ -1467,11 +1479,14 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   background: var(--zskin-text-success);
 }
 
-/* 3.1 / 3.9 agent trees. The rail is the only border-l inside a card body;
- * nested rows recede: the branch colour is the dim gutter, names drop to the
- * contrast-safe muted pair. Subagent rows also get the app's source badge
- * (border + bg-background-alt), which reads as a quiet [subagent] tag. */
-[data-tool-call-id] [data-slot="collapsible-content"] div.border-l {
+/* 3.1 / 3.9 agent trees. The rail is the only border-l drawn directly in a
+ * card body; nested rows recede: the branch colour is the dim gutter, names
+ * drop to the contrast-safe muted pair. Subagent rows also get the app's
+ * source badge (border + bg-background-alt) — a quiet [subagent] tag.
+ * The selector walks the exact chain (content > wrapper > pt-2 > rail) so it
+ * cannot repaint a markdown blockquote from 2.7 that happens to sit inside a
+ * tool output: that rail keeps its own #504945. */
+[data-tool-call-id] [data-slot="collapsible-content"] > div > div.pt-2 > div.border-l {
   border-left-color: var(--zskin-tool-meta);
 }
 
@@ -1487,8 +1502,11 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   color: var(--color-foreground);
 }
 
+/* The path caption says where the file is — meaningful text, not decor. The
+ * dim #7c6f64 measures 3.37:1 on the dark plate and 3.55:1 on the light one,
+ * so it takes the same muted pair as the shell output (5.9 / 4.75:1). */
 [data-tool-call-id] .tool-summary-content > span.truncate {
-  color: var(--zskin-tool-meta);
+  color: var(--zskin-text-muted);
 }
 
 /* 3.7 shell. Command plate on the terminal colour, prompt stays stock-muted,
@@ -1574,12 +1592,13 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
  * their signal colour. */
 [data-tool-call-id][data-status="failed"] .tool-summary-content > [data-slot="tooltip-trigger"],
 [data-tool-call-id][data-status="denied"] .tool-summary-content > [data-slot="tooltip-trigger"] {
-  color: var(--color-destructive);
+  color: var(--zskin-text-destructive);
 }
 
 [data-tool-call-id][data-status="stopped"] .tool-summary-content > [data-slot="tooltip-trigger"],
-[data-tool-call-id][data-status="paused"] .tool-summary-content > [data-slot="tooltip-trigger"] {
-  color: var(--color-warning);
+[data-tool-call-id][data-status="paused"] .tool-summary-content > [data-slot="tooltip-trigger"],
+[data-tool-call-id][data-status="cancelled"] .tool-summary-content > [data-slot="tooltip-trigger"] {
+  color: var(--zskin-text-warning);
 }
 
 /* ===== composer popovers: width follows content =====
