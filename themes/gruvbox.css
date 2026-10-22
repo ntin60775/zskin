@@ -1444,23 +1444,10 @@ html.theme-zai-light {
   background: transparent;
 }
 
-/* title (kind label). Running cards carry the animated gradient, whose
- * stock colours are the purple icon tokens — re-point them at the brand so
- * "Running" pulses orange, and leave the text clip alone. */
+/* title (kind label). The running gradient itself is the plan-4.1 shimmer
+ * below — one rule for every animated label, tool cards included. */
 [data-tool-call-id] .tool-summary-kind-label {
   color: var(--zskin-tool-title);
-}
-
-[data-tool-call-id] .tool-summary-kind-label.animated-gradient-text {
-  --animated-gradient-text-strong: var(--color-brand);
-  --animated-gradient-text-soft: color-mix(in srgb, var(--color-brand) 22%, transparent);
-}
-
-/* light brand #d65d0e measures 3.41:1 on cream — under the text bar. The
- * running label takes the darker orange already used by 2.16 (5.4:1). */
-html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradient-text {
-  --animated-gradient-text-strong: #af3a03;
-  --animated-gradient-text-soft: color-mix(in srgb, #af3a03 22%, transparent);
 }
 
 /* summary content: the de-facto intent line (command, query, filename) */
@@ -1613,6 +1600,100 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
  * card body shifts to the same tint too — the signal stays red. */
 [data-tool-call-id] [data-slot="collapsible-content"] .text-destructive {
   color: var(--zskin-text-destructive);
+}
+
+/* ===== plan 4 — live indicators (docs/plans/04-indicators.md) =====
+ * Bundle facts verified against the installed 3.16.2 app.asar:
+ *   - the chat shimmer is .animated-gradient-text: text clipped to a 300%
+ *     gradient band, 4s cycle with a 2s sweep. It runs on the reasoning
+ *     "Thinking…" label, the streaming turn marker, the permission-request
+ *     label, workflow card titles, the remote status line and running tool
+ *     kind labels. Stock paints bright text (#fff dark) with a dark notch
+ *     sweeping over it — a whole-label brightness pulse;
+ *   - data-zcode-chat-loading-animate is the ChatLoading entrance fade on
+ *     a size-4 .animate-spin wrapper — covered by the session activity
+ *     block above, nothing of its own to paint; status variants of the
+ *     spinner are carried by the existing status rules (2.12 icons, step-3
+ *     labels), the build exposes no spinner-state hook;
+ *   - FlipMetricValue / SmoothMetricValue from the join table do not exist
+ *     in this build (the only "metric-row" strings belong to an embedded
+ *     typography demo), so plan 4.4 has no target surface — recorded here,
+ *     not silently dropped.
+ */
+
+/* 4.1 shimmer as the omp "kitt" scanner: the label rests dim and a single
+ * brand head with a short muted tail sweeps left→right — no whole-label
+ * brightness pulsing. The head sits on the left edge of the band: the band
+ * travels rightwards (background-position 100%→0% over background-size
+ * 300%), so the head leads and the tail trails behind it. Stock timing is
+ * kept: its 2s sweep is ~20 cells/s on a 20-cell label, next to the plan's
+ * 30; the sweep is width-relative, a constant cells/s is not expressible
+ * in CSS alone. The custom properties leave the head re-tintable for the
+ * highspeed variant (step 6). .cua-group-gradient-text (computer-use
+ * screens) keeps its stock look — outside the plan pairs. */
+html.theme-zai-dark {
+  --zskin-shimmer-dim: #7c6f64;   /* gruvbox bg4 — resting label, 3.0:1 on #282828 (decor) */
+  --zskin-shimmer-muted: #928374; /* gruvbox gray — tail, 4.0:1 on #282828 */
+  --zskin-shimmer-head: #fe8019;  /* brand — 5.8:1 on the #282828 feed */
+}
+
+html.theme-zai-light {
+  --zskin-shimmer-dim: #bdae93;   /* faded fg on cream — resting label, 1.9:1 (decor) */
+  --zskin-shimmer-muted: #928374; /* tail, 3.2:1 on cream */
+  --zskin-shimmer-head: #af3a03;  /* 5.4:1 on cream — the 2.16 orange */
+}
+
+.animated-gradient-text {
+  /* longhands on purpose: a background shorthand here would reset the
+   * stock background-clip:text (set earlier in the cascade) to border-box
+   * and the label would render as a solid rectangle (caught by the live
+   * probe) */
+  background-image: linear-gradient(90deg,
+    var(--zskin-shimmer-dim) 0%,
+    var(--zskin-shimmer-dim) 78%,
+    var(--zskin-shimmer-head) 88%,
+    var(--zskin-shimmer-muted) 92%,
+    var(--zskin-shimmer-dim) 97%,
+    var(--zskin-shimmer-dim) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* with animation disabled the band would freeze mid-label (stock leaves a
+ * frozen bright notch): rest at a uniform dim instead */
+@media (prefers-reduced-motion: reduce) {
+  .animated-gradient-text {
+    background-image: none;
+    background-color: var(--zskin-shimmer-dim);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+}
+
+/* 4.3 progress. Anatomy (bundle, offset ~329.386 млн): root
+ * div[data-slot="progress"] — the Radix progressbar with data-state
+ * loading | complete | indeterminate — carries "h-1 … rounded-md bg-muted"
+ * and a child div[data-slot="progress-indicator"] "h-full rounded-full
+ * bg-primary" sized by inline width. Stock h-1 is already the plan's 4px
+ * and the fill is flat; the only gradient is the .zcode-update-charge-
+ * progress sweep highlight — indeterminate motion, kept. Track takes the
+ * chrome tint (--color-background-alt, the plan's #32302f), the fill goes
+ * brand and a complete bar goes success — both fills, not text (brand on
+ * the track 5.2:1 dark / 3.1:1 light, complete 6.4:1 / 2.5:1 — the light
+ * success stays a fill-only colour, same call as the 2.12 icons). The
+ * bg-transparent guard keeps the segmented variant (segments carry their
+ * own fills) unflattened. */
+[data-slot="progress"] {
+  background-color: var(--color-background-alt);
+  border-radius: 2px;
+}
+
+[data-slot="progress-indicator"]:not([class~="bg-transparent"]) {
+  background-color: var(--color-brand);
+}
+
+[data-slot="progress-indicator"][data-state="complete"] {
+  background-color: var(--color-success);
 }
 
 /* ===== composer popovers: width follows content =====
