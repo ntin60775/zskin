@@ -1601,6 +1601,13 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
   color: var(--zskin-text-warning);
 }
 
+/* The stock error body inside a card paints .text-destructive on
+ * bg-destructive/10 — 4.3:1 for the message itself. The text twin keeps the
+ * signal red and clears the bar (5.0 / 7.1:1). */
+[data-tool-call-id] [data-slot="collapsible-content"] .text-destructive {
+  color: var(--zskin-text-destructive);
+}
+
 /* ===== composer popovers: width follows content =====
  * Two composer popovers ship with a hard width and clip their own labels:
  *   - the context-window popover pins !w-80 (320px) on the popover content,
