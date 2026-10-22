@@ -1346,7 +1346,7 @@ html.theme-zai-light diffs-container {
  * Live anatomy on 3.16.2 (verified in the running client):
  *   div[data-tool-call-id][data-tool-name][data-status] .w-full
  *     > div[data-slot="collapsible"] .w-full.flex.flex-col
- *       > div[data-slot="collapsible-trigger"].tool-summary
+ *       > div[data-slot="collapsible-trigger"] (class group/tool-summary)
  *           span (icon wrapper, [&_svg]:text-foreground-subtlest)
  *           span.tool-summary-kind-label   -- "Terminal", "Read", "MCP"…
  *           div.tool-summary-content       -- command, file chip, stats, status label
@@ -1453,10 +1453,9 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
 
 /* 3.3 progress. Spinner colour and the no-glow rule live in the session
  * activity block above; the success mark the plan asks for has no glyph in
- * this build, so it is drawn as a 6px dot at the end of a finished row. */
-/* The marker sits right after the title, as omp writes "╭── • Title · (ms)":
- * the summary row itself stretches to the card width, so a trailing pseudo
- * on the trigger would land at the far edge, far from the label. */
+ * this build, so it is drawn as a 6px dot. It sits right after the title,
+ * as omp writes "╭── • Title · (ms)": the summary row stretches to the card
+ * width, so a trailing pseudo on the trigger would land at the far edge. */
 [data-tool-call-id][data-status="completed"] .tool-summary-kind-label::after {
   content: "";
   display: inline-block;
