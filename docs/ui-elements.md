@@ -300,6 +300,14 @@ html.theme-zai-light {
 | `[data-slot="hover-card-content"]` + токен `!w-80` | карточка расхода контекста в композере | Ж |
 | `[data-composer-model-list]`, `[data-composer-provider-list]` | скролл-блоки меню модели и провайдера | Ж |
 | `<diffs-container>` | pierre/diffs: shadow root, стилизуется только `--diffs-*` | Б |
+| `[data-tool-call-id][data-tool-name][data-status]` | карточка вызова; статусы `pending`, `in_progress`, `completed`, `failed`, `denied`, `stopped` | Ж |
+| `[data-testid^="tool-summary-trigger-"]`, `.tool-summary-kind-label`, `.tool-summary-content` | строка-сводка карточки: иконка, титул, контент, шеврон | Ж |
+| `div.ml-2.space-y-2.border-l.pl-3.5` внутри карточки | рейка дерева вложенных вызовов (Explore, Agent, ExecuteGroup, группы правок) | Ж |
+| `[data-testid="execute-detail"]`, `execute-command`, `bash-result-output`, `bash-output-scroll` | shell-карточка: плашка команды, вывод, фейд хвоста | Ж |
+| `[data-inline-diff-preview]`, `[data-lightweight-diff-preview]`, `[data-lightweight-diff-scroll-content]` | инлайн-дифф правки (собственный рендерер, не pierre) | Ж |
+| `[data-testid="mcp-expanded-content"]`, `mcp-result-surface`, `mcp-pending-surface`, `mcp-error-surface` | MCP-карточка: тело, результат, ожидание, ошибка | Б |
+| `[data-testid="node-repl-expanded-content"]`, `node-repl-result-surface`, `[data-node-repl-image-gallery]` | eval-карточка: код, результат, галерея изображений | Б |
+| `[data-line-number-content]` | номер строки в code-viewer (гуттер) | Б |
 
 Чего в сборке нет или что работает иначе:
 
@@ -308,6 +316,15 @@ html.theme-zai-light {
 - `.message-response` — displayName React-компонента, не класс;
 - `StackTrace` в 3.16.2 не отгружается (его классы в бандле отсутствуют);
 - тосты: слота `toast` нет, красятся токеном `--color-toast`.
+- `data-tool-status` — в сборке нет: статус карточки лежит в `data-status`;
+- `.tool-summary` — не класс, а Tailwind-группа (`group/tool-summary`);
+- у карточки вызова нет длительности (`283ms`), глифа успеха, кода выхода в
+  DOM, групп совпадений по файлам у поиска, тела вывода у WebFetch и
+  отдельного блока у CronCreate;
+- иконка типа файла в чипе — `<img>` (набор иконок приложения), не SVG:
+  цветом не красится;
+- `Sources`/`InlineCitation` монтируются только с веб-поиском, которого в
+  наборе инструментов нет.
 
 ## Обновление карты
 
