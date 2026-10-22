@@ -1376,10 +1376,12 @@ html.theme-zai-dark {
    * from step 1, so a card framed with it would be indistinguishable from a
    * running call. Yellow is omp's warning role and the plan's 3.2 hex. */
   --zskin-tool-warning: #fabd2f;
-  --zskin-text-warning: #fabd2f; /* 9.7:1 on the feed base */
-  /* --color-destructive #fb4934 is a 4.3:1 label on the error plate, under
-   * the text bar; the label takes a lightened twin of the same red (5.2:1),
-   * the way wave 2 introduced --zskin-text-success for fills vs text. */
+  --zskin-text-warning: #fabd2f; /* 8.7:1 on the #282828 feed base (9.7 on the #1d2021 plate) */
+  /* --color-destructive #fb4934 is a 4.3:1 label on the #3c2021 error plate,
+   * under the text bar; the label takes a lightened twin of the same red —
+   * 5.2:1 on that plate and on the #282828 feed base, 4.6:1 on the 10%
+   * destructive tint it paints the error body with. Wave 2 used the same
+   * fills-vs-text split for --zskin-text-success. */
   --zskin-text-destructive: #fc6a55;
 }
 
@@ -1392,7 +1394,7 @@ html.theme-zai-light {
   --zskin-tool-error-bg: color-mix(in oklab, #9d0006 8%, #fbf1c7);
   --zskin-tool-warning: #b57614; /* 3.3:1 as a hairline on cream */
   --zskin-text-warning: #8a6100; /* 4.9:1 on cream; the amber already used in 2.7 */
-  --zskin-text-destructive: #9d0006; /* 7.1:1 on the tinted error plate */
+  --zskin-text-destructive: #9d0006; /* 6.3:1 on the 10% destructive tint over cream, 7.6:1 on cream */
 }
 
 /* 3.2 card frame. The plan's success frame #3c3836 is invisible on the
@@ -1603,7 +1605,9 @@ html.theme-zai-light [data-tool-call-id] .tool-summary-kind-label.animated-gradi
 
 /* The stock error body inside a card paints .text-destructive on
  * bg-destructive/10 — 4.3:1 for the message itself. The text twin keeps the
- * signal red and clears the bar (5.0 / 7.1:1). */
+ * signal red and clears the bar: 4.6:1 on that 10% tint in dark, 6.3:1 in
+ * light. The rule is class-based, so an svg carrying text-destructive in a
+ * card body shifts to the same tint too — the signal stays red. */
 [data-tool-call-id] [data-slot="collapsible-content"] .text-destructive {
   color: var(--zskin-text-destructive);
 }
