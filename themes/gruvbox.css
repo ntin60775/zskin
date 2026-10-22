@@ -1101,32 +1101,71 @@ html.theme-zai-light [data-row-id] [data-slot="collapsible"]:has(.text-diff-adde
  * a body div[data-elicitation-dialog-body] holding a role="listbox" (or
  * "group" for multi-select) of option rows "flex w-full items-center gap-3
  * rounded-xl px-3 py-2" that paint bg-selected / bg-hover / hover:bg-hover,
- * and a footer div[data-elicitation-dialog-footer]. Plan 2.15 wants the warm
- * ask tint, rails on the options and a brand-selected row. The card takes
- * --color-interaction-ask-surface and the hover border; option rows get a 1px
- * rail; a selected row (the app's own bg-selected utility) gets a brand rail
- * and keeps its stock fill. The amber title from the plan is not reachable:
- * the question is a plain span.text-foreground with no hook of its own, and
- * colouring every .text-foreground inside the card would repaint the options
- * too — the brand accent is carried by the selected row instead. Visibility
+ * and a footer div[data-elicitation-dialog-footer] whose pair is a
+ * data-variant="outline" Dismiss and a Submit painted bg-brand.
+ *
+ * The design is the user-approved mock mix (2026-10-22, iterated over three
+ * variants in a visual carousel): the warm tint tried in 8841eca is gone —
+ * the card sits on the plate (--color-background-win-alt, the surface of the
+ * user bubble and code blocks) and the "active card" role is carried by a
+ * 2px brand frame, the tool-card language. Four accents, one per role, all
+ * from the same ramp: frame brand, selected-row rail aqua (the user colour
+ * of the feed), Submit green (the --color-success role), Dismiss quiet grey.
+ * Option rows are borderless — the 1px frames of the first pass are gone;
+ * a selected row keeps the app's bg-selected fill and takes the rail as an
+ * inset box-shadow (the stock border-box would offset it). Contrast from
+ * actual surfaces: submit text 7.9:1 dark / 5.0:1 light on its fill,
+ * dismiss text 6.4:1 / 5.3:1, frame 6.5:1 on the dark plate. Visibility
  * and behaviour are untouched. */
 [data-elicitation-dialog-card] {
-  background: var(--color-interaction-ask-surface);
-  border-color: var(--color-border-hover);
-}
-
-[data-elicitation-dialog-body] [role="listbox"] > *,
-[data-elicitation-dialog-body] [role="group"] > * {
-  border: 1px solid var(--color-border-hover);
+  background: var(--color-background-win-alt);
+  border-color: var(--color-brand);
+  border-width: 2px;
 }
 
 [data-elicitation-dialog-body] [role="listbox"] > [class~="bg-selected"],
 [data-elicitation-dialog-body] [role="group"] > [class~="bg-selected"] {
-  border-color: var(--color-brand);
+  box-shadow: inset 2px 0 0 var(--zskin-ask-rail);
 }
 
 [data-elicitation-countdown-seconds] {
   color: var(--zskin-text-muted);
+}
+
+html.theme-zai-dark {
+  --zskin-ask-rail: #83a598;        /* aqua — rail of the selected option */
+  --zskin-ask-submit: #b8bb26;      /* green confirm, ink text 7.9:1 */
+  --zskin-ask-submit-hover: #d0d426;
+  --zskin-ask-dismiss: #504945;     /* quiet grey, cream text 6.4:1 */
+  --zskin-ask-dismiss-hover: #665c54;
+}
+
+html.theme-zai-light {
+  --zskin-ask-rail: #458588;
+  --zskin-ask-submit: #6b6a00;      /* the text-success olive, cream text 5.0:1 */
+  --zskin-ask-submit-hover: #5e5d00;
+  --zskin-ask-dismiss: #bdae93;     /* charcoal text 5.3:1 */
+  --zskin-ask-dismiss-hover: #d5c4a1;
+}
+
+[data-elicitation-dialog-footer] [data-slot="button"][class~="bg-brand"] {
+  background-color: var(--zskin-ask-submit);
+  color: var(--color-foreground-inverse);
+}
+
+[data-elicitation-dialog-footer] [data-slot="button"][class~="bg-brand"]:hover {
+  background-color: var(--zskin-ask-submit-hover);
+}
+
+[data-elicitation-dialog-footer] [data-slot="button"][data-variant="outline"] {
+  background-color: var(--zskin-ask-dismiss);
+  border-color: var(--zskin-ask-dismiss);
+  color: var(--color-foreground);
+}
+
+[data-elicitation-dialog-footer] [data-slot="button"][data-variant="outline"]:hover {
+  background-color: var(--zskin-ask-dismiss-hover);
+  border-color: var(--zskin-ask-dismiss-hover);
 }
 
 /* 2.16 confirmation. Bundle (~332.710 млн): the confirmation dialog content
