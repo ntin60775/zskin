@@ -1771,3 +1771,43 @@ html.theme-zai-light {
 [data-slot="dropdown-menu-content"]:has([data-composer-provider-list]) .truncate {
   max-width: none;
 }
+
+/* ===== plan 5 — composer palette (start, design approved 2026-10-22) =====
+ * The approved composer look: frame in the "active card" language (the same
+ * 2px brand rim as the ask card) and a readable context ring. The approved
+ * status footer — context ring with the window size in its centre, thicker
+ * 5h/week limit bars, a "cache hit" chip — has no DOM in 3.16.2: the
+ * composer renders only the ring trigger; limits and cache live in the right
+ * usage panel, and the context numbers exist as one raw aria-label string
+ * ("Context usage 98,774 of 1,000,000"). The footer is recorded in
+ * docs/plans/05-composer.md as an upstream request; nothing of it is faked
+ * here. Literals in the mock do not ship until the app renders them.
+ */
+[data-composer-layout] {
+  border-width: 2px;
+  border-color: var(--color-brand);
+}
+
+/* stock hover paints border-input-border-hover on the same element (0,2,0
+ * beats the plain attribute selector), so the rim is re-pinned on hover */
+[data-composer-layout]:hover {
+  border-color: var(--color-brand);
+}
+
+/* context ring. The stock trigger draws usage as an SVG arc with an inline
+ * stroke-dashoffset (14px icon, grey on grey, track at 0.25 opacity). It
+ * grows to 22px and splits into a visible grey track and a brand arc; the
+ * percentage stays in the geometry — the centre label needs upstream. */
+[data-testid="chat-context-usage-trigger"] svg {
+  width: 22px;
+  height: 22px;
+}
+
+[data-testid="chat-context-usage-trigger"] svg circle[opacity="0.25"] {
+  stroke: var(--color-border-hover);
+  opacity: 0.9;
+}
+
+[data-testid="chat-context-usage-trigger"] svg circle:not([opacity="0.25"]) {
+  stroke: var(--color-brand);
+}
