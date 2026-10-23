@@ -1,0 +1,167 @@
+<div id="ring-seg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+#ring-seg {
+  --z-feed: #282828;
+  --z-plate: #1d2021;
+  --z-surface: #32302f;
+  --z-hover: #3c3836;
+  --z-border: #3c3836;
+  --z-border2: #504945;
+  --z-fg: #ebdbb2;
+  --z-subtle: #bdae93;
+  --z-muted: #a89984;
+  --z-dim: #928374;
+  --z-brand: #fe8019;
+  --z-green: #b8bb26;
+  --z-red: #fb4934;
+  --z-aqua: #83a598;
+  --z-purple: #d3869b;
+  --z-ink: #1d2021;
+  font-family: "JetBrains Mono", "JetBrainsMono NFM", ui-monospace, monospace;
+}
+#ring-seg .zfeed {
+  background: var(--z-feed);
+  border-radius: 12px;
+  padding: 18px 16px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+#ring-seg .zc {
+  border-radius: 16px;
+  padding: 10px 12px 8px;
+  background: var(--z-plate);
+  border: 2px solid var(--z-brand);
+}
+#ring-seg .zinput {
+  min-height: 40px;
+  padding: 2px 6px 8px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--z-fg);
+  outline: none;
+  caret-color: var(--z-brand);
+  overflow-wrap: anywhere;
+}
+#ring-seg .zbar { display: flex; align-items: center; gap: 6px; }
+#ring-seg .zspacer { flex: 1; }
+#ring-seg .zpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--z-subtle);
+  background: var(--z-surface);
+  border: 1px solid var(--z-border);
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+#ring-seg .zadd { background: transparent; border: none; }
+#ring-seg .zpill i, #ring-seg .zsend i { width: 14px; height: 14px; }
+#ring-seg .zsend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: var(--z-green);
+  color: var(--z-ink);
+}
+#ring-seg .zsend .ic-stop { display: none; }
+#ring-seg .zsend.stop { background: var(--z-red); }
+#ring-seg .zsend.stop .ic-up { display: none; }
+#ring-seg .zsend.stop .ic-stop { display: block; }
+
+/* подвал статуса */
+#ring-seg .zstatus {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 7px;
+  padding: 9px 6px 2px;
+  border-top: 1px solid var(--z-border);
+  font-size: 12.5px;
+  color: var(--z-dim);
+}
+#ring-seg .zring { display: inline-flex; flex: none; }
+#ring-seg .zring svg { display: block; }
+#ring-seg .zlimit { display: inline-flex; align-items: center; gap: 8px; flex: none; font-size: 14px; }
+#ring-seg .zlname { color: var(--z-muted); }
+#ring-seg .zlval { color: var(--z-fg); }
+#ring-seg .zbar-mini {
+  width: 64px; height: 7px;
+  border-radius: 4px;
+  background: var(--z-border2);
+  overflow: hidden;
+}
+#ring-seg .zbar-mini > span {
+  display: block; height: 100%;
+  border-radius: 4px;
+  background: var(--z-brand);
+}
+#ring-seg .zlimit.b5h .zbar-mini > span { background: var(--z-aqua); }
+#ring-seg .zlimit.bwk .zbar-mini > span { background: var(--z-purple); }
+#ring-seg .zcache {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--z-surface);
+  border: 1px solid var(--z-border);
+  font-size: 13px;
+  color: var(--z-dim);
+}
+#ring-seg .zcache b { color: var(--z-fg); font-weight: 500; }
+</style>
+
+<div class="zfeed">
+  <div class="zc">
+    <div class="zinput" contenteditable="true" data-placeholder="Ask for follow-up changes">Покажи прогресс по тикету 04</div>
+    <div class="zbar">
+      <button type="button" class="zpill zadd" aria-label="Добавить"><i data-lucide="plus"></i></button>
+      <button type="button" class="zpill"><i data-lucide="shield"></i>Full access<i data-lucide="chevron-down"></i></button>
+      <span class="zspacer"></span>
+      <button type="button" class="zpill"><i data-lucide="sparkles"></i>GLM-5.3-Flash Max<i data-lucide="chevron-down"></i></button>
+      <button type="button" class="zsend" aria-label="Отправить"><i data-lucide="arrow-up" class="ic-up"></i><i data-lucide="square" class="ic-stop"></i></button>
+    </div>
+    <div class="zstatus" role="status">
+      <span class="zring">
+        <svg viewBox="0 0 36 36" width="36" height="36" role="img" aria-label="Контекст: 30 процентов из 1M, 3 из 10 сегментов">
+          <g transform="rotate(-90 18 18)">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#fe8019" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-0.0"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#fe8019" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-8.8"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#fe8019" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-17.59"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-26.39"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-35.18"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-43.98"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-52.78"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-61.57"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-70.37"></circle>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#504945" stroke-width="6" stroke-dasharray="6 81.96" stroke-dashoffset="-79.16"></circle>
+          </g>
+          <text x="18" y="21" text-anchor="middle" font-size="9.5" font-weight="500" fill="#ebdbb2" font-family="'JetBrains Mono', monospace">1M</text>
+        </svg>
+      </span>
+      <span class="zspacer"></span>
+      <span class="zlimit b5h"><span class="zlname">5h</span><span class="zbar-mini"><span style="width:62%"></span></span><span class="zlval">62%</span></span>
+      <span class="zlimit bwk"><span class="zlname">week</span><span class="zbar-mini"><span style="width:38%"></span></span><span class="zlval">38%</span></span>
+      <span class="zspacer"></span>
+      <span class="zcache"><span>cache hit</span><b>87%</b></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById("ring-seg");
+  root.addEventListener("click", (e) => {
+    const send = e.target.closest(".zsend");
+    if (send) send.classList.toggle("stop");
+  });
+})();
+</script>
+</div>
