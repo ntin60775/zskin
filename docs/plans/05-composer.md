@@ -83,9 +83,9 @@ hover переприбит (стоковый `hover:border-input-border-hover` �
 
 Скриншоты концепта (сняты в живом клиенте на иконках приложения):
 
-![Композер с подвалом статуса](mockups/composer-statusline-v1-dark.png)
+![Композер с подвалом статуса](../mockups/composer-statusline-v1-dark.png)
 
-![Подвал статуса крупно](mockups/composer-statusline-v1-footer.png)
+![Подвал статуса крупно](../mockups/composer-statusline-v1-footer.png)
 
 **Что уже в теме (`32c23c5`):** рамка `[data-composer-layout]` 2px бренда
 (hover переприбит) и кольцо `chat-context-usage-trigger` 22px с треком
