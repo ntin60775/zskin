@@ -1879,17 +1879,18 @@ html.theme-zai-light {
   color: var(--zskin-composer-disabled-icon);
 }
 
-/* stop: the red fill fought the brand frame (user call, 2026-10-24) — the
- * signal lives on the glyph instead: transparent button, destructive icon,
- * destructive-surface tint on hover. Icon on the #1d2021 plate = 4.3:1
- * (UI glyph bar is 3:1); light icon #9d0006 on cream = 7.6:1. */
+/* stop: between the two rejected takes (2026-10-24) — the full red fill
+ * fought the brand frame, the bare glyph floated without a plate. The
+ * settled look is the error-card language of step 3: a quiet
+ * destructive-surface plate with a red glyph. Icon = the destructive text
+ * twin (4.6:1 on the tint, light 6.3:1); hover deepens the tint to 24%. */
 [data-testid="v4-stop"] {
-  background-color: transparent;
-  color: var(--color-destructive);
+  background-color: var(--color-destructive-surface);
+  color: var(--zskin-text-destructive);
 }
 
 [data-testid="v4-stop"]:hover {
-  background-color: var(--color-destructive-surface);
+  background-color: color-mix(in srgb, var(--color-destructive) 24%, transparent);
   color: var(--zskin-text-destructive);
 }
 
