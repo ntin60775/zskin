@@ -1879,13 +1879,18 @@ html.theme-zai-light {
   color: var(--zskin-composer-disabled-icon);
 }
 
+/* stop: the red fill fought the brand frame (user call, 2026-10-24) — the
+ * signal lives on the glyph instead: transparent button, destructive icon,
+ * destructive-surface tint on hover. Icon on the #1d2021 plate = 4.3:1
+ * (UI glyph bar is 3:1); light icon #9d0006 on cream = 7.6:1. */
 [data-testid="v4-stop"] {
-  background-color: var(--color-destructive);
-  color: var(--color-foreground-inverse);
+  background-color: transparent;
+  color: var(--color-destructive);
 }
 
 [data-testid="v4-stop"]:hover {
-  background-color: color-mix(in oklab, var(--color-destructive) 82%, var(--color-foreground-inverse));
+  background-color: var(--color-destructive-surface);
+  color: var(--zskin-text-destructive);
 }
 
 html.theme-zai-dark {
