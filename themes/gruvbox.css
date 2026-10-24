@@ -1811,3 +1811,221 @@ html.theme-zai-light {
 [data-testid="chat-context-usage-trigger"] svg circle:not([opacity="0.25"]) {
   stroke: var(--color-brand);
 }
+
+/* 5.1 toolbar. The plan's palette for the composer column itself is already
+ * token-driven (--color-input* carry the #1d2021 plate and the #504945 rim;
+ * the 2px brand frame above is the approved active-card language). What the
+ * tokens do not express is the toolbar text: stock paints the ghost buttons
+ * text-foreground (#ebdbb2); omp quiets the toolbar to the subtle grey.
+ * The context trigger keeps its stock text-success quota semaphore — a quota
+ * indicator is excluded from recolouring by the plan's own boundaries. The
+ * stock hover:text-foreground utility loses to our unlayered base rule, so
+ * the hover lift is re-stated here (layer rules, docs/plans/05-composer.md).
+ * The v4-* action buttons (send / queue-send / stop) carry their own fills
+ * from 5.3 and are excluded here: this rule's (0,2,1) specificity would
+ * otherwise win their icon colour.
+ * Contrast on the #1d2021 plate: #bdae93 = 7.53:1; light #665c54 on the
+ * #fbf1c7 input = 5.74:1. */
+[data-composer-leading-actions] button:not([data-testid="chat-context-usage-trigger"]):not([data-testid^="v4-"]),
+[data-composer-trailing-actions] button:not([data-testid="chat-context-usage-trigger"]):not([data-testid^="v4-"]) {
+  color: var(--color-foreground-subtle);
+}
+
+[data-composer-leading-actions] button:not([data-testid="chat-context-usage-trigger"]):not([data-testid^="v4-"]):hover,
+[data-composer-trailing-actions] button:not([data-testid="chat-context-usage-trigger"]):not([data-testid^="v4-"]):hover {
+  color: var(--color-foreground);
+}
+
+/* 5.2 editor. Text colour and selection are token-driven already (the
+ * contenteditable carries text-foreground; ::selection is the global pair).
+ * What remains is the caret: stock keeps the UA default while omp paints
+ * cursors in the accent colour. The placeholder has no DOM hook in 3.16.2
+ * (only aria-placeholder on the contenteditable; no placeholder element
+ * mounts while a task is streaming) — the stock placeholder styling, when it
+ * mounts, already reads --color-foreground-subtlest, the plan's #928374. */
+[data-testid="v4-composer-input"] {
+  caret-color: var(--color-brand);
+}
+
+/* 5.3 send and stop. The approved mock: send = the confirm green of the ask
+ * card (same "submit" role, same pair), stop = destructive red. The send
+ * button has no dedicated hook in the bundle; its testids are the constant
+ * table QRe/$Re/eze = v4-composer-send / -clear-queue-send /
+ * -keep-queue-send (app.asar), mounted idle or with queued items — the stop
+ * twin v4-stop is live-confirmed (mounted while a task runs). Icon/label on
+ * the fill uses the inverse pair: ink #1d2021 on green #b8bb26 = 7.94:1,
+ * cream on light olive #6b6a00 = 5.02:1; ink on red #fb4934 = 4.77:1, cream
+ * on #9d0006 = 7.60:1. Disabled: surface fill, quiet icon. Stock
+ * hover:bg-secondary/80 loses to the unlayered rules below, so hover is
+ * restated: send takes the ask-submit hover twin, stop fades toward the
+ * inverse ink (each scheme toward its own base). */
+[data-testid="v4-composer-send"],
+[data-testid="v4-composer-clear-queue-send"],
+[data-testid="v4-composer-keep-queue-send"] {
+  background-color: var(--zskin-ask-submit);
+  color: var(--color-foreground-inverse);
+}
+
+[data-testid="v4-composer-send"]:hover,
+[data-testid="v4-composer-clear-queue-send"]:hover,
+[data-testid="v4-composer-keep-queue-send"]:hover {
+  background-color: var(--zskin-ask-submit-hover);
+}
+
+[data-testid="v4-composer-send"]:disabled,
+[data-testid="v4-composer-clear-queue-send"]:disabled,
+[data-testid="v4-composer-keep-queue-send"]:disabled {
+  background-color: var(--color-surface);
+  color: var(--zskin-composer-disabled-icon);
+}
+
+[data-testid="v4-stop"] {
+  background-color: var(--color-destructive);
+  color: var(--color-foreground-inverse);
+}
+
+[data-testid="v4-stop"]:hover {
+  background-color: color-mix(in oklab, var(--color-destructive) 82%, var(--color-foreground-inverse));
+}
+
+html.theme-zai-dark {
+  --zskin-composer-disabled-icon: #7c6f64; /* gruvbox bg4 — disabled glyph on #32302f */
+}
+
+html.theme-zai-light {
+  --zskin-composer-disabled-icon: #bdae93;
+}
+
+/* 5.4/5.5/5.6/5.7 composer menus. The model, provider, mode and thought
+ * menus are dropdown menus whose items already sit on theme tokens
+ * (bg-menu, bg-menu-hover on data-highlighted). 3.16.2 fact: the mode and
+ * thought "segments" of the plan do not exist — both render as dropdown
+ * radio-groups (chat-mode-select-item-*, chat-thought-level-select-*; the
+ * mode trigger itself is chat-mode-select-trigger). The selected row gets
+ * the selected fill (--color-selected #3c3836, text #ebdbb2 = 8.45:1; light
+ * #d5c4a1/#3c3836 = 6.76:1) and keeps the menu-hover tint when highlighted
+ * (stock bg-menu-hover loses to the unlayered base rule, so the highlighted
+ * twin is restated). Provider status dots are painted by stock
+ * text-success/text-warning — already on theme tokens. */
+[data-slot="dropdown-menu-content"]:has([data-composer-model-list]) [data-slot="dropdown-menu-radio-item"][data-checked],
+[data-slot="dropdown-menu-content"]:has([data-composer-provider-list]) [data-slot="dropdown-menu-radio-item"][data-checked],
+[data-slot="dropdown-menu-content"]:has([data-testid^="chat-mode-select-item"]) [data-slot="dropdown-menu-radio-item"][data-checked],
+[data-slot="dropdown-menu-content"]:has([data-testid^="chat-thought-level-select-item"]) [data-slot="dropdown-menu-radio-item"][data-checked] {
+  background-color: var(--color-selected);
+}
+
+[data-slot="dropdown-menu-content"]:has([data-composer-model-list]) [data-slot="dropdown-menu-radio-item"][data-checked][data-highlighted],
+[data-slot="dropdown-menu-content"]:has([data-composer-provider-list]) [data-slot="dropdown-menu-radio-item"][data-checked][data-highlighted],
+[data-slot="dropdown-menu-content"]:has([data-testid^="chat-mode-select-item"]) [data-slot="dropdown-menu-radio-item"][data-checked][data-highlighted],
+[data-slot="dropdown-menu-content"]:has([data-testid^="chat-thought-level-select-item"]) [data-slot="dropdown-menu-radio-item"][data-checked][data-highlighted] {
+  background-color: var(--color-menu-hover);
+}
+
+/* 5.4 model metadata. Capability chips ("Vision") recede from stock
+ * text-foreground-subtle to the contrast-safe muted pair: #a89984 on the
+ * #32302f chip fill = 4.72:1; light #665c54 on #f2e5bc = 5.18:1. The menu
+ * section label (account line) takes the same pair — hypothesis: the label
+ * slot mounts with the menu but its content was not seen live. */
+[data-composer-model-list] [data-model-input-capability],
+[data-slot="dropdown-menu-content"]:has([data-composer-model-list]) [data-slot="dropdown-menu-label"] {
+  color: var(--zskin-text-muted);
+}
+
+/* 5.6 thought level. The control mounts as a toolbar select trigger
+ * (chat-thought-level-select-trigger, bundle-confirmed; not mounted while a
+ * task streams). The level text takes the brand accent per the plan: dark
+ * #fe8019 on the #1d2021 plate = 5.8:1; light uses the darker brand
+ * #af3a03 (#d65d0e on cream is 3.08:1) = 5.40:1 on the #fbf1c7 input. The
+ * trigger lives inside the trailing actions, so this rule must stay after
+ * the 5.1 toolbar block. */
+[data-testid="chat-thought-level-select-trigger"] {
+  color: var(--color-brand);
+}
+
+html.theme-zai-light [data-testid="chat-thought-level-select-trigger"] {
+  color: #af3a03;
+}
+
+/* 5.8 context usage. Live anatomy (hover card opened via CDP): the card
+ * mounts as [data-slot="hover-card-content"][class~="!w-80"] with a bg-menu
+ * body; the usage scale is a segmented progress (data-slot="progress" with a
+ * bg-transparent indicator whose segments carry inline
+ * --color-usage-chart-* fills — already the theme ramp), source rows read
+ * text-foreground-subtle with mono percentages. All of it is token-driven,
+ * so no new rule is needed for the scale itself. What mounts only near a
+ * quota reset is the reminder (data-context-reset-reminder, not mounted at
+ * probe time) — its copy takes the warning text pair: #fabd2f on the #1d2021
+ * card = 9.67:1, light #8a6100 on cream = 4.88:1. Severity beyond "warning"
+ * (critical red) has no hook in the bundle — checked when it mounts. */
+[data-context-reset-reminder] {
+  color: var(--zskin-text-warning);
+}
+
+/* 5.10 attachment chips. Hooks confirmed in the bundle
+ * (data-composer-attachment-kind / -remove); the chip row does not mount
+ * without attachments, so the rule is bundle-hypothesis, palette-only:
+ * surface fill, border token, subtle label (plan: #32302f / #3c3836 /
+ * #bdae93). Contrast: #bdae93 on #32302f = 6.03:1; light #665c54 on
+ * #f2e5bc = 5.18:1. Remove glyph turns destructive on hover. */
+[data-composer-attachment-kind] {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-foreground-subtle);
+}
+
+[data-composer-attachment-remove]:hover {
+  color: var(--color-destructive);
+}
+
+/* 5.12 message queue. Bundle hooks: data-queue-item-id / -count /
+ * -auto-drain; rows do not mount without queued messages. Palette only:
+ * quiet surface fill, selected tint on hover. The plan's "number in brand"
+ * has no dedicated hook in the row (no numeral element is identifiable from
+ * the bundle) — dropped to a plan note, not faked. */
+[data-queue-item-id] {
+  background-color: var(--color-surface);
+}
+
+[data-queue-item-id]:hover {
+  background-color: var(--color-selected);
+}
+
+/* 5.13 mention chip. .prompt-mention confirmed in the bundle (6 hits): the
+ * inline @-chip takes the surface fill with the popover-border hairline
+ * (plan: #32302f / #504945 / #ebdbb2 = 9.57:1; light #3c3836 on #f2e5bc =
+ * 6.76:1). */
+.prompt-mention {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-hover);
+  color: var(--color-foreground);
+}
+
+/* 5.13/5.14/5.15 mention, slash and history panels are cmdk command lists
+ * (data-slot="command-item", bundle-confirmed for the composer panels).
+ * Their chrome (bg-popover, borders) is token-driven from step 1; the
+ * selected row gets the shared selected fill — the same rule the command
+ * palette picks up, which keeps one "selected" language app-wide. */
+[data-slot="command-item"][data-selected="true"] {
+  background-color: var(--color-selected);
+}
+
+/* 5.16 suggested prompts. 3.16.2 fact: the plan's "suggested-prompt*"
+ * classes do not exist; the draft suggestions mount as
+ * [data-v4-draft-suggested-prompts] with two layouts — list rows (plain
+ * hover:bg-hover buttons, already token-driven) and a chip waterfall keyed
+ * by [data-v4-draft-suggested-prompts-group] with
+ * [data-draft-suggested-prompt] outline buttons. Chips take the plan's
+ * palette: surface fill, border token, subtle label that lifts to full
+ * foreground on hover. Contrast: #bdae93 on #32302f = 6.03:1, hover
+ * #ebdbb2 on #3c3836 = 8.45:1; light #665c54 on #f2e5bc = 5.18:1, hover
+ * #3c3836 on #d5c4a1 = 6.76:1. */
+[data-v4-draft-suggested-prompts-group] [data-draft-suggested-prompt] {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-foreground-subtle);
+}
+
+[data-v4-draft-suggested-prompts-group] [data-draft-suggested-prompt]:hover {
+  background-color: var(--color-selected);
+  color: var(--color-foreground);
+}
