@@ -60,8 +60,13 @@ computer-use, строка `voice:` — из встроенных схем-пр
 disabled-отправка живьём на пустом вводе (surface + тихая иконка),
 выбранная строка меню модели на `--color-selected`, чип Vision и label
 аккаунта на muted-паре, кольцо и рамка не сломаны; скриншоты обеих
-схем просмотрены (сессия, `z5-dark-composer` / `z5-dark-model-menu` /
-`z5-light-composer` в /tmp).
+схем просмотрены:
+
+![Композер, тёмная схема — тулбар, кольцо, disabled-отправка](../mockups/z5-dark-composer.png)
+
+![Меню модели — выбранная строка на selected, чип Vision приглушён](../mockups/z5-dark-model-menu.png)
+
+![Композер, светлая схема](../mockups/z5-light-composer.png)
 
 Разведка шага переписана фактом:
 
