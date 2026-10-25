@@ -67,6 +67,7 @@ def wait_debug_port(port: int, timeout: float) -> None:
 
 
 def pick_page_target(port: int) -> dict:
+    """One-shot lookup of the first injectable page target."""
     targets = http_json(port, "/json/list")
     pages = [t for t in targets
              if t.get("type") == "page" and not t.get("url", "").startswith("devtools:")]
@@ -156,19 +157,41 @@ class WsClient:
 
 
 def inject_css(port: int, css: str) -> None:
-    target = pick_page_target(port)
-    ws_url = target["webSocketDebuggerUrl"]
-    rest = ws_url.split("://", 1)[1]
-    host, rest = rest.split(":", 1)
-    port_ws, path = rest.split("/", 1)
-    ws = WsClient(host, int(port_ws), "/" + path)
-    expression = INJECT_JS % json.dumps(css)
-    result = ws.call("Runtime.evaluate",
-                     {"expression": expression, "returnByValue": True})
-    if result.get("result", {}).get("value") != STYLE_ID:
-        raise RuntimeError(f"unexpected inject result: {result}")
-    print(f"zskin: injected {len(css)} bytes of CSS into "
-          f"{target.get('url', '?')[:80]}")
+    """Inject with retries until the renderer DOM is ready.
+
+    On Electron 41 cold starts the page target appears in two steps: the
+    target itself registers first (so /json/list answers), the document
+    comes later (document.head is null for a while -> appendChild TypeError).
+    The target may also be replaced mid-startup, so every attempt re-picks
+    it; a healthy running client succeeds on the first attempt.
+    """
+    deadline = time.monotonic() + WAIT_TIMEOUT
+    last_err = None
+    while True:
+        ws = None
+        try:
+            target = pick_page_target(port)
+            ws_url = target["webSocketDebuggerUrl"]
+            rest = ws_url.split("://", 1)[1]
+            host, rest = rest.split(":", 1)
+            port_ws, path = rest.split("/", 1)
+            ws = WsClient(host, int(port_ws), "/" + path)
+            expression = INJECT_JS % json.dumps(css)
+            result = ws.call("Runtime.evaluate",
+                             {"expression": expression, "returnByValue": True})
+            if result.get("result", {}).get("value") != STYLE_ID:
+                raise RuntimeError(f"unexpected inject result: {result}")
+            print(f"zskin: injected {len(css)} bytes of CSS into "
+                  f"{target.get('url', '?')[:80]}")
+            return
+        except (OSError, KeyError, RuntimeError) as e:
+            last_err = e
+        finally:
+            if ws is not None:
+                ws.s.close()
+        if time.monotonic() >= deadline:
+            raise last_err
+        time.sleep(0.5)
 
 
 def cmd_run(args) -> int:
@@ -180,8 +203,6 @@ def cmd_run(args) -> int:
     print(f"zskin: launched {args.bin} (pid {proc.pid}), "
           f"debug port {args.port}")
     wait_debug_port(args.port, WAIT_TIMEOUT)
-    # The first window may appear slightly after the port answers.
-    time.sleep(3)
     inject_css(args.port, css)
     return 0
 

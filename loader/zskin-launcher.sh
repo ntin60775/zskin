@@ -38,12 +38,15 @@ if client_running; then
 fi
 
 echo "$(date '+%F %T') launching: zskin.py run --theme $THEME" >>"$LOG_FILE"
-if out="$(python3 "$LOADER" run --theme "$THEME" 2>&1)"; then
+# An if without else resets $? to 0 when its condition fails, so capture the
+# status from the assignment itself.
+out="$(python3 "$LOADER" run --theme "$THEME" 2>&1)"
+rc=$?
+if [ "$rc" -eq 0 ]; then
     printf '%s %s\n' "$(date '+%F %T')" "$out" >>"$LOG_FILE"
     exit 0
 fi
 
-rc=$?
 printf '%s FAILED rc=%s\n%s\n\n' "$(date '+%F %T')" "$rc" "$out" >>"$LOG_FILE"
 notify "zskin: не удалось запустить" \
     "$(printf '%s\n' "$out" | tail -n 2) — подробности: $LOG_FILE"
