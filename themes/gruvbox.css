@@ -1879,18 +1879,21 @@ html.theme-zai-light {
   color: var(--zskin-composer-disabled-icon);
 }
 
-/* stop: between the two rejected takes (2026-10-24) — the full red fill
- * fought the brand frame, the bare glyph floated without a plate. The
- * settled look is the error-card language of step 3: a quiet
- * destructive-surface plate with a red glyph. Icon = the destructive text
- * twin (4.6:1 on the tint, light 6.3:1); hover deepens the tint to 24%. */
+/* stop: third take (2026-10-24) — the 16% tint plate read as a broken,
+ * low-contrast frame (user call). The button gets a real frame instead:
+ * 1px destructive outline (the stock border is border-transparent, so the
+ * colour drops in without layout shift), transparent middle, red glyph —
+ * visible without the screaming fill. Border #fb4934 on the #1d2021 plate
+ * = 4.3:1 (UI bar 3:1), glyph 5.2:1; light border/glyph #9d0006 on cream.
+ * Hover pours the destructive tint inside the outline. */
 [data-testid="v4-stop"] {
-  background-color: var(--color-destructive-surface);
+  background-color: transparent;
+  border-color: var(--color-destructive);
   color: var(--zskin-text-destructive);
 }
 
 [data-testid="v4-stop"]:hover {
-  background-color: color-mix(in srgb, var(--color-destructive) 24%, transparent);
+  background-color: var(--color-destructive-surface);
   color: var(--zskin-text-destructive);
 }
 
