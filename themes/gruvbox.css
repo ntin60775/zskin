@@ -1881,14 +1881,16 @@ html.theme-zai-light {
 
 /* stop: third take (2026-10-24) — the 16% tint plate read as a broken,
  * low-contrast frame (user call). The button gets a real frame instead:
- * 1px destructive outline (the stock border is border-transparent, so the
- * colour drops in without layout shift), transparent middle, red glyph —
- * visible without the screaming fill. Border #fb4934 on the #1d2021 plate
- * = 4.3:1 (UI bar 3:1), glyph 5.2:1; light border/glyph #9d0006 on cream.
- * Hover pours the destructive tint inside the outline. */
+ * 2px destructive outline (the stock border is border-transparent at 1px;
+ * box-sizing keeps the outer size, so no layout shift), transparent
+ * middle, red glyph — visible without the screaming fill. Border #fb4934
+ * on the #1d2021 plate = 4.3:1 (UI bar 3:1), glyph 5.2:1; light
+ * border/glyph #9d0006 on cream. Hover pours the destructive tint inside
+ * the outline. */
 [data-testid="v4-stop"] {
   background-color: transparent;
   border-color: var(--color-destructive);
+  border-width: 2px;
   color: var(--zskin-text-destructive);
 }
 
