@@ -8,11 +8,12 @@
 `data-grouped-*` в перепись не попал — проверить в группированном
 виде.
 
-Разведка 3.17.1 (2026-10-29, grep `app.asar` вместе с аудитом апдейта;
-клон 3.14.3 отстал от сборки — часть имён компонентов из join-таблицы
-в бандле отсутствует, работа через токены и data-хуки). Все data-хуки
-шага живы и расширены: `data-project-*` — шесть имён (host, id, key,
-name, sidebar-panel, workspace-identity); полный инвентарь
+Разведка 3.17.1 (2026-10-29, grep `app.asar` вместе с аудитом апдейта).
+Имена компонентов из клона 3.14.3 вычищены из задач: как CSS-хуки они
+мертвы, в бандле 3.17.1 их литералов нет (полный список удалённых —
+история git, `b32bd2c`); работа через подтверждённые хуки ниже. Все
+data-хуки шага живы и расширены: `data-project-*` — шесть имён (host,
+id, key, name, sidebar-panel, workspace-identity); полный инвентарь
 `data-grouped-*` — семь имён (layout-key, sticky-header, task-key,
 group-header-id, group-content-id, group-item-id,
 empty-drop-zone-id); `data-workspace-file-tree-hierarchy-guides`
@@ -32,33 +33,22 @@ MCP — `mcp-status`, `mcp-server-row`, `mcp-settings`,
 `onboarding-dialog`, `onboarding-page`, `onboarding-wizard-cancel`,
 `onboarding-migration-dialog`; статистика — `usage-stats`,
 `coding-plan-usage-trends`; плагины — `plugin-store-sidebar-open`
-(новый в 3.17.1). В бандле отсутствуют (гипотезы классов снять,
-работать через токены, слоты и data-хуки; поверхности снимать с живого
-DOM на приёмке): `SettingsRow`, `SettingsGroupCard`,
-`SettingsRangeControl`, `SettingsHeaderBreadcrumb`, `SettingsSection`,
-`ThemeSelect`, `ThemePreviewCard`, `CommandCenterDialog`,
-`TaskFindDialog`, `ShortcutSettings*`, `FeedbackCenter`,
-`TicketDetailView`, `WelcomeScreen`, `LoginPanel`, `McpStatusDot`,
-`SubagentsSection`, `SubagentReasoningField`, `TaskGroupedView`,
-`FileManagerPane`, `HookForm`, `HooksList`, `AnimatedTerminalPanel`,
-`TerminalTabTrigger`, `CodingPlanUsagePanel`, `SetupWizardComponent`,
-`OnboardingSetupWizard`. Разделителей с общим слотом нет — только
+(новый в 3.17.1). Разделителей с общим слотом нет — только
 `select-separator`, `dropdown-menu-separator`, `context-menu-separator`.
 Новые поверхности 3.17.1: app-header семья (`desktop-top-logo-sidebar-toggle`,
 `desktop-top-nav-back`, `desktop-top-overlay`, `side-pane-toggle`,
 `side-pane-full-view-host`, `terminal-toggle`, `logout-button`),
 `project-section`, `automations-open`, семья `side-pane-*` (42
 литерала: `side-pane-add-item`, `side-pane-content-slot`,
-`side-pane-full-view*`, …), `plugin-store-sidebar-open`. Не
-поверхности: `--color-user-message-bubble` задан во всех секциях
-токенов, но класс на разметке не встречается — заготовка апстрима,
-не задача; `composer-thought-meter` — сток композера, палитра шага 5
-его накрывает.
+`side-pane-full-view*`, …). Не поверхности: `--color-user-message-bubble`
+задан во всех секциях токенов, но класс на разметке не встречается —
+заготовка апстрима, не задача; `composer-thought-meter` — сток
+композера, палитра шага 5 его накрывает.
 
 Ссылки: [общее](00-common.md) · [образец стиля](../oh-my-pi-output-style.md) · [join-таблица](../components-join.md).
 
 ### 6.1. Список выбора и меню (пара 13)
-`Select`, `DropdownMenu`, `Command`.
+Слоты `select-*`, `dropdown-menu-*`, `command-*`.
 **Что.** Пункт: hover `#32302f`, selected `#3c3836`, текст `#ebdbb2`,
 разделители `#3c3836`.
 **Как.** `[data-slot="select-item"]`, `dropdown-menu-item`,
@@ -67,7 +57,7 @@ DOM на приёмке): `SettingsRow`, `SettingsGroupCard`,
 `--color-menu-hover` (резолвится живьём, `#32302f` в тёмной).
 
 ### 6.2. Дерево (пара 14)
-`TreeView`, `FileTree`, `FileTreeRow`.
+`FileTree`.
 **Что.** Строка: текст `#ebdbb2`, папки `#bdae93`, guides `#3c3836`,
 selected `#3c3836`, hover `#32302f`.
 **Как.** Классы `FileTree`/`FileTreeOpen` подтверждены;
@@ -76,15 +66,13 @@ selected `#3c3836`, hover `#32302f`.
 `workspace-file-tree-depth`, `workspace-file-tree-mask-offset`.
 
 ### 6.3. Реестр агентов (пара 53)
-`SubagentsSection`, `SubagentDirectorySidePane`.
 **Что.** Карточки агентов: `#282828`, рамка `#3c3836`, роль — brand,
 метрики — `#928374`.
-**Как.** Имена клона в бандле отсутствуют; хуки — testid
-`subagent-directory`, `subagent-row`, `subagent-session`; обёртка —
-`side-pane-*` (см. разведку). Токены card/border.
+**Как.** Хуки — testid `subagent-directory`, `subagent-row`,
+`subagent-session`; обёртка — `side-pane-*` (см. разведку). Токены
+card/border.
 
 ### 6.4. Список сессий и задач (пара 76)
-`ProjectSidebar`, `TaskGroupedView`, `TaskList`.
 **Что.** Строка: hover `#32302f`, active `#3c3836`, заголовок группы —
 `#928374`; бейдж активности — brand; без зебры.
 **Как.** `data-task-row-metadata`, `data-task-item-key`,
@@ -96,68 +84,60 @@ selected `#3c3836`, hover `#32302f`.
 живой осмотр группированного вида — на приёмке). Токены selected/hover.
 
 ### 6.5. Поиск и палитра (пара 77)
-`CommandCenterDialog`, `TaskFindDialog`.
 **Что.** Диалог на popover, инпут без рамки, совпадение —
 `--color-find-highlight`.
 **Как.** `[data-slot="command-input"]`, `command-item` (слоты живы);
-find-токены живы, значений не меняли; классов диалогов в бандле нет —
-поверхность снять с живого DOM приёмки.
+find-токены живы, значений не меняли; поверхность диалога снять с
+живого DOM приёмки.
 
 ### 6.6. Файловое дерево-панель (пара 78)
-`WorkspaceFileTree`, `FileManagerPane`.
+`WorkspaceFileTree`.
 **Что.** Фон панели `#1d2021`, строки как 6.2, липкие папки — фон хрома.
 **Как.** Класс `WorkspaceFileTree` подтверждён (20 вхождений); testid
 `workspace-file-tree-panel`, `workspace-file-tree-refresh-button`;
-`data-workspace-file-tree-hierarchy-guides`. `FileManagerPane` в
-бандле нет. Токены panel/sidebar.
+`data-workspace-file-tree-hierarchy-guides`. Токены panel/sidebar.
 
 ### 6.7. Git (пара 79)
-`GitPane`, `GitGraphPane`, `GitBranchSwitcher`.
+`GitPane`, `GitBranchSwitcher`.
 **Что.** Статусы из `--color-git-*` (modified brand, added/untracked
 `#b8bb26`, deleted `#fb4934`, renamed `#83a598`); граф — линии `#3c3836`,
 узлы `#928374`, HEAD brand.
-**Как.** Классы `GitPane`, `GitBranchSwitcher` подтверждены; токены
-git в 3.17.1 без изменений (added/deleted/descendant/ignored/modified/
-renamed/untracked); SVG графа — `stroke`/`fill` селекторами (гипотеза).
+**Как.** Оба класса подтверждены; токены git в 3.17.1 без изменений
+(added/deleted/descendant/ignored/modified/renamed/untracked); SVG
+графа — `stroke`/`fill` селекторами (гипотеза).
 
 ### 6.8. Терминал-панель (пара 80)
-`TerminalSession`, `AnimatedTerminalPanel`, `TerminalTabTrigger`.
+`TerminalSession`.
 **Что.** Панель на `#282828`, табы как 1.6, статус success/error.
 **Как.** Класс `TerminalSession` подтверждён; `--color-terminal-*`
 без изменений; `data-terminal-tab-content` внутри таб-триггера с
-`data-active` (механизм 1.6 жив); `AnimatedTerminalPanel` /
-`TerminalTabTrigger` в бандле нет; переключатель панели — testid
+`data-active` (механизм 1.6 жив); переключатель панели — testid
 `terminal-toggle` в app-header.
 
 ### 6.9. Настройки (пара 81)
-`SettingsPage`, `SettingsHeaderBreadcrumb`.
+`SettingsPage`.
 **Что.** Фон базы, контент на `#282828`, навигация на хроме, активный пункт
 `#3c3836`.
 **Как.** `SettingsPage` подтверждён; `data-settings-section-nav` —
 значение равно ключу секции, активный пункт:
 `[data-settings-section-nav][aria-current="page"]`;
 `data-settings-panel-frame`; testid-литералы `settings-page`,
-`settings-toolbar`, `settings-root`, `settings-dialog`. Бreadcrumb в
-бандле отсутствует.
+`settings-toolbar`, `settings-root`, `settings-dialog`.
 
 ### 6.10. Строки настроек (пара 82)
-`SettingsRow`, `SettingsRangeControl`, `SettingsGroupCard`.
 **Что.** Label `#ebdbb2`, описание `#928374`, разделители `#3c3836`;
 контролы — 1.8; карточки групп — `#282828` + рамка.
-**Как.** Три имени клона в бандле отсутствуют: строки собирать из
-слотов `input`/`switch`/`checkbox`/`select-trigger` + токены
-card/border/foreground; тестовые зацепки — `settings-toolbar`.
+**Как.** Строки собирать из слотов `input`/`switch`/`checkbox`/
+`select-trigger` + токены card/border/foreground; тестовые зацепки —
+`settings-toolbar`.
 
 ### 6.11. Выбор темы (пара 83)
-`ThemeSelect`, `ThemePreviewCard`.
 **Что.** Превью-карточки: рамка `#3c3836`, выбранная — brand-рамка `#fe8019`,
 подпись `#bdae93`.
-**Как.** Оба имени в бандле отсутствуют; `[data-slot="card"]` жив;
-selected-класс/атрибут снять с живого DOM настроек на приёмке
-(гипотеза остаётся).
+**Как.** `[data-slot="card"]` жив; selected-класс/атрибут снять с
+живого DOM настроек на приёмке (гипотеза остаётся).
 
 ### 6.12. Плагины (пара 84)
-`PluginStorePage`, `InstalledPluginDetailPanel`.
 **Что.** Карточки `#282828`/рамка `#3c3836`, платный бейдж —
 `plugin-paid-plan-badge` (1.1), статус установки — success.
 **Как.** Классы `PluginStore`/`PluginStoreOrder` подтверждены; testid
@@ -165,67 +145,59 @@ selected-класс/атрибут снять с живого DOM настрое
 бейдж-токены живы.
 
 ### 6.13. Hooks (пара 85)
-`HooksSection`, `HookForm`, `HooksList`.
 **Что.** Строки как 6.10, форма — 1.8, код hook — mono `#ebdbb2` на `#1d2021`.
-**Как.** Замена найдена: `hooks-settings-section`, `hooks-form`;
-`HooksList` в бандле нет.
+**Как.** Хуки — `hooks-settings-section`, `hooks-form` (замены вместо
+имён клона).
 
 ### 6.14. MCP (пара 86)
-`McpSettingsSection`, `McpServerList`, `McpStatusDot`.
+`McpServerList`.
 **Что.** Статус-точка: success/warning/error; строка сервера — как 6.10;
 ошибка — destructive-surface.
-**Как.** `McpServerList` подтверждён; `McpStatusDot` отсутствует —
-точку красить статусными токенами; хуки: `mcp-status`, `mcp-server-row`,
-`mcp-settings`, `mcp-settings-refresh`,
-`mcp-open-authorization-button`; `--color-destructive-surface` жив.
+**Как.** `McpServerList` подтверждён; точку красить статусными токенами;
+хуки: `mcp-status`, `mcp-server-row`, `mcp-settings`,
+`mcp-settings-refresh`, `mcp-open-authorization-button`;
+`--color-destructive-surface` жив.
 
 ### 6.15. Субагенты (пара 87)
-`SubagentsSection`, `SubagentReasoningField`.
 **Что.** Реестр как 6.3; поле reasoning — select по 1.8.
 **Как.** `subagent-directory`/`subagent-row` (см. 6.3);
-`subagent-built-in-model-trigger`; `SubagentReasoningField` в бандле
-нет — select по 1.8 (`select-trigger`).
+`subagent-built-in-model-trigger`; reasoning — select по 1.8
+(`select-trigger`).
 
 ### 6.16. Горячие клавиши (пара 88)
-`ShortcutSettingsSection`, `ShortcutBindingRow`, `ShortcutSearchBar`.
 **Что.** Kbd по 1.10, строки как 6.10, поиск — find-токены.
-**Как.** Семейства `shortcut-*` в бандле нет вовсе; kbd по 1.10
-(`[data-slot="kbd"]`), строки/поиск — по 6.10 и find-токенам;
-поверхность снять с живого DOM настроек.
+**Как.** Kbd по 1.10 (`[data-slot="kbd"]`), строки/поиск — по 6.10 и
+find-токенам; поверхность снять с живого DOM настроек.
 
 ### 6.17. Статистика использования (пара 89)
-`UsageStatsSection`, `UsageHeatmap`, `CodingPlanUsagePanel`.
+`UsageHeatmap`.
 **Что.** Heatmap и графики — ramp `usage-heatmap`/`usage-chart`; карточки —
 `#282828`; подписи `#928374`.
 **Как.** Класс `UsageHeatmap` подтверждён; хуки `usage-stats`,
-`coding-plan-usage-trends`; `UsageStatsSection` /
-`CodingPlanUsagePanel` в бандле нет; heatmap/chart-токены без
-изменений (форма color-mix → srgb, значения те же); SVG — 7.1.
+`coding-plan-usage-trends`; heatmap/chart-токены без изменений (форма
+color-mix → srgb, значения те же); SVG — 7.1.
 
 ### 6.18. Фидбек (пара 90)
-`FeedbackCenter`, `TicketDetailView`.
 **Что.** Формы — 1.8, статусы тикетов — status-цвета, фон базы.
-**Как.** Оба имени в бандле отсутствуют; литералы `feedback-*` —
-только логи телеметрии, `ticket-*` — иконки lucide; поверхность
-собирать с живого DOM; формы 1.8, статусы — status-пары из 1.1.
+**Как.** Литералы `feedback-*` в бандле — только логи телеметрии,
+`ticket-*` — иконки lucide; поверхность собирать с живого DOM; формы
+1.8, статусы — status-пары из 1.1.
 
 ### 6.19. Онбординг (пара 92)
-`OnboardingDialog`, `SetupWizardComponent`.
+`OnboardingDialog`.
 **Что.** Как 1.9: шаги, карточки, кнопка brand.
 **Как.** `OnboardingDialog` подтверждён; хуки `onboarding-dialog`,
 `onboarding-page`, `onboarding-wizard-cancel`,
-`onboarding-migration-dialog`; `SetupWizardComponent` в бандле нет —
-шаги по 1.9 + `[data-slot="dialog-content"]`.
+`onboarding-migration-dialog`; шаги по 1.9 +
+`[data-slot="dialog-content"]`.
 
 ### 6.20. Вход (пара 93)
-`WelcomeScreen`, `LoginPanel`, `LoginApiKeyForm`.
 **Что.** Фон базы, поля 1.8, кнопка brand, ошибка — destructive.
-**Как.** Имена клона в бандле отсутствуют; вместо них семья `login-*`:
-`login-trigger`, `login-menu-item`, `login-api-key-input`,
-`login-api-key-continue-button`, `login-api-key-cancel-button`,
-`login-api-key-skip-button`, `login-api-key-error`,
-`login-api-key-provider` (12 литералов); поля 1.8, ошибка —
-destructive-пара.
+**Как.** Семья `login-*`: `login-trigger`, `login-menu-item`,
+`login-api-key-input`, `login-api-key-continue-button`,
+`login-api-key-cancel-button`, `login-api-key-skip-button`,
+`login-api-key-error`, `login-api-key-provider` (12 литералов);
+поля 1.8, ошибка — destructive-пара.
 
 ### 6.21. Служебные токены вне join
 **Пара** — нет: токены, которым не нашлось пары в join-таблице.
