@@ -407,7 +407,8 @@ html.theme-zai-light ::selection {
 }
 
 /* 1.5 panel splitters. No resizable/split data hooks exist in the 3.16.2
- * bundle (the workbench splitter is custom), so this stays a hypothesis:
+ * or 3.17.1 bundles (the workbench splitter is custom; data-resize-handle-state
+ * has zero occurrences), so this stays a hypothesis:
  *
  * [data-slot="resizable-handle"] {
  *   background: var(--color-border);
@@ -562,13 +563,11 @@ html.theme-zai-light [data-slot="alert-dialog-overlay"] {
   filter: none; /* omp draws no glow (plan 3.3) */
 }
 
-/* live workflow run line under the title: full-strength text, yellow glyph */
+/* live workflow run line under the title: full-strength text. The yellow
+ * glyph rule (svg.lucide-workflow) died in 3.17.1 — the class no longer
+ * exists in the bundle, the row glyph is not targetable anymore. */
 [data-workflow-run-line="true"][data-run-status="running"] {
   color: var(--color-foreground);
-}
-
-[data-workflow-run-line="true"][data-run-status="running"] svg.lucide-workflow {
-  color: var(--color-warning);
 }
 
 /* ===== status panel (right): width + full height =====
