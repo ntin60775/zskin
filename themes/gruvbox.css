@@ -2281,3 +2281,17 @@ html.theme-zai-dark [data-task-item-key]:hover {
 [data-testid="workspace-file-tree-row"]:hover {
   background: var(--color-hover);
 }
+
+/* ===== plan 7 — visualizations (docs/plans/07-visualizations.md) ===== */
+
+/* 7.1 chart chrome. Recharts inlines library constants as presentational
+ * attributes (grid stroke="#ccc", axis tick fill="#666"); attributes lose to
+ * plain CSS. Series and heatmap cells already paint from the 1.1 token ramps
+ * via inline var() references (recon 2026-10-30). */
+[data-settings-panel-frame] .recharts-cartesian-grid line {
+  stroke: var(--color-border);
+}
+
+[data-settings-panel-frame] .recharts-cartesian-axis-tick-value {
+  fill: var(--color-foreground-subtle);
+}
