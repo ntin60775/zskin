@@ -2239,6 +2239,35 @@ html.theme-zai-dark [data-task-item-key]:hover {
   background: var(--color-selected);
 }
 
+/* 6.11 code preview cards (Settings → Appearance). The two previews render
+ * through the same pierre/diffs <diffs-container> as transcript diffs and
+ * branch by their own inline color-scheme (light host vs dark host). Two of
+ * our earlier rules flattened them into one dark plate: 2.21 pins both
+ * --diffs-*-bg to the active scheme for transcript diffs, and the 2.20 chip
+ * fix ([data-language] [style*="--diffs-bg"], !important) repaints the
+ * inline --diffs-bg of the preview hosts with --color-background-win-alt —
+ * Light preview went dark-on-dark (user-reported). Preview hosts carry a
+ * distinctive inline marker, so split them back: each branch gets its own
+ * surface and fallback text. Needs !important plus a specificity above the
+ * 2.20 rule, hence the panel-frame scope. Transcript diffs keep 2.21. */
+[data-settings-panel-frame] diffs-container[style*="color-scheme: light"] {
+  --diffs-bg: #fbf1c7 !important;
+  --diffs-light-bg: #fbf1c7 !important;
+  --diffs-dark-bg: #1d2021 !important;
+  --diffs-light: #3c3836;
+  --diffs-dark: #3c3836;
+  --diffs-fg: #3c3836;
+}
+
+[data-settings-panel-frame] diffs-container[style*="color-scheme: dark"] {
+  --diffs-bg: #1d2021 !important;
+  --diffs-light-bg: #fbf1c7 !important;
+  --diffs-dark-bg: #1d2021 !important;
+  --diffs-light: #ebdbb2;
+  --diffs-dark: #ebdbb2;
+  --diffs-fg: #ebdbb2;
+}
+
 /* 6.2/6.6 file tree. The panel itself is transparent stock over the themed
  * sidebar token — nothing to paint. Rows were NOT mounted at acceptance
  * (empty workspace): the rules follow the step-1 practice (bundle-confirmed
