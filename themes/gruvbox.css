@@ -185,6 +185,82 @@ html.dark {
   --color-git-none: var(--color-foreground);
   --color-idle-task: #d3869b;
   --color-idle-task-surface: color-mix(in oklab, #8f3f71 35%, #1d2021);
+
+  /* plan 6.21 — out-of-join tokens. Primary actions go brand with the dark
+   * inverse text (6.6:1 on orange); light scheme keeps primary charcoal so
+   * the button text passes 4.5:1 (cream on faded orange is only 3.4:1).
+   * Highspeed recipe mirrors stock alphas, hue moved to the warm ramp. */
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: #1d2021;
+  --color-destructive-foreground: #1d2021;
+
+  --color-highspeed-accent: #fe8019;
+  --color-highspeed-composer-surface: #1d2021;
+  --color-highspeed-composer-border-idle: #504945;
+  --color-highspeed-composer-border-hover: #665c54;
+  --color-highspeed-composer-border-pre-animation: transparent;
+  --color-highspeed-glow-01: #fe801903;
+  --color-highspeed-glow-04: #fe80190a;
+  --color-highspeed-glow-15: #fe801926;
+  --color-highspeed-glow-26: #fe801942;
+  --color-highspeed-particle: #fe8019c2;
+  --color-highspeed-particle-highlight: #fe8019;
+  --color-highspeed-particle-highlight-glow: #fe8019ad;
+  --color-highspeed-model-sweep-highlight: #ebdbb2;
+  --color-highspeed-share-foreground: #ebdbb2;
+  --color-highspeed-share-foreground-subtle: #bdae93;
+  --color-highspeed-share-control-hover: #ebdbb21a;
+  --color-highspeed-share-card-view-border: #ebdbb270;
+  --color-highspeed-share-card-view-start: #ebdbb20f;
+  --color-highspeed-share-card-view-end: #a899840f;
+  --color-highspeed-share-dialog-surface: #1d2021;
+  --color-highspeed-share-dialog-foreground: #ebdbb2;
+  --color-highspeed-share-dialog-muted: #bdae93;
+  --color-highspeed-share-dialog-benefit-text: #bdae93;
+  --color-highspeed-share-dialog-pill-text: #bdae93;
+  --color-highspeed-share-dialog-border: #ebdbb21f;
+  --color-highspeed-share-dialog-input-border: #ebdbb21a;
+  --color-highspeed-share-dialog-stats-border: #ebdbb21a;
+  --color-highspeed-share-dialog-logo-border: #ebdbb21f;
+  --color-highspeed-share-dialog-logo-surface: #3c3836;
+  --color-highspeed-share-dialog-control-hover: #ebdbb21a;
+  --color-highspeed-share-dialog-download-surface: #282828;
+  --color-highspeed-share-dialog-download-foreground: #ebdbb2;
+  --color-highspeed-share-dialog-download-hover-surface: #3c3836;
+  --color-highspeed-share-dialog-bars-start: #fb4934;
+  --color-highspeed-share-dialog-bars-mid: #fabd2f;
+  --color-highspeed-share-dialog-bars-end: #b8bb26;
+  --color-highspeed-share-dialog-bars-baseline: #ebdbb22e;
+  --color-highspeed-share-dialog-marker-glow: #b8bb2699;
+  --color-highspeed-share-dialog-noise-opacity: 1;
+  --color-highspeed-share-dialog-noise-light-opacity: 0;
+  --color-highspeed-share-dialog-noise-dark-opacity: 0.06;
+
+  /* remote panes: the three flavors take one muted hue each off the
+   * gruvbox ramp; continuity panel is a floating chrome slab */
+  --color-remote-ssh-border: #458588;
+  --color-remote-ssh-foreground: #83a598;
+  --color-remote-ssh-surface: color-mix(in srgb, #83a598 14%, transparent);
+  --color-remote-docker-border: #8f3f71;
+  --color-remote-docker-foreground: #d3869b;
+  --color-remote-docker-surface: color-mix(in srgb, #d3869b 14%, transparent);
+  --color-remote-wsl-border: #98971a;
+  --color-remote-wsl-foreground: #b8bb26;
+  --color-remote-wsl-surface: color-mix(in srgb, #b8bb26 14%, transparent);
+  --color-remote-foreground-muted: #a89984;
+  --color-remote-continuity-panel: #3c3836;
+  --color-remote-continuity-panel-foreground: #ebdbb2;
+  --color-remote-continuity-panel-subtle: #bdae93;
+  --color-remote-continuity-panel-surface: #282828;
+
+  /* sidebar/graph node palettes: one ramp hue per node kind */
+  --color-file-node: color-mix(in oklab, #83a598 14%, transparent);
+  --color-file-node-foreground: #83a598;
+  --color-session-node-foreground: #b8bb26;
+  --color-skill-node-foreground: #d3869b;
+  --color-plugin-node-foreground: #fabd2f;
+  --color-command-node-foreground: #bdae93;
+  --color-subagent-node-foreground: #b8bb26;
 }
 
 /* ===== light (omp light-gruvbox, minimal coverage) ===== */
@@ -320,6 +396,77 @@ html.theme-zai-light {
   --color-workflow-rule: rgba(60, 56, 54, 0.06);
   --color-workflow-trace: rgba(60, 56, 54, 0.35);
   --color-workflow-trace-strong: rgba(60, 56, 54, 0.6);
+
+  /* plan 6.21 — out-of-join tokens, light twins. Primary stays charcoal:
+   * cream on the faded brand orange is 3.4:1, on charcoal it passes. */
+  --color-primary: #3c3836;
+  --color-primary-foreground: #fbf1c7;
+  --color-destructive-foreground: #fbf1c7;
+
+  --color-highspeed-accent: #d65d0e;
+  --color-highspeed-composer-surface: #fbf1c7;
+  --color-highspeed-composer-border-idle: #d5c4a1;
+  --color-highspeed-composer-border-hover: #bdae93;
+  --color-highspeed-composer-border-pre-animation: #d5c4a1;
+  --color-highspeed-glow-01: #d65d0e03;
+  --color-highspeed-glow-04: #d65d0e0a;
+  --color-highspeed-glow-15: #d65d0e26;
+  --color-highspeed-glow-26: #d65d0e42;
+  --color-highspeed-particle: #d65d0ec2;
+  --color-highspeed-particle-highlight: #d65d0e;
+  --color-highspeed-particle-highlight-glow: #d65d0ead;
+  --color-highspeed-model-sweep-highlight: #3c3836;
+  --color-highspeed-share-foreground: #3c3836;
+  --color-highspeed-share-foreground-subtle: #665c54;
+  --color-highspeed-share-control-hover: #3c38360a;
+  --color-highspeed-share-card-view-border: #3c38362e;
+  --color-highspeed-share-card-view-start: #fbf1c70f;
+  --color-highspeed-share-card-view-end: #7c6f640f;
+  --color-highspeed-share-dialog-surface: #fbf1c7;
+  --color-highspeed-share-dialog-foreground: #3c3836;
+  --color-highspeed-share-dialog-muted: #665c54;
+  --color-highspeed-share-dialog-benefit-text: #665c54;
+  --color-highspeed-share-dialog-pill-text: #665c54;
+  --color-highspeed-share-dialog-border: #3c38361a;
+  --color-highspeed-share-dialog-input-border: #3c38361a;
+  --color-highspeed-share-dialog-stats-border: #3c38361a;
+  --color-highspeed-share-dialog-logo-border: #3c38361f;
+  --color-highspeed-share-dialog-logo-surface: #f2e5bc;
+  --color-highspeed-share-dialog-control-hover: #3c383612;
+  --color-highspeed-share-dialog-download-surface: #3c3836;
+  --color-highspeed-share-dialog-download-foreground: #fbf1c7;
+  --color-highspeed-share-dialog-download-hover-surface: #504945;
+  --color-highspeed-share-dialog-bars-start: #9d0006;
+  --color-highspeed-share-dialog-bars-mid: #b57614;
+  --color-highspeed-share-dialog-bars-end: #79740e;
+  --color-highspeed-share-dialog-bars-baseline: #3c38362e;
+  --color-highspeed-share-dialog-marker-glow: #79740e99;
+  --color-highspeed-share-dialog-noise-opacity: 1;
+  --color-highspeed-share-dialog-noise-light-opacity: 0.06;
+  --color-highspeed-share-dialog-noise-dark-opacity: 0;
+
+  --color-remote-ssh-border: #076678;
+  --color-remote-ssh-foreground: #076678;
+  --color-remote-ssh-surface: color-mix(in srgb, #458588 12%, transparent);
+  --color-remote-docker-border: #8f3f71;
+  --color-remote-docker-foreground: #8f3f71;
+  --color-remote-docker-surface: color-mix(in srgb, #8f3f71 12%, transparent);
+  --color-remote-wsl-border: #79740e;
+  --color-remote-wsl-foreground: #79740e;
+  --color-remote-wsl-surface: color-mix(in srgb, #98971a 12%, transparent);
+  --color-remote-foreground-muted: #7c6f64;
+  --color-remote-continuity-panel: #f2e5bc;
+  --color-remote-continuity-panel-foreground: #3c3836;
+  --color-remote-continuity-panel-subtle: #665c54;
+  --color-remote-continuity-panel-surface: #ebdbb2;
+
+  --color-file-node: color-mix(in oklab, #458588 14%, transparent);
+  --color-file-node-foreground: #076678;
+  --color-session-node-foreground: #79740e;
+  --color-skill-node-foreground: #8f3f71;
+  --color-plugin-node-foreground: #af3a03;
+  --color-command-node-foreground: #665c54;
+  --color-subagent-node-foreground: #79740e;
 }
 
 /* ===== selection & scrollbars ===== */
@@ -2049,4 +2196,59 @@ html.theme-zai-light [data-testid="chat-thought-level-select-trigger"] {
 [data-v4-draft-suggested-prompts-group] [data-draft-suggested-prompt]:hover {
   background-color: var(--color-selected);
   color: var(--color-foreground);
+}
+
+/* ===== plan 6 — navigation, lists, settings (docs/plans/06-navigation-settings.md) =====
+ * Hooks re-verified against the 3.17.1 bundle. Token-only surfaces (sidebar
+ * row active state, menus, dialogs, settings fields, usage/terminal/git
+ * panes, MCP dots) ride the 1.1 overrides through stock token utilities and
+ * need no structural rules; this block carries the rest. */
+
+/* 6.1 menu separators: no generic separator slot exists — only the
+ * family-scoped select/dropdown-menu/context-menu separators (3.17.1
+ * inventory). Context-menu separator already draws from --color-border. */
+[data-slot="select-separator"],
+[data-slot="dropdown-menu-separator"] {
+  background: var(--color-border);
+}
+
+/* 6.4 sidebar task rows. Verified live on 3.17.1: rows paint their active
+ * state from bg-selected (#3c3836 resolved) and hover from the
+ * hover:bg-surface-hover utility (#3c3836). The omp hover tint is one step
+ * quieter; the unlayered rule beats the layered stock utility on purpose.
+ * Dark-scope only: in light the stock surface-hover (#d5c4a1) is the visible
+ * warm tint, while --color-hover collapses into the sidebar cream. */
+html.dark [data-task-item-key]:hover,
+html.theme-zai-dark [data-task-item-key]:hover {
+  background: var(--color-hover);
+}
+
+/* 6.9 settings navigation. The active item carries
+ * data-settings-section-nav=<section key> + aria-current="page" (verified in
+ * the 3.17.1 bundle); the panel frame and rows are token-driven stock.
+ * Background of the active item is a hypothesis superseded by measurement —
+ * stock paints bg-selected (#3c3836 / #d5c4a1), the same values the plan
+ * wants. Inactive items take the subtle text pair: stock light measured
+ * 4.29:1 (#7c6f64 on #fbf1c7), this pair gives 5.74 / 6.77. */
+[data-settings-section-nav] {
+  color: var(--color-foreground-subtle);
+}
+
+[data-settings-section-nav][aria-current="page"] {
+  color: var(--color-foreground);
+  background: var(--color-selected);
+}
+
+/* 6.2/6.6 file tree. The panel itself is transparent stock over the themed
+ * sidebar token — nothing to paint. Rows were NOT mounted at acceptance
+ * (empty workspace): the rules follow the step-1 practice (bundle-confirmed
+ * hook, token-true colors) and will apply when a tree renders; re-check at
+ * the first live tree. Guides are inline-styled (style attr, no classes) and
+ * cannot be retargeted from CSS at all — recorded as a limitation. */
+[data-testid="workspace-file-tree-row"] {
+  color: var(--color-foreground);
+}
+
+[data-testid="workspace-file-tree-row"]:hover {
+  background: var(--color-hover);
 }
